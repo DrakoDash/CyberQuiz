@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Menaces Cyber — CyberQuiz</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"/>
+<style>
+:root {
+  --bg: #07091a;
+  --card: #0d1228;
+  --card2: #111833;
+  --accent: #ff4444;
+  --accent2: #ff6b35;
+  --glow: rgba(255,68,68,0.18);
+  --border: rgba(255,68,68,0.18);
+  --muted: rgba(255,255,255,0.7);
+  --success: #4dff91;
+  --fail: #ff5555;
+  --text: #e8eaf6;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0; min-height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── PARTICLES ─────────────────────── */
+#particles {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+
+/* ── NAVBAR ─────────────────────────── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(7,9,26,0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 900;
+}
+
+.nav-back {
+  background: none; border: none; cursor: pointer;
+  color: var(--accent); font-size: 0.9rem;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: background 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+.nav-back:hover { background: var(--glow); }
+
+.nav-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem; color: var(--accent); letter-spacing: 2px;
+}
+
+.nav-badge {
+  font-size: 0.75rem; color: var(--muted);
+  background: rgba(255,68,68,0.08);
+  border: 1px solid var(--border);
+  padding: 4px 10px; border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── MAIN ───────────────────────────── */
+main {
+  position: relative; z-index: 1;
+  padding: 82px 16px 60px;
+  max-width: 820px; margin: 0 auto;
+}
+
+/* ── QUIZ CARD ──────────────────────── */
+.quiz-card {
+  background: linear-gradient(160deg, rgba(15,20,48,0.98), rgba(10,13,33,0.98));
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(255,68,68,0.07), 0 20px 40px rgba(0,0,0,0.5);
+}
+
+/* ── HERO BANNER ────────────────────── */
+.quiz-hero {
+  background: linear-gradient(120deg, rgba(255,68,68,0.1) 0%, rgba(255,107,53,0.06) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 28px 32px 22px;
+  display: flex; align-items: center; gap: 20px;
+}
+
+.hero-icon {
+  width: 58px; height: 58px; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(255,68,68,0.15), rgba(255,107,53,0.08));
+  border: 1px solid rgba(255,68,68,0.3);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+}
+
+.hero-text h1 {
+  margin: 0 0 4px;
+  font-size: 1.35rem; font-weight: 700;
+  color: #fff;
+}
+
+.hero-text p {
+  margin: 0;
+  font-size: 0.82rem; color: var(--muted); line-height: 1.4;
+}
+
+.hero-label {
+  display: inline-block; margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); background: rgba(255,68,68,0.08);
+  border: 1px solid rgba(255,68,68,0.25);
+  padding: 2px 8px; border-radius: 4px;
+}
+
+/* ── PROGRESS ───────────────────────── */
+.progress-zone {
+  padding: 16px 32px 0;
+  display: flex; align-items: center; gap: 14px;
+}
+
+.progress-bar {
+  flex: 1; height: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 99px; overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 99px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(255,68,68,0.5);
+}
+
+.progress-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; color: var(--muted); white-space: nowrap;
+}
+
+/* ── QUIZ BODY ──────────────────────── */
+.quiz-body { padding: 28px 32px 32px; }
+
+.question-meta {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+}
+
+.q-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--accent); background: rgba(255,68,68,0.08);
+  border: 1px solid rgba(255,68,68,0.2);
+  padding: 3px 10px; border-radius: 5px;
+}
+
+.question-text {
+  font-size: 1.1rem; font-weight: 500; line-height: 1.65;
+  color: #f0f2ff; margin: 0 0 24px;
+}
+
+/* ── ANSWERS ────────────────────────── */
+.answers { display: flex; flex-direction: column; gap: 10px; }
+
+.answer-btn {
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px; padding: 14px 16px;
+  cursor: pointer; text-align: left;
+  transition: all 0.18s ease;
+  color: var(--text); font-family: 'Poppins', sans-serif; font-size: 0.92rem;
+}
+
+.answer-btn:hover {
+  background: rgba(255,68,68,0.07);
+  border-color: rgba(255,68,68,0.3);
+  transform: translateX(4px);
+}
+
+.answer-badge {
+  min-width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem; font-weight: 600; color: var(--muted);
+  transition: all 0.18s ease; flex-shrink: 0;
+}
+
+.answer-btn.selected {
+  background: rgba(255,68,68,0.12);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(255,68,68,0.2);
+}
+
+.answer-btn.selected .answer-badge {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ── CONTROLS ───────────────────────── */
+.controls {
+  display: flex; gap: 12px; margin-top: 28px;
+}
+
+.btn {
+  padding: 12px 20px; border-radius: 10px; border: none;
+  cursor: pointer; font-weight: 600; font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; flex: 1;
+  box-shadow: 0 4px 15px rgba(255,68,68,0.25);
+}
+.btn-primary:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255,68,68,0.35);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted);
+}
+.btn-ghost:not(:disabled):hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* ── RESULT SCREEN ──────────────────── */
+#resultStep { display: none; text-align: center; padding: 10px 0 6px; }
+
+.score-ring {
+  position: relative; width: 130px; height: 130px;
+  margin: 0 auto 20px;
+}
+
+.score-ring svg { transform: rotate(-90deg); }
+
+.score-ring-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+
+.score-ring-fill {
+  fill: none; stroke-width: 8; stroke-linecap: round;
+  stroke: var(--accent);
+  stroke-dasharray: 345;
+  stroke-dashoffset: 345;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 0 6px rgba(255,68,68,0.5));
+}
+
+.score-ring-text {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+
+.score-number {
+  font-size: 2rem; font-weight: 700; color: #fff;
+  font-family: 'JetBrains Mono', monospace; line-height: 1;
+}
+
+.score-total { font-size: 0.75rem; color: var(--muted); }
+
+.score-msg {
+  font-size: 1.1rem; font-weight: 600; margin-bottom: 6px;
+}
+
+.score-sub {
+  font-size: 0.82rem; color: var(--muted); margin-bottom: 24px;
+}
+
+.result-actions {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+}
+
+/* ── CORRECTION SCREEN ──────────────── */
+#corrStep { display: none; }
+
+.corr-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+
+.corr-header h3 {
+  margin: 0; font-size: 1.1rem; color: #fff;
+}
+
+.corr-list {
+  max-height: 440px; overflow-y: auto;
+  padding-right: 6px; display: flex; flex-direction: column; gap: 10px;
+}
+
+.corr-list::-webkit-scrollbar { width: 4px; }
+.corr-list::-webkit-scrollbar-track { background: transparent; }
+.corr-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.corr-item {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px; padding: 16px;
+  border-left: 3px solid transparent;
+}
+
+.corr-item.ok { border-left-color: var(--success); }
+.corr-item.ko { border-left-color: var(--fail); }
+
+.corr-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 10px; margin-bottom: 10px;
+}
+
+.corr-q { font-size: 0.88rem; font-weight: 500; color: #f0f2ff; line-height: 1.4; }
+
+.corr-status {
+  font-size: 0.72rem; font-weight: 600; white-space: nowrap;
+  padding: 3px 8px; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.corr-status.ok { background: rgba(77,255,145,0.1); color: var(--success); }
+.corr-status.ko { background: rgba(255,85,85,0.1); color: var(--fail); }
+
+.corr-answers { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+.corr-answers strong { color: #fff; }
+
+.corr-expl {
+  margin-top: 8px; font-size: 0.8rem;
+  color: rgba(255,107,53,0.85);
+  font-style: italic; line-height: 1.5;
+  padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.corr-footer {
+  display: flex; gap: 10px; margin-top: 18px;
+}
+
+/* ── MODAL ──────────────────────────── */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1200;
+}
+
+.modal {
+  background: #0d1228;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px; width: 320px; text-align: center;
+  box-shadow: 0 0 40px rgba(255,68,68,0.1);
+}
+
+.modal h4 {
+  margin: 0 0 10px; font-size: 1.05rem; color: #fff;
+}
+
+.modal p { margin: 0 0 22px; font-size: 0.88rem; color: var(--muted); }
+
+.modal-actions { display: flex; gap: 10px; }
+
+/* ── RESPONSIVE ─────────────────────── */
+@media (max-width: 600px) {
+  .quiz-hero { padding: 20px 20px 16px; gap: 14px; }
+  .quiz-body { padding: 20px 20px 24px; }
+  .progress-zone { padding: 14px 20px 0; }
+  .hero-text h1 { font-size: 1.1rem; }
+  .hero-icon { width: 48px; height: 48px; font-size: 1.4rem; border-radius: 10px; }
+  .question-text { font-size: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <button class="nav-back" id="backBtn">
+    <i class="fa-solid fa-arrow-left"></i> Retour
+  </button>
+  <div class="nav-logo">CYBER<span style="opacity:.4">QUIZ</span></div>
+  <div class="nav-badge"><i class="fa-solid fa-shield-halved" style="margin-right:5px"></i>Niveau 2</div>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="quiz-card">
+
+    <!-- HERO -->
+    <div class="quiz-hero">
+      <div class="hero-icon">⚠️</div>
+      <div class="hero-text">
+        <div class="hero-label">Module 02</div>
+        <h1>Les Menaces Cyber</h1>
+        <p>Ransomware, phishing, malware, DDoS… Identifie et comprends les attaques informatiques modernes.</p>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-zone">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">0 / 20</div>
+    </div>
+
+    <!-- QUIZ STEP -->
+    <div class="quiz-body" id="quizStep">
+      <div class="question-meta">
+        <span class="q-number" id="qNumber">Question 01</span>
+      </div>
+      <div class="question-text" id="qText"></div>
+      <div class="answers" id="ansBox"></div>
+      <div class="controls">
+        <button class="btn btn-ghost" id="prevBtn" disabled>
+          <i class="fa-solid fa-chevron-left"></i> Précédent
+        </button>
+        <button class="btn btn-primary" id="nextBtn" disabled>
+          Suivant <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULT STEP -->
+    <div class="quiz-body" id="resultStep">
+      <div class="score-ring">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle class="score-ring-track" cx="65" cy="65" r="55"/>
+          <circle class="score-ring-fill" id="ringFill" cx="65" cy="65" r="55"/>
+        </svg>
+        <div class="score-ring-text">
+          <div class="score-number" id="scoreNum">0</div>
+          <div class="score-total" id="scoreTotal">/ 20</div>
+        </div>
+      </div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div class="score-sub" id="scoreSub"></div>
+      <div class="result-actions">
+        <button class="btn btn-ghost" id="showCorrBtn">
+          <i class="fa-solid fa-list-check"></i> Voir la correction
+        </button>
+        <button class="btn btn-primary" id="goHomeBtn">
+          <i class="fa-solid fa-house"></i> Accueil
+        </button>
+      </div>
+    </div>
+
+    <!-- CORRECTION STEP -->
+    <div class="quiz-body" id="corrStep">
+      <div class="corr-header">
+        <i class="fa-solid fa-magnifying-glass" style="color:var(--accent)"></i>
+        <h3>Correction détaillée</h3>
+      </div>
+      <div class="corr-list" id="corrList"></div>
+      <div class="corr-footer">
+        <button class="btn btn-ghost" id="backToResultBtn">
+          <i class="fa-solid fa-arrow-left"></i> Score
+        </button>
+        <button class="btn btn-primary" id="goHomeBtn2">
+          <i class="fa-solid fa-house"></i> Accueil
+        </button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- QUIT MODAL -->
+<div id="quitModal" style="display:none">
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h4>⚠️ Quitter le quiz ?</h4>
+      <p>Ta progression sera perdue. Tu es sûr ?</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelQuit" style="flex:1">Rester</button>
+        <button class="btn btn-primary" id="confirmQuit" style="flex:1">Quitter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── QUESTIONS ──────────────────────── */
+const questions = [
+  { q: "Qu'est-ce qu'un ransomware ?", a: ["Un logiciel qui accélère l'ordinateur","Un malware qui chiffre vos données et exige une rançon","Un antivirus gratuit"], c: 1, e: "Un ransomware chiffre vos fichiers et réclame un paiement pour les déchiffrer. Ex : WannaCry en 2017." },
+  { q: "Le phishing est une technique visant principalement à :", a: ["Accélérer votre connexion Internet","Voler vos informations via de faux sites ou emails","Mettre à jour votre système"], c: 1, e: "Le phishing trompe l'utilisateur pour lui faire saisir ses identifiants sur un site frauduleux imitant un site officiel." },
+  { q: "Qu'est-ce qu'un cheval de Troie (trojan) ?", a: ["Un programme malveillant déguisé en logiciel légitime","Un système de chiffrement puissant","Un protocole réseau sécurisé"], c: 0, e: "Un trojan se cache dans un logiciel apparemment inoffensif pour s'installer discrètement et ouvrir une porte dérobée." },
+  { q: "Une attaque DDoS (Distributed Denial of Service) consiste à :", a: ["Déchiffrer des mots de passe par force brute","Saturer un serveur de requêtes pour le rendre inaccessible","Intercepter des communications réseau"], c: 1, e: "Un DDoS noie la cible sous un flux massif de requêtes provenant de milliers de machines infectées (botnet)." },
+  { q: "Qu'est-ce qu'un keylogger ?", a: ["Un outil de sauvegarde automatique de fichiers","Un programme qui enregistre silencieusement tout ce que vous tapez","Un système de verrouillage de session"], c: 1, e: "Le keylogger capture vos frappes clavier, y compris mots de passe et numéros bancaires, et les envoie à l'attaquant." },
+  { q: "Un ver informatique (worm) se distingue d'un virus car il :", a: ["Se propage seul sans avoir besoin d'un fichier hôte","Nécessite une interaction humaine pour se diffuser","Est toujours détecté par les antivirus"], c: 0, e: "Un ver se réplique et se propage de façon autonome sur les réseaux, sans fichier hôte ni action de l'utilisateur." },
+  { q: "L'attaque Man-in-the-Middle (MitM) consiste à :", a: ["Inonder un réseau de paquets malveillants","S'interposer secrètement entre deux parties qui communiquent","Forcer un mot de passe par tentatives répétées"], c: 1, e: "Le pirate intercepte et peut modifier les échanges à l'insu des deux parties, par exemple sur un Wi-Fi public." },
+  { q: "Qu'est-ce qu'un botnet ?", a: ["Un réseau de robots aspirateurs connectés","Un réseau d'ordinateurs infectés contrôlés à distance par un pirate","Un service cloud sécurisé"], c: 1, e: "Un botnet peut regrouper des millions de machines 'zombies' utilisées pour des DDoS, du spam ou du minage de crypto." },
+  { q: "Le spear phishing se distingue du phishing classique car il :", a: ["Est plus facile à détecter","Cible une personne précise avec des informations personnalisées","Utilise uniquement les SMS"], c: 1, e: "Le spear phishing est une attaque ciblée qui exploite des informations personnelles (prénom, employeur) pour paraître crédible." },
+  { q: "Qu'est-ce que le social engineering ?", a: ["Une méthode pour améliorer les réseaux sociaux","Manipulation psychologique pour obtenir des informations confidentielles","Un outil de gestion des réseaux d'entreprise"], c: 1, e: "Le social engineering exploite la confiance, la peur ou l'urgence humaine plutôt que les failles techniques des systèmes." },
+  { q: "Une vulnérabilité zero-day est :", a: ["Une faille connue et déjà corrigée par un patch","Une faille inconnue du fabricant, sans correctif disponible","Un virus inoffensif"], c: 1, e: "Une zero-day est particulièrement dangereuse car elle est exploitée avant que l'éditeur en soit informé et publie un patch." },
+  { q: "Un rootkit est principalement conçu pour :", a: ["Améliorer les performances système","Se dissimuler dans le système et masquer d'autres malwares","Sauvegarder les fichiers automatiquement"], c: 1, e: "Un rootkit opère au niveau du noyau du système d'exploitation pour rester invisible aux outils de sécurité classiques." },
+  { q: "Le smishing est une variante de phishing qui utilise :", a: ["Des emails professionnels usurpés","Les réseaux Wi-Fi publics","Des SMS frauduleux"], c: 2, e: "Smishing = SMS + phishing. Les victimes reçoivent un faux SMS les invitant à cliquer sur un lien malveillant." },
+  { q: "Une injection SQL permet à un attaquant de :", a: ["Ralentir une connexion Internet","Injecter des commandes malveillantes dans une base de données via un formulaire","Copier un disque dur à distance"], c: 1, e: "L'injection SQL exploite les formulaires web mal sécurisés pour lire, modifier ou supprimer des données sensibles." },
+  { q: "Qu'est-ce qu'une attaque par force brute ?", a: ["Une attaque physique sur les serveurs","Tester automatiquement toutes les combinaisons pour craquer un mot de passe","Envoyer des milliers d'emails en même temps"], c: 1, e: "La force brute tente des milliards de combinaisons. Un mot de passe court et simple peut tomber en quelques secondes." },
+  { q: "Le vishing est une variante de phishing qui passe par :", a: ["Les appels téléphoniques frauduleux","Les vidéos piégées","Les clés USB abandonnées"], c: 0, e: "Vishing = Voice + phishing. Le pirate se fait passer pour un technicien ou une banque par appel téléphonique." },
+  { q: "Un logiciel espion (spyware) est conçu pour :", a: ["Protéger votre vie privée","Collecter et transmettre vos données à votre insu","Optimiser votre connexion internet"], c: 1, e: "Un spyware surveille discrètement votre activité (sites visités, identifiants) et envoie ces informations à un tiers." },
+  { q: "Qu'est-ce qu'un adware ?", a: ["Un logiciel qui affiche des publicités indésirables pour générer des revenus","Un antivirus publicitaire performant","Un outil d'administration réseau"], c: 0, e: "L'adware inonde votre écran de publicités et peut ralentir le PC tout en collectant vos données de navigation." },
+  { q: "L'APT (Advanced Persistent Threat) désigne :", a: ["Un antivirus très performant","Une attaque ciblée et prolongée, souvent d'origine étatique","Un type de sauvegarde automatique"], c: 1, e: "Les APT sont des attaques sophistiquées visant des cibles stratégiques (gouvernements, grandes entreprises), actives pendant des mois." },
+  { q: "Qu'est-ce que le 'drive-by download' ?", a: ["Un téléchargement volontaire d'une application","Un téléchargement automatique de malware lors de la visite d'un site piégé","Un service de mise à jour sécurisé"], c: 1, e: "Avec le drive-by download, il suffit de visiter un site compromis pour qu'un code malveillant s'installe automatiquement." }
+];
+
+/* ── STATE ──────────────────────────── */
+let cur = 0;
+const userAns = new Array(questions.length).fill(null);
+const LABELS = ['A', 'B', 'C', 'D'];
+
+/* ── ELEMENTS ───────────────────────── */
+const quizStep   = document.getElementById('quizStep');
+const resultStep = document.getElementById('resultStep');
+const corrStep   = document.getElementById('corrStep');
+const qText      = document.getElementById('qText');
+const ansBox     = document.getElementById('ansBox');
+const nextBtn    = document.getElementById('nextBtn');
+const prevBtn    = document.getElementById('prevBtn');
+const progressFill  = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const qNumber    = document.getElementById('qNumber');
+
+/* ── RENDER QUESTION ────────────────── */
+function renderQ() {
+  const q = questions[cur];
+  qNumber.textContent = `Question ${String(cur + 1).padStart(2, '0')}`;
+  qText.textContent = q.q;
+  ansBox.innerHTML = '';
+
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = userAns[cur] === null;
+  nextBtn.innerHTML = cur === questions.length - 1
+    ? 'Terminer <i class="fa-solid fa-flag-checkered"></i>'
+    : 'Suivant <i class="fa-solid fa-chevron-right"></i>';
+
+  q.a.forEach((ans, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn' + (userAns[cur] === i ? ' selected' : '');
+    btn.innerHTML = `
+      <div class="answer-badge">${LABELS[i]}</div>
+      <span>${ans}</span>
+    `;
+    btn.onclick = () => {
+      document.querySelectorAll('.answer-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      userAns[cur] = i;
+      nextBtn.disabled = false;
+    };
+    ansBox.appendChild(btn);
+  });
+
+  const pct = (cur / questions.length) * 100;
+  progressFill.style.width = pct + '%';
+  progressLabel.textContent = `${cur} / ${questions.length}`;
+}
+
+/* ── NAVIGATION ─────────────────────── */
+nextBtn.onclick = () => {
+  if (cur < questions.length - 1) { cur++; renderQ(); }
+  else showResults();
+};
+
+prevBtn.onclick = () => { if (cur > 0) { cur--; renderQ(); } };
+
+/* ── RESULTS ────────────────────────── */
+function showResults() {
+  quizStep.style.display = 'none';
+  resultStep.style.display = 'block';
+  progressFill.style.width = '100%';
+  progressLabel.textContent = `${questions.length} / ${questions.length}`;
+
+  let score = 0;
+  userAns.forEach((a, i) => { if (a === questions[i].c) score++; });
+  const pct = Math.round((score / questions.length) * 100);
+
+  // Animated number
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('scoreTotal').textContent = `/ ${questions.length}`;
+
+  // Ring animation
+  const ring = document.getElementById('ringFill');
+  const circ = 2 * Math.PI * 55;
+  ring.style.strokeDasharray = circ;
+  ring.style.strokeDashoffset = circ;
+  setTimeout(() => {
+    ring.style.strokeDashoffset = circ * (1 - pct / 100);
+  }, 100);
+
+  // Color + message
+  let msg, sub, color;
+  if (pct >= 90)      { msg = '🏆 Excellent !'; sub = 'Tu maîtrises les menaces cyber.'; color = '#4dff91'; }
+  else if (pct >= 70) { msg = '🎯 Bien joué !'; sub = 'Quelques points à approfondir encore.'; color = '#00bfff'; }
+  else if (pct >= 50) { msg = '👍 Pas mal !'; sub = 'Revois les notions sur les malwares.'; color = '#ffd166'; }
+  else                { msg = '📚 À revoir'; sub = 'Les menaces cyber méritent plus d\'attention.'; color = '#ff4444'; }
+
+  ring.style.stroke = color;
+  const msgEl = document.getElementById('scoreMsg');
+  msgEl.textContent = msg;
+  msgEl.style.color = color;
+  document.getElementById('scoreSub').textContent = sub;
+}
+
+/* ── CORRECTION ─────────────────────── */
+document.getElementById('showCorrBtn').onclick = () => {
+  resultStep.style.display = 'none';
+  corrStep.style.display = 'block';
+  const list = document.getElementById('corrList');
+  list.innerHTML = '';
+
+  questions.forEach((q, i) => {
+    const ok = userAns[i] === q.c;
+    const chosen = userAns[i] !== null ? q.a[userAns[i]] : 'Aucune réponse';
+    list.innerHTML += `
+      <div class="corr-item ${ok ? 'ok' : 'ko'}">
+        <div class="corr-top">
+          <div class="corr-q"><strong>${i + 1}.</strong> ${q.q}</div>
+          <span class="corr-status ${ok ? 'ok' : 'ko'}">${ok ? '✓ Correct' : '✗ Incorrect'}</span>
+        </div>
+        <div class="corr-answers">
+          Ta réponse : <strong style="color:${ok ? 'var(--success)' : 'var(--fail)'}">${chosen}</strong>
+          ${!ok ? `<br>Bonne réponse : <strong style="color:var(--success)">${q.a[q.c]}</strong>` : ''}
+        </div>
+        <div class="corr-expl"><i class="fa-solid fa-circle-info" style="margin-right:5px"></i>${q.e}</div>
+      </div>
+    `;
+  });
+};
+
+document.getElementById('backToResultBtn').onclick = () => {
+  corrStep.style.display = 'none';
+  resultStep.style.display = 'block';
+};
+
+/* ── HOME & MODAL ───────────────────── */
+const goHome = () => { window.location.href = 'accueil.html'; };
+document.getElementById('goHomeBtn').onclick = goHome;
+document.getElementById('goHomeBtn2').onclick = goHome;
+
+document.getElementById('backBtn').onclick = () => {
+  document.getElementById('quitModal').style.display = 'block';
+};
+document.getElementById('cancelQuit').onclick = () => {
+  document.getElementById('quitModal').style.display = 'none';
+};
+document.getElementById('confirmQuit').onclick = goHome;
+
+/* ── PARTICLES ──────────────────────── */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+
+class Particle {
+  constructor() { this.reset(true); }
+  reset(init = false) {
+    this.x = Math.random() * canvas.width;
+    this.y = init ? Math.random() * canvas.height : -5;
+    this.size = Math.random() * 1.8 + 0.3;
+    this.speedY = Math.random() * 0.4 + 0.1;
+    this.speedX = (Math.random() - 0.5) * 0.2;
+    this.opacity = Math.random() * 0.3 + 0.05;
+    this.color = Math.random() > 0.6 ? `rgba(255,68,68,${this.opacity})` : `rgba(255,107,53,${this.opacity})`;
+  }
+  update() {
+    this.x += this.speedX; this.y += this.speedY;
+    if (this.y > canvas.height + 5) this.reset();
+  }
+  draw() {
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color; ctx.fill();
+  }
+}
+
+function initParticles() {
+  particles = [];
+  const n = Math.max(40, Math.floor(canvas.width * canvas.height / 18000));
+  for (let i = 0; i < n; i++) particles.push(new Particle());
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', () => { resize(); initParticles(); });
+resize(); initParticles(); animate();
+
+/* ── INIT ───────────────────────────── */
+renderQ();
+</script>
+</body>
+</html>
