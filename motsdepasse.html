@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Mots de Passe — CyberQuiz</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"/>
+<style>
+:root {
+  --bg: #0a1428;
+  --card: #0d1b2a;
+  --accent: #0d6efd;
+  --accent2: #0dcaf0;
+  --glow: rgba(13,110,253,0.15);
+  --border: rgba(13,110,253,0.18);
+  --muted: rgba(255,255,255,0.7);
+  --success: #4dff91;
+  --fail: #ff5555;
+  --text: #e7f1ff;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0; min-height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── PARTICLES ─────────────────────── */
+#particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+/* ── NAVBAR ─────────────────────────── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(10,20,40,0.9);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 900;
+}
+
+.nav-back {
+  background: none; border: 1px solid var(--border); cursor: pointer;
+  color: var(--accent); font-size: 0.9rem;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 8px;
+  transition: background 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+.nav-back:hover { background: var(--glow); }
+
+.nav-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem; color: var(--accent); letter-spacing: 2px;
+}
+
+.nav-badge {
+  font-size: 0.75rem; color: var(--muted);
+  background: rgba(13,110,253,0.07);
+  border: 1px solid var(--border);
+  padding: 4px 10px; border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── MAIN ───────────────────────────── */
+main {
+  position: relative; z-index: 1;
+  padding: 82px 16px 60px;
+  max-width: 820px; margin: 0 auto;
+}
+
+/* ── QUIZ CARD ──────────────────────── */
+.quiz-card {
+  background: linear-gradient(160deg, rgba(13,27,42,0.98), rgba(10,20,40,0.98));
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(13,110,253,0.06), 0 20px 40px rgba(0,0,0,0.5);
+}
+
+/* ── HERO BANNER ────────────────────── */
+.quiz-hero {
+  background: linear-gradient(120deg, rgba(13,110,253,0.09) 0%, rgba(13,202,240,0.05) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 28px 32px 22px;
+  display: flex; align-items: center; gap: 20px;
+}
+
+.hero-icon {
+  width: 58px; height: 58px; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(13,110,253,0.15), rgba(13,202,240,0.08));
+  border: 1px solid rgba(13,110,253,0.3);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+}
+
+.hero-text h1 {
+  margin: 0 0 4px;
+  font-size: 1.35rem; font-weight: 700;
+  color: #fff;
+}
+
+.hero-text p {
+  margin: 0;
+  font-size: 0.82rem; color: var(--muted); line-height: 1.4;
+}
+
+.hero-label {
+  display: inline-block; margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); background: rgba(13,110,253,0.08);
+  border: 1px solid rgba(13,110,253,0.25);
+  padding: 2px 8px; border-radius: 4px;
+}
+
+/* ── PROGRESS ───────────────────────── */
+.progress-zone {
+  padding: 16px 32px 0;
+  display: flex; align-items: center; gap: 14px;
+}
+
+.progress-bar {
+  flex: 1; height: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 99px; overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 99px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(13,110,253,0.5);
+}
+
+.progress-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; color: var(--muted); white-space: nowrap;
+}
+
+/* ── QUIZ BODY ──────────────────────── */
+.quiz-body { padding: 28px 32px 32px; }
+
+.question-meta {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+}
+
+.q-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--accent); background: rgba(13,110,253,0.08);
+  border: 1px solid rgba(13,110,253,0.2);
+  padding: 3px 10px; border-radius: 5px;
+}
+
+.question-text {
+  font-size: 1.1rem; font-weight: 500; line-height: 1.65;
+  color: #f0fffe; margin: 0 0 24px;
+}
+
+/* ── ANSWERS ────────────────────────── */
+.answers { display: flex; flex-direction: column; gap: 10px; }
+
+.answer-btn {
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px; padding: 14px 16px;
+  cursor: pointer; text-align: left;
+  transition: all 0.18s ease;
+  color: var(--text); font-family: 'Poppins', sans-serif; font-size: 0.92rem;
+}
+
+.answer-btn:hover {
+  background: rgba(13,110,253,0.07);
+  border-color: rgba(13,110,253,0.3);
+  transform: translateX(4px);
+}
+
+.answer-badge {
+  min-width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem; font-weight: 600; color: var(--muted);
+  transition: all 0.18s ease; flex-shrink: 0;
+}
+
+.answer-btn.selected {
+  background: rgba(13,110,253,0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(13,110,253,0.2);
+}
+
+.answer-btn.selected .answer-badge {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ── CONTROLS ───────────────────────── */
+.controls {
+  display: flex; gap: 12px; margin-top: 28px;
+}
+
+.btn {
+  padding: 12px 20px; border-radius: 10px; border: none;
+  cursor: pointer; font-weight: 600; font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff; flex: 1;
+  box-shadow: 0 4px 15px rgba(13,110,253,0.25);
+}
+.btn-primary:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(13,110,253,0.35);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted);
+}
+.btn-ghost:not(:disabled):hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* ── RESULT SCREEN ──────────────────── */
+#resultStep { display: none; text-align: center; padding: 10px 0 6px; }
+
+.score-ring {
+  position: relative; width: 130px; height: 130px;
+  margin: 0 auto 20px;
+}
+
+.score-ring svg { transform: rotate(-90deg); }
+.score-ring-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+
+.score-ring-fill {
+  fill: none; stroke-width: 8; stroke-linecap: round;
+  stroke: var(--accent);
+  stroke-dasharray: 345;
+  stroke-dashoffset: 345;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 0 6px rgba(13,110,253,0.5));
+}
+
+.score-ring-text {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+
+.score-number {
+  font-size: 2rem; font-weight: 700; color: #fff;
+  font-family: 'JetBrains Mono', monospace; line-height: 1;
+}
+
+.score-total { font-size: 0.75rem; color: var(--muted); }
+.score-msg { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; }
+.score-sub { font-size: 0.82rem; color: var(--muted); margin-bottom: 24px; }
+
+.result-actions {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+}
+
+/* ── CORRECTION SCREEN ──────────────── */
+#corrStep { display: none; }
+
+.corr-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+}
+
+.corr-header h3 { margin: 0; font-size: 1.1rem; color: #fff; }
+
+.corr-list {
+  max-height: 440px; overflow-y: auto;
+  padding-right: 6px; display: flex; flex-direction: column; gap: 10px;
+}
+
+.corr-list::-webkit-scrollbar { width: 4px; }
+.corr-list::-webkit-scrollbar-track { background: transparent; }
+.corr-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.corr-item {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px; padding: 16px;
+  border-left: 3px solid transparent;
+}
+
+.corr-item.ok { border-left-color: var(--success); }
+.corr-item.ko { border-left-color: var(--fail); }
+
+.corr-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 10px; margin-bottom: 10px;
+}
+
+.corr-q { font-size: 0.88rem; font-weight: 500; color: #f0fffe; line-height: 1.4; }
+
+.corr-status {
+  font-size: 0.72rem; font-weight: 600; white-space: nowrap;
+  padding: 3px 8px; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.corr-status.ok { background: rgba(77,255,145,0.1); color: var(--success); }
+.corr-status.ko { background: rgba(255,85,85,0.1); color: var(--fail); }
+
+.corr-answers { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+.corr-answers strong { color: #fff; }
+
+.corr-expl {
+  margin-top: 8px; font-size: 0.8rem;
+  color: rgba(13,110,253,0.8);
+  font-style: italic; line-height: 1.5;
+  padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.corr-footer { display: flex; gap: 10px; margin-top: 18px; }
+
+/* ── MODAL ──────────────────────────── */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1200;
+}
+
+.modal {
+  background: #0d1b2a;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px; width: 320px; text-align: center;
+  box-shadow: 0 0 40px rgba(13,110,253,0.08);
+}
+
+.modal h4 { margin: 0 0 10px; font-size: 1.05rem; color: #fff; }
+.modal p { margin: 0 0 22px; font-size: 0.88rem; color: var(--muted); }
+.modal-actions { display: flex; gap: 10px; }
+
+/* ── RESPONSIVE ─────────────────────── */
+@media (max-width: 600px) {
+  .quiz-hero { padding: 20px 20px 16px; gap: 14px; }
+  .quiz-body { padding: 20px 20px 24px; }
+  .progress-zone { padding: 14px 20px 0; }
+  .hero-text h1 { font-size: 1.1rem; }
+  .hero-icon { width: 48px; height: 48px; font-size: 1.4rem; border-radius: 10px; }
+  .question-text { font-size: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <button class="nav-back" id="backBtn">
+    <i class="fa-solid fa-arrow-left"></i> Retour
+  </button>
+  <div class="nav-logo">CYBER<span style="opacity:.4">QUIZ</span></div>
+  <div class="nav-badge"><i class="fa-solid fa-key" style="margin-right:5px"></i>Niveau 4</div>
+</nav>
+
+<!-- MAIN -->
+<main>
+  <div class="quiz-card">
+
+    <!-- HERO -->
+    <div class="quiz-hero">
+      <div class="hero-icon">🗝️</div>
+      <div class="hero-text">
+        <div class="hero-label">Module 04</div>
+        <h1>Mots de Passe</h1>
+        <p>Identifie les mots de passe faibles, maîtrise l'authentification multi-facteur et protège tes comptes.</p>
+      </div>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-zone">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">0 / 20</div>
+    </div>
+
+    <!-- QUIZ STEP -->
+    <div class="quiz-body" id="quizStep">
+      <div class="question-meta">
+        <span class="q-number" id="qNumber">Question 01</span>
+      </div>
+      <div class="question-text" id="qText"></div>
+      <div class="answers" id="ansBox"></div>
+      <div class="controls">
+        <button class="btn btn-ghost" id="prevBtn" disabled>
+          <i class="fa-solid fa-chevron-left"></i> Précédent
+        </button>
+        <button class="btn btn-primary" id="nextBtn" disabled>
+          Suivant <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULT STEP -->
+    <div class="quiz-body" id="resultStep">
+      <div class="score-ring">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle class="score-ring-track" cx="65" cy="65" r="55"/>
+          <circle class="score-ring-fill" id="ringFill" cx="65" cy="65" r="55"/>
+        </svg>
+        <div class="score-ring-text">
+          <div class="score-number" id="scoreNum">0</div>
+          <div class="score-total" id="scoreTotal">/ 20</div>
+        </div>
+      </div>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div class="score-sub" id="scoreSub"></div>
+      <div class="result-actions">
+        <button class="btn btn-ghost" id="showCorrBtn">
+          <i class="fa-solid fa-list-check"></i> Voir la correction
+        </button>
+        <button class="btn btn-primary" id="goHomeBtn">
+          <i class="fa-solid fa-house"></i> Accueil
+        </button>
+      </div>
+    </div>
+
+    <!-- CORRECTION STEP -->
+    <div class="quiz-body" id="corrStep">
+      <div class="corr-header">
+        <i class="fa-solid fa-magnifying-glass" style="color:var(--accent)"></i>
+        <h3>Correction détaillée</h3>
+      </div>
+      <div class="corr-list" id="corrList"></div>
+      <div class="corr-footer">
+        <button class="btn btn-ghost" id="backToResultBtn">
+          <i class="fa-solid fa-arrow-left"></i> Score
+        </button>
+        <button class="btn btn-primary" id="goHomeBtn2">
+          <i class="fa-solid fa-house"></i> Accueil
+        </button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- QUIT MODAL -->
+<div id="quitModal" style="display:none">
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h4>🗝️ Quitter le quiz ?</h4>
+      <p>Ta progression sera perdue. Tu es sûr ?</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelQuit" style="flex:1">Rester</button>
+        <button class="btn btn-primary" id="confirmQuit" style="flex:1">Quitter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── QUESTIONS ──────────────────────── */
+const questions = [
+  { q: "Quel élément rend un mot de passe faible ?", a: ["Trop long avec des caractères spéciaux","Composé uniquement de chiffres ou de lettres minuscules","Changeant régulièrement"], c: 1, e: "Un mot de passe faible manque de diversité : il doit combiner majuscules, minuscules, chiffres et caractères spéciaux." },
+  { q: "Combien de caractères minimum recommandé pour un mot de passe sûr ?", a: ["6 caractères","8 caractères","12 caractères"], c: 2, e: "Un minimum de 12 caractères est recommandé pour augmenter la difficulté des attaques par force brute." },
+  { q: "Pourquoi éviter des mots du dictionnaire dans son mot de passe ?", a: ["Ils sont plus faciles à retenir","Ils peuvent être devinés par attaques par dictionnaire","Ils rendent le mot de passe plus unique"], c: 1, e: "Les attaquants utilisent des dictionnaires pour tester des mots courants. Les mots de passe doivent être imprévisibles." },
+  { q: "Est-il sûr d'utiliser un mot de passe contenant votre date de naissance ?", a: ["Oui, c'est facile à retenir","Non, ces informations sont publiques ou facilement accessibles","Ça dépend de la région"], c: 1, e: "Les données personnelles comme la date de naissance sont souvent publiques. Elles ne doivent jamais être dans un mot de passe." },
+  { q: "Qu'est-ce que l'authentification multi-facteur (MFA) ?", a: ["Un mot de passe très complexe","L'utilisation de plusieurs méthodes pour vérifier l'identité","Un type de chiffrement avancé"], c: 1, e: "L'AMF combine plusieurs facteurs : quelque chose que tu sais (mot de passe), quelque chose que tu possèdes (téléphone), quelque chose que tu es (empreinte)." },
+  { q: "Quelle est la meilleure méthode de MFA pour sécuriser un compte ?", a: ["SMS uniquement","Email uniquement","Authentification par application (authenticator) ou clé de sécurité"], c: 2, e: "Les applications authenticator et les clés de sécurité offrent plus de protection que SMS/email contre les interceptions." },
+  { q: "Pourquoi les SMS comme deuxième facteur ne sont-ils pas idéaux ?", a: ["Ils sont trop rapides","Ils peuvent être interceptés ou détournés (SIM swapping)","Ils coûtent trop cher"], c: 1, e: "Le SIM swapping permet à des attaquants de se faire transférer votre numéro pour recevoir les codes SMS." },
+  { q: "Qu'est-ce qu'un gestionnaire de mots de passe ?", a: ["Un logiciel qui crée de faibles mots de passe","Un outil qui crée, stocke et gère des mots de passe complexes","Un service qui change automatiquement votre mot de passe"], c: 1, e: "Les gestionnaires génèrent des mots de passe forts et uniques, les stockent chiffrés sous une seule clé maître." },
+  { q: "Est-il prudent d'utiliser le même mot de passe pour plusieurs comptes ?", a: ["Oui, c'est plus simple","Non, si un compte est compromis, tous les autres le sont aussi","Ça dépend du type de compte"], c: 1, e: "Si un site est piraté et votre mot de passe révélé, les pirates peuvent accéder à tous vos comptes utilisant le même mot de passe." },
+  { q: "Combien de temps faut-il pour craquer un mot de passe simple comme '123456' ?", a: ["Plusieurs années","Quelques secondes à quelques minutes","Il ne peut pas être cracké"], c: 1, e: "'123456' et autres mots de passe simples peuvent être trouvés en secondes par les outils de force brute modernes." },
+  { q: "Que signifie 'force brute' pour craquer un mot de passe ?", a: ["Utiliser des mots du dictionnaire","Tester toutes les combinaisons possibles","Installer un virus sur l'ordinateur"], c: 1, e: "Une attaque par force brute teste systématiquement toutes les combinaisons de caractères possibles jusqu'à trouver le bon." },
+  { q: "Quel est le danger des mots de passe partagés sur des notes papier ou numériques ?", a: ["Aucun danger","Ils peuvent être trouvés ou volés facilement","C'est plus sécurisé"], c: 1, e: "Les notes contenant des mots de passe sont vulnérables au vol physique ou numérique. Utilise un gestionnaire chiffré." },
+  { q: "Que faire si vous devez mémoriser un mot de passe fort ?", a: ["Le noter sur un papier","Utiliser une phrase clé dont seules les premières lettres forment le mot de passe","L'écrire sur un post-it"], c: 1, e: "Une passphrase mnémonique permet de créer un mot de passe fort et mémorisable, comme 'JaMeSaLcP2024!' pour 'Je aime Manger En Secure Les Comptes Pour 2024'." },
+  { q: "Qu'est-ce qu'une 'passphrase' ?", a: ["Un mot de passe classique","Une phrase longue qui sert de mot de passe (ex: 'MonChat-Aime-Dormir123')","Un type de virus informatique"], c: 1, e: "Une passphrase utilise plusieurs mots séparés par des caractères spéciaux. Elles sont longues, mémorables et très difficiles à craquer." },
+  { q: "Devriez-vous changer votre mot de passe régulièrement même sans suspicion ?", a: ["Oui, tous les mois","Oui, tous les 90 jours maximum","Non, si vous ne soupçonnez rien"], c: 0, e: "Changer régulièrement son mot de passe limite les dégâts en cas de fuite. C'est une bonne pratique de sécurité." },
+  { q: "Que faire si vous soupçonnez la compromission d'un mot de passe ?", a: ["Rien, garder le même","Changer immédiatement le mot de passe et vérifier l'activité du compte","Attendre quelques jours"], c: 1, e: "Un changement immédiat coupe l'accès à l'attaquant. Vérifiez aussi la dernière connexion et les appareils autorisés." },
+  { q: "Quel est l'avantage d'une clé de sécurité (security key) par rapport aux codes SMS ?", a: ["Elle est moins chère","Elle ne peut pas être interceptée numériquement, plus sûre contre les attaques","Elle fonctionne sans Internet"], c: 1, e: "Les clés de sécurité (USB, NFC) utilisent la cryptographie et ne peuvent pas être phishées ou interceptées comme les SMS." },
+  { q: "Que signifie 'phishing' dans le contexte des mots de passe ?", a: ["Une technique de cryptage","Usurper l'identité d'un site pour voler vos identifiants","Un type de malware"], c: 1, e: "Le phishing crée de faux sites identiques aux vrais pour tromper les utilisateurs et dérober leurs mots de passe." },
+  { q: "Pourquoi les caractères spéciaux renforcent-ils la sécurité d'un mot de passe ?", a: ["Ils n'ont pas d'utilité réelle","Ils augmentent considérablement le nombre de combinaisons possibles","Ils rendent le mot de passe plus facile à retenir"], c: 1, e: "Les caractères spéciaux (!@#$%^&*) multiplient les combinaisons possibles, rendant les attaques par force brute exponentiellement plus longues." },
+  { q: "Comment activer l'authentification multi-facteur sur un compte Google ?", a: ["C'est impossible","Via les paramètres de sécurité, en sélectionnant 'Vérification en 2 étapes'","Seulement avec un email spécialisé"], c: 1, e: "Google offre la 2FA dans les paramètres de compte. On peut choisir entre SMS, appels, ou l'application Google Authenticator." }
+];
+
+/* ── STATE ──────────────────────────── */
+let cur = 0;
+const userAns = new Array(questions.length).fill(null);
+const LABELS = ['A', 'B', 'C', 'D'];
+
+/* ── ELEMENTS ───────────────────────── */
+const quizStep   = document.getElementById('quizStep');
+const resultStep = document.getElementById('resultStep');
+const corrStep   = document.getElementById('corrStep');
+const qText      = document.getElementById('qText');
+const ansBox     = document.getElementById('ansBox');
+const nextBtn    = document.getElementById('nextBtn');
+const prevBtn    = document.getElementById('prevBtn');
+const progressFill  = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const qNumber    = document.getElementById('qNumber');
+
+/* ── RENDER QUESTION ────────────────── */
+function renderQ() {
+  const q = questions[cur];
+  qNumber.textContent = `Question ${String(cur + 1).padStart(2, '0')}`;
+  qText.textContent = q.q;
+  ansBox.innerHTML = '';
+
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = userAns[cur] === null;
+  nextBtn.innerHTML = cur === questions.length - 1
+    ? 'Terminer <i class="fa-solid fa-flag-checkered"></i>'
+    : 'Suivant <i class="fa-solid fa-chevron-right"></i>';
+
+  q.a.forEach((ans, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn' + (userAns[cur] === i ? ' selected' : '');
+    btn.innerHTML = `
+      <div class="answer-badge">${LABELS[i]}</div>
+      <span>${ans}</span>
+    `;
+    btn.onclick = () => {
+      document.querySelectorAll('.answer-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      userAns[cur] = i;
+      nextBtn.disabled = false;
+    };
+    ansBox.appendChild(btn);
+  });
+
+  const pct = (cur / questions.length) * 100;
+  progressFill.style.width = pct + '%';
+  progressLabel.textContent = `${cur} / ${questions.length}`;
+}
+
+/* ── NAVIGATION ─────────────────────── */
+nextBtn.onclick = () => {
+  if (cur < questions.length - 1) { cur++; renderQ(); }
+  else showResults();
+};
+
+prevBtn.onclick = () => { if (cur > 0) { cur--; renderQ(); } };
+
+/* ── RESULTS ────────────────────────── */
+function showResults() {
+  quizStep.style.display = 'none';
+  resultStep.style.display = 'block';
+  progressFill.style.width = '100%';
+  progressLabel.textContent = `${questions.length} / ${questions.length}`;
+
+  let score = 0;
+  userAns.forEach((a, i) => { if (a === questions[i].c) score++; });
+  const pct = Math.round((score / questions.length) * 100);
+
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('scoreTotal').textContent = `/ ${questions.length}`;
+
+  const ring = document.getElementById('ringFill');
+  const circ = 2 * Math.PI * 55;
+  ring.style.strokeDasharray = circ;
+  ring.style.strokeDashoffset = circ;
+  setTimeout(() => {
+    ring.style.strokeDashoffset = circ * (1 - pct / 100);
+  }, 100);
+
+  let msg, sub, color;
+  if (pct >= 90)      { msg = '🏆 Excellent !';   sub = 'Tu maîtrises la sécurité des mots de passe.'; color = '#4dff91'; }
+  else if (pct >= 70) { msg = '🎯 Bien joué !';   sub = 'Renforce ta connaissance de l\'AMF.'; color = '#0dcaf0'; }
+  else if (pct >= 50) { msg = '👍 Pas mal !';     sub = 'Révise les critères de mots de passe forts.'; color = '#ffd166'; }
+  else                { msg = '📚 À revoir';      sub = 'La sécurité des mots de passe est cruciale.'; color = '#ff4444'; }
+
+  ring.style.stroke = color;
+  const msgEl = document.getElementById('scoreMsg');
+  msgEl.textContent = msg;
+  msgEl.style.color = color;
+  document.getElementById('scoreSub').textContent = sub;
+}
+
+/* ── CORRECTION ─────────────────────── */
+document.getElementById('showCorrBtn').onclick = () => {
+  resultStep.style.display = 'none';
+  corrStep.style.display = 'block';
+  const list = document.getElementById('corrList');
+  list.innerHTML = '';
+
+  questions.forEach((q, i) => {
+    const ok = userAns[i] === q.c;
+    const chosen = userAns[i] !== null ? q.a[userAns[i]] : 'Aucune réponse';
+    list.innerHTML += `
+      <div class="corr-item ${ok ? 'ok' : 'ko'}">
+        <div class="corr-top">
+          <div class="corr-q"><strong>${i + 1}.</strong> ${q.q}</div>
+          <span class="corr-status ${ok ? 'ok' : 'ko'}">${ok ? '✓ Correct' : '✗ Incorrect'}</span>
+        </div>
+        <div class="corr-answers">
+          Ta réponse : <strong style="color:${ok ? 'var(--success)' : 'var(--fail)'}">${chosen}</strong>
+          ${!ok ? `<br>Bonne réponse : <strong style="color:var(--success)">${q.a[q.c]}</strong>` : ''}
+        </div>
+        <div class="corr-expl"><i class="fa-solid fa-circle-info" style="margin-right:5px"></i>${q.e}</div>
+      </div>
+    `;
+  });
+};
+
+document.getElementById('backToResultBtn').onclick = () => {
+  corrStep.style.display = 'none';
+  resultStep.style.display = 'block';
+};
+
+/* ── HOME & MODAL ───────────────────── */
+const goHome = () => { window.location.href = 'accueil.html'; };
+document.getElementById('goHomeBtn').onclick = goHome;
+document.getElementById('goHomeBtn2').onclick = goHome;
+
+document.getElementById('backBtn').onclick = () => {
+  document.getElementById('quitModal').style.display = 'block';
+};
+document.getElementById('cancelQuit').onclick = () => {
+  document.getElementById('quitModal').style.display = 'none';
+};
+document.getElementById('confirmQuit').onclick = goHome;
+
+/* ── PARTICLES ──────────────────────── */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+
+class Particle {
+  constructor() { this.reset(true); }
+  reset(init = false) {
+    this.x = Math.random() * canvas.width;
+    this.y = init ? Math.random() * canvas.height : canvas.height + 5;
+    this.size = Math.random() * 1.8 + 0.3;
+    this.speedY = -(Math.random() * 0.4 + 0.1);
+    this.speedX = (Math.random() - 0.5) * 0.2;
+    this.opacity = Math.random() * 0.25 + 0.05;
+    this.color = Math.random() > 0.5
+      ? `rgba(13,110,253,${this.opacity})`
+      : `rgba(13,202,240,${this.opacity})`;
+  }
+  update() {
+    this.x += this.speedX; this.y += this.speedY;
+    if (this.y < -5) this.reset();
+  }
+  draw() {
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color; ctx.fill();
+  }
+}
+
+function initParticles() {
+  particles = [];
+  const n = Math.max(40, Math.floor(canvas.width * canvas.height / 18000));
+  for (let i = 0; i < n; i++) particles.push(new Particle());
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', () => { resize(); initParticles(); });
+resize(); initParticles(); animate();
+
+/* ── INIT ───────────────────────────── */
+renderQ();
+</script>
+</body>
+</html>
