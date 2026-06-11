@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CyberQuiz — Notes de version</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Share+Tech+Mono&display=swap">
+<style>
+:root {
+  --bg:      #0a0f24;
+  --card:    #111833;
+  --accent:  #00bfff;
+  --accent2: #4cc9f0;
+  --border:  rgba(0,191,255,0.18);
+  --muted:   rgba(255,255,255,0.55);
+  --glass:   rgba(13,19,43,0.92);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+/* ── Particules ── */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ── Navbar ── */
+.navbar {
+  position: fixed;
+  top: 0; width: 100%;
+  background: rgba(10,15,36,0.88);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  height: 62px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 999;
+}
+
+.nav-logo {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.35rem;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(0,191,255,0.5);
+  text-decoration: none;
+}
+.nav-logo span { color: #fff; }
+
+.nav-links { display: flex; gap: 6px; align-items: center; }
+
+.nav-links a {
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-size: 0.88rem;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  border: 1px solid transparent;
+}
+.nav-links a:hover  { color: var(--accent); border-color: var(--border); background: rgba(0,191,255,0.06); }
+.nav-links a.active { color: var(--accent); background: rgba(0,191,255,0.1); border-color: var(--border); }
+.nav-links a.final  { color: #f7a81b; border-color: rgba(247,168,27,0.3); }
+.nav-links a.final:hover { background: rgba(247,168,27,0.1); }
+
+.nav-toggle {
+  display: none;
+  font-size: 1.5rem;
+  color: var(--accent);
+  cursor: pointer;
+  background: none; border: none; padding: 4px;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 62px; right: -100%;
+    width: 72%; height: calc(100vh - 62px);
+    background: rgba(8,12,30,0.97);
+    backdrop-filter: blur(12px);
+    flex-direction: column;
+    padding: 32px 20px; gap: 8px;
+    transition: right 0.35s cubic-bezier(.4,0,.2,1);
+    border-left: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .nav-links a { width: 100%; padding: 10px 14px; font-size: 1rem; }
+  .nav-links.open { right: 0; }
+  .nav-toggle { display: block; }
+}
+
+/* ── En-tête de page ── */
+.page-header {
+  padding: 110px 24px 48px;
+  text-align: center;
+  position: relative;
+}
+
+.page-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 30%, rgba(0,191,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.page-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: rgba(0,191,255,0.07);
+  border: 1px solid var(--border);
+  padding: 5px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.page-title {
+  font-size: clamp(1.9rem, 5vw, 3rem);
+  font-weight: 700;
+  margin: 0 0 10px;
+  color: #fff;
+}
+.page-title span { color: var(--accent); }
+
+.page-subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* ── Compteur de versions ── */
+.version-count-bar {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.vc-item {
+  text-align: center;
+}
+.vc-num {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.6rem;
+  color: var(--accent);
+  display: block;
+  line-height: 1;
+}
+.vc-label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* ── Contenu principal ── */
+.changelog-wrapper {
+  max-width: 780px;
+  margin: 0 auto 80px;
+  padding: 0 20px;
+}
+
+/* ── Info d'édition ── */
+.edit-hint {
+  background: rgba(0,191,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.edit-hint i { color: var(--accent); flex-shrink: 0; }
+.edit-hint code {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--accent2);
+  background: rgba(0,191,255,0.08);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+}
+
+/* ── Timeline ── */
+.timeline {
+  position: relative;
+  padding-left: 28px;
+}
+
+/* Ligne verticale */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--accent) 0%, rgba(0,191,255,0.1) 100%);
+  border-radius: 2px;
+}
+
+/* ── Carte de version ── */
+.version-card {
+  position: relative;
+  margin-bottom: 28px;
+  opacity: 0;
+  transform: translateX(-16px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.version-card.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Point sur la timeline */
+.version-card::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 22px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 8px rgba(0,191,255,0.5);
+  z-index: 1;
+}
+
+/* Point spécial pour la dernière version */
+.version-card.latest::before {
+  width: 14px;
+  height: 14px;
+  left: -26px;
+  top: 20px;
+  animation: pulse-point 2s ease infinite;
+}
+
+@keyframes pulse-point {
+  0%, 100% { box-shadow: 0 0 0 0   rgba(0,191,255,0.5); }
+  50%       { box-shadow: 0 0 0 8px rgba(0,191,255,0);   }
+}
+
+/* Boîte interne */
+.version-box {
+  background: linear-gradient(160deg, rgba(17,24,51,0.97), rgba(13,18,40,0.9));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+  transition: border-color 0.25s, box-shadow 0.25s;
+}
+
+.version-card:hover .version-box {
+  border-color: rgba(0,191,255,0.32);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+}
+
+.version-card.latest .version-box {
+  border-color: rgba(0,191,255,0.3);
+  box-shadow: 0 0 0 1px rgba(0,191,255,0.1), 0 8px 24px rgba(0,0,0,0.3);
+}
+
+/* En-tête de la carte */
+.version-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.version-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: rgba(0,191,255,0.1);
+  border: 1px solid rgba(0,191,255,0.25);
+  padding: 3px 12px;
+  border-radius: 8px;
+  letter-spacing: 1px;
+}
+
+.version-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+  flex: 1;
+}
+
+.badge-latest {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: #7efc6a;
+  background: rgba(126,252,106,0.1);
+  border: 1px solid rgba(126,252,106,0.3);
+  padding: 2px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.version-date {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-family: 'Share Tech Mono', monospace;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+.version-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.05);
+  margin-bottom: 14px;
+}
+
+.version-desc {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.78);
+  line-height: 1.75;
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+/* ── Pagination ── */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 22px;
+  background: rgba(17,24,51,0.9);
+  border: 1px solid var(--border);
+  color: rgba(255,255,255,0.8);
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: rgba(0,191,255,0.1);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.page-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.page-indicator {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--accent);
+  background: rgba(0,191,255,0.08);
+  border: 1px solid var(--border);
+  padding: 10px 18px;
+  border-radius: 10px;
+  letter-spacing: 1px;
+}
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--border);
+  background: rgba(8,12,28,0.8);
+  padding: 24px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+footer a:hover { text-decoration: underline; }
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fadeUp 0.6s ease both; }
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar">
+  <a href="accueil.html" class="nav-logo">Cyber<span>Quiz</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="accueil.html">Accueil</a>
+    <a href="debutant.html">Débutant</a>
+    <a href="pratiques.html">Pratiques</a>
+    <a href="menaces.html">Menaces</a>
+    <a href="reseaux.html">Réseaux</a>
+    <a href="avance.html">Avancé</a>
+    <a href="quiz-final.html" class="final">⚡ Contrôle Final</a>
+    <a href="changelog.html" class="active">📋 Versions</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleMenu()" aria-label="Menu">
+    <i class="fa-solid fa-bars" id="menuIcon"></i>
+  </button>
+</nav>
+
+<!-- ── EN-TÊTE ── -->
+<header class="page-header">
+  <div class="page-eyebrow">
+    <i class="fa-solid fa-code-branch"></i>
+    Historique des mises à jour
+  </div>
+  <h1 class="page-title">Notes de <span>version</span></h1>
+  <p class="page-subtitle">Toutes les mises à jour du projet CyberQuiz, de la plus récente à la plus ancienne.</p>
+
+  <div class="version-count-bar">
+    <div class="vc-item">
+      <span class="vc-num" id="totalVersions">—</span>
+      <span class="vc-label">Versions publiées</span>
+    </div>
+    <div class="vc-item">
+      <span class="vc-num" id="latestVersion">—</span>
+      <span class="vc-label">Dernière version</span>
+    </div>
+    <div class="vc-item">
+      <span class="vc-num" id="totalPages">—</span>
+      <span class="vc-label">Pages de changelog</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── CONTENU ── -->
+<main class="changelog-wrapper">
+
+  <!-- Astuce de modification -->
+  <div class="edit-hint fade-in">
+    <i class="fa-solid fa-pen-to-square"></i>
+    <span>
+      Pour publier une nouvelle version, ajoutez un objet au début du tableau
+      <code>VERSIONS</code> en haut du fichier <code>changelog.html</code>.
+    </span>
+  </div>
+
+  <!-- Timeline générée par JS -->
+  <div class="timeline" id="timeline"></div>
+
+  <!-- Pagination -->
+  <div class="pagination" id="pagination"></div>
+
+</main>
+
+<!-- ── FOOTER ── -->
+<footer>
+  © 2025 CyberQuiz — BAC PRO CIEL &nbsp;·&nbsp;
+  <a href="accueil.html"><i class="fa-solid fa-arrow-left" style="font-size:0.7rem"></i> Retour à l'accueil</a>
+</footer>
+
+<script>
+/* ============================================================
+   ✏️  AJOUTEZ VOS NOUVELLES VERSIONS ICI
+   ─────────────────────────────────────────────────────────────
+   Pour publier une mise à jour :
+   1. Copiez le bloc { ... } ci-dessous
+   2. Collez-le EN PREMIER dans le tableau (avant les autres)
+   3. Remplissez version, date, title et description
+   ============================================================ */
+const VERSIONS = [
+  {
+    version: 'v1.2',
+    date:    '11/06/2025',
+    title:   'Système d\'alertes & Notes de version',
+    description:
+`- Ajout d'une bannière d'alerte rouge personnalisable en haut de la page
+- Ajout d'une popup modale d'alerte au chargement de la page
+- Les deux sont fermables avec un bouton ✕ ou la touche Échap
+- Création de cette page de notes de version (changelog.html)
+- Accès depuis la navbar de la page d'accueil`
+  },
+  {
+    version: 'v1.1',
+    date:    '10/06/2025',
+    title:   'Refonte complète de la page d\'accueil',
+    description:
+`- Nouveau hero avec titre effet glitch et sous-titre en animation typewriter
+- Compteurs animés (quiz, questions, thèmes) déclenchés au scroll
+- Barre de progression globale lisant les scores sauvegardés (localStorage)
+- Badges de difficulté colorés (Facile / Moyen / Difficile) sur chaque carte
+- Statut par carte : "Nouveau" → "✓ X/Y" après completion d'un quiz
+- Sections numérotées (01, 02, 03) avec séparateurs
+- Footer enrichi avec liens de navigation et mentions BAC PRO CIEL
+- Navbar améliorée avec lien actif surligné et animation mobile`
+  },
+  {
+    version: 'v1.0',
+    date:    '01/06/2025',
+    title:   'Lancement initial du site',
+    description:
+`- Mise en ligne de la première version de CyberQuiz
+- Page d'introduction animée avec particules et effet glitch
+- Page d'accueil avec grille de quiz
+- Quiz Débutant : 20 questions sur les bases de la cybersécurité
+- Quiz Bonnes Pratiques : 10 questions sur les habitudes numériques
+- Quiz Identifier les Menaces : phishing, malware, ransomware
+- Quiz Réseaux Sociaux : vie privée et arnaques en ligne
+- Contrôle Final : question aléatoire difficile
+- Support PWA (Progressive Web App) avec service worker`
+  },
+];
+
+/* ============================================================
+   ⚙️  CONFIGURATION (ne pas modifier sauf besoin)
+   ============================================================ */
+const VERSIONS_PER_PAGE = 20;
+
+/* ── État ── */
+let currentPage = 1;
+const totalPages = Math.ceil(VERSIONS.length / VERSIONS_PER_PAGE);
+
+/* ── Mise à jour des compteurs d'en-tête ── */
+document.getElementById('totalVersions').textContent = VERSIONS.length;
+document.getElementById('latestVersion').textContent = VERSIONS.length > 0 ? VERSIONS[0].version : '—';
+document.getElementById('totalPages').textContent    = Math.max(1, totalPages);
+
+/* ── Rendu de la page courante ── */
+function renderPage(page) {
+  currentPage = page;
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+
+  const start = (page - 1) * VERSIONS_PER_PAGE;
+  const slice = VERSIONS.slice(start, start + VERSIONS_PER_PAGE);
+
+  slice.forEach((v, i) => {
+    const isLatest = (start + i === 0);
+    const card = document.createElement('div');
+    card.className = 'version-card' + (isLatest ? ' latest' : '');
+
+    card.innerHTML = `
+      <div class="version-box">
+        <div class="version-header">
+          <span class="version-tag">${v.version}</span>
+          <h2 class="version-title">${v.title}</h2>
+          ${isLatest ? '<span class="badge-latest">● Dernière</span>' : ''}
+        </div>
+        <div class="version-date">
+          <i class="fa-regular fa-calendar" style="color:var(--accent)"></i>
+          ${v.date}
+        </div>
+        <div class="version-divider"></div>
+        <pre class="version-desc">${v.description}</pre>
+      </div>
+    `;
+
+    timeline.appendChild(card);
+
+    /* Animation au scroll */
+    setTimeout(() => {
+      const obs = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          card.classList.add('visible');
+          obs.disconnect();
+        }
+      }, { threshold: 0.08 });
+      obs.observe(card);
+    }, 0);
+  });
+
+  renderPagination();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── Rendu de la pagination ── */
+function renderPagination() {
+  const pag = document.getElementById('pagination');
+  pag.innerHTML = '';
+
+  if (totalPages <= 1) return;
+
+  /* Bouton précédent */
+  const prev = document.createElement('button');
+  prev.className = 'page-btn';
+  prev.innerHTML = '<i class="fa-solid fa-chevron-left"></i> Précédent';
+  prev.disabled  = (currentPage === 1);
+  prev.onclick   = () => renderPage(currentPage - 1);
+  pag.appendChild(prev);
+
+  /* Indicateur de page */
+  const indicator = document.createElement('span');
+  indicator.className = 'page-indicator';
+  indicator.textContent = `Page ${currentPage} / ${totalPages}`;
+  pag.appendChild(indicator);
+
+  /* Bouton suivant */
+  const next = document.createElement('button');
+  next.className = 'page-btn';
+  next.innerHTML = 'Suivant <i class="fa-solid fa-chevron-right"></i>';
+  next.disabled  = (currentPage === totalPages);
+  next.onclick   = () => renderPage(currentPage + 1);
+  pag.appendChild(next);
+}
+
+/* ── Lancement ── */
+renderPage(1);
+
+/* ── Navbar mobile ── */
+function toggleMenu() {
+  const links = document.getElementById('navLinks');
+  const icon  = document.getElementById('menuIcon');
+  links.classList.toggle('open');
+  icon.className = links.classList.contains('open')
+    ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+}
+
+document.querySelectorAll('.nav-links a').forEach(a =>
+  a.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+    document.getElementById('menuIcon').className = 'fa-solid fa-bars';
+  })
+);
+
+/* ── Particules ── */
+const canvas = document.getElementById('particles');
+const ctx    = canvas.getContext('2d');
+let parts    = [];
+
+function initCanvas() {
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+window.addEventListener('resize', () => { initCanvas(); initParticles(); });
+
+class Particle {
+  constructor() {
+    this.reset();
+    this.size  = Math.random() * 1.8 + 0.3;
+    this.color = `rgba(0,191,255,${Math.random() * 0.28 + 0.05})`;
+  }
+  reset() {
+    this.x  = Math.random() * canvas.width;
+    this.y  = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.4;
+    this.vy = (Math.random() - 0.5) * 0.4;
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x < -10 || this.x > canvas.width + 10
+     || this.y < -10 || this.y > canvas.height + 10) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  }
+}
+
+function initParticles() {
+  parts = [];
+  const n = Math.max(30, Math.floor(canvas.width * canvas.height / 20000));
+  for (let i = 0; i < n; i++) parts.push(new Particle());
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  parts.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animateParticles);
+}
+
+initCanvas(); initParticles(); animateParticles();
+</script>
+
+</body>
+</html>
