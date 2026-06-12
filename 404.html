@@ -1,272 +1,395 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Erreur 404 - CyberQuiz</title>
-
+<title>404 — Page introuvable · CyberQuiz</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0a0f24;
-  --accent:#00bfff;
+:root {
+  --bg:      #0a0f24;
+  --accent:  #00bfff;
+  --accent2: #4cc9f0;
+  --danger:  #ff6b6b;
+  --border:  rgba(0,191,255,0.18);
+  --muted:   rgba(255,255,255,0.55);
 }
 
-body{
-  margin:0;
-  font-family:'Poppins',sans-serif;
-  background:var(--bg);
-  color:white;
-  overflow:hidden;
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: #fff;
+  overflow: hidden;
+  height: 100vh;
 }
 
-/* NAVBAR */
+/* ── Canvas ── */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ── Grille de fond ── */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,191,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,191,255,0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+}
+
+/* ── Navbar ── */
 .navbar {
   position: fixed;
-  top: 0;
-  width: 100%;
-  background: rgba(10,15,36,0.85);
-  backdrop-filter: blur(6px);
-  border-bottom: 2px solid var(--accent);
-  padding: 12px 25px;
+  top: 0; width: 100%;
+  background: rgba(10,15,36,0.88);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 28px;
+  height: 62px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  z-index: 999;
 }
 
 .nav-logo {
-  font-weight:600;
-  color:var(--accent);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.35rem;
+  color: var(--accent);
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(0,191,255,0.5);
+  text-decoration: none;
+}
+.nav-logo span { color: #fff; }
+
+.nav-back {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: 0.2s;
+}
+.nav-back:hover { color: var(--accent); border-color: var(--accent); background: rgba(0,191,255,0.06); }
+
+/* ── Contenu principal ── */
+.error-page {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 24px 24px;
+  animation: fadeUp 0.9s ease both;
+  animation-delay: 0.1s;
 }
 
-/* FLASH écran */
-.flash{
-  position:fixed;
-  width:100%;
-  height:100%;
-  background:white;
-  opacity:0;
-  animation:flashAnim 0.4s ease;
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes flashAnim{
-  0%{opacity:1;}
-  100%{opacity:0;}
+/* ── Grand "404" glitch ── */
+.error-code-wrap {
+  position: relative;
+  margin-bottom: 8px;
+  user-select: none;
 }
 
-/* CONTENU */
-.error-container{
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  opacity:0;
-  transform:translateY(40px) scale(0.95);
-  animation:appear 0.8s ease forwards;
-  animation-delay:0.3s;
+.error-code {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(6rem, 20vw, 12rem);
+  font-weight: 700;
+  color: transparent;
+  -webkit-text-stroke: 2px var(--accent);
+  text-shadow:
+    0 0 30px rgba(0,191,255,0.25),
+    0 0 60px rgba(0,191,255,0.12);
+  line-height: 1;
+  letter-spacing: -4px;
+  position: relative;
+  display: inline-block;
 }
 
-@keyframes appear{
-  to{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
+.error-code::before,
+.error-code::after {
+  content: "404";
+  position: absolute;
+  inset: 0;
+  -webkit-text-stroke: 2px transparent;
+  animation-iteration-count: infinite;
 }
 
-/* GLITCH */
-.glitch{
-  font-size:2.8rem;
-  font-weight:800;
-  position:relative;
+.error-code::before {
+  color: rgba(255,0,200,0.5);
+  animation: glitch-a 3.5s steps(2) infinite;
 }
 
-.glitch::before,
-.glitch::after{
-  content:attr(data-text);
-  position:absolute;
-  left:0;
-  width:100%;
+.error-code::after {
+  color: rgba(0,255,242,0.5);
+  animation: glitch-b 3.5s steps(2) 0.1s infinite;
 }
 
-.glitch::before{
-  color:red;
-  animation:glitch 0.4s infinite;
+@keyframes glitch-a {
+  0%,90%,100% { transform: translate(0); clip-path: none; }
+  92% { transform: translate(-5px, 2px); clip-path: inset(15% 0 60% 0); }
+  94% { transform: translate(5px, -2px); clip-path: inset(55% 0 10% 0); }
+  96% { transform: translate(-3px, 1px); clip-path: inset(30% 0 40% 0); }
 }
 
-.glitch::after{
-  color:cyan;
-  animation:glitch 0.4s infinite reverse;
+@keyframes glitch-b {
+  0%,90%,100% { transform: translate(0); clip-path: none; }
+  92% { transform: translate(5px, -2px); clip-path: inset(60% 0 15% 0); }
+  94% { transform: translate(-5px, 2px); clip-path: inset(10% 0 55% 0); }
+  96% { transform: translate(3px, -1px); clip-path: inset(40% 0 30% 0); }
 }
 
-@keyframes glitch{
-  0%{transform:translate(0)}
-  20%{transform:translate(-2px,2px)}
-  40%{transform:translate(-2px,-2px)}
-  60%{transform:translate(2px,2px)}
-  80%{transform:translate(2px,-2px)}
-  100%{transform:translate(0)}
+/* ── Icône ── */
+.error-icon {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(255,107,107,0.12);
+  border: 1.5px solid rgba(255,107,107,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--danger);
+  animation: pulse-icon 2s ease infinite;
 }
 
-/* Icône */
-.error-icon{
-  font-size:60px;
-  color:#ff3b3b;
-  margin-bottom:15px;
-  animation:pulse 1.5s infinite;
+@keyframes pulse-icon {
+  0%,100% { box-shadow: 0 0 0 0   rgba(255,107,107,0.4); }
+  50%      { box-shadow: 0 0 0 10px rgba(255,107,107,0); }
 }
 
-@keyframes pulse{
-  50%{transform:scale(1.2);}
+/* ── Texte d'erreur ── */
+.error-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--danger);
+  background: rgba(255,107,107,0.08);
+  border: 1px solid rgba(255,107,107,0.25);
+  padding: 3px 12px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+  display: inline-block;
 }
 
-/* Barre */
-.error-bar{
-  width:300px;
-  height:4px;
-  background:linear-gradient(90deg, transparent, var(--accent), transparent);
-  margin:20px auto;
-  animation:slide 2s infinite;
+.error-title {
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  font-weight: 700;
+  margin: 0 0 12px;
 }
 
-@keyframes slide{
-  0%{opacity:0;}
-  50%{opacity:1;}
-  100%{opacity:0;}
+.error-desc {
+  color: var(--muted);
+  font-size: 0.92rem;
+  max-width: 420px;
+  line-height: 1.7;
+  margin: 0 auto 32px;
 }
 
-.error-text{
-  opacity:0.85;
-  margin-bottom:30px;
+/* ── Ligne déco ── */
+.error-line {
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 0 auto 28px;
+  animation: scan 3s ease infinite;
 }
 
-/* Bouton */
-.btn{
-  background:#ffe600;
-  color:black;
-  padding:12px 30px;
-  font-weight:600;
-  border:none;
-  cursor:pointer;
-  transition:0.3s;
+@keyframes scan {
+  0%,100% { opacity: 0.3; width: 80px; }
+  50%      { opacity: 1;   width: 220px; }
 }
 
-.btn:hover{
-  transform:scale(1.08);
+/* ── Boutons ── */
+.error-actions {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-/* Particules */
-canvas{
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:-1;
+.btn-primary {
+  padding: 12px 28px;
+  background: var(--accent);
+  color: #001;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary:hover {
+  background: var(--accent2);
+  box-shadow: 0 6px 24px rgba(0,191,255,0.3);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  padding: 12px 28px;
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-ghost:hover {
+  background: rgba(0,191,255,0.08);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+/* ── URL affichée ── */
+.error-url {
+  margin-top: 28px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 1px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .error-code { -webkit-text-stroke-width: 1.5px; }
+  .error-actions { flex-direction: column; align-items: center; }
 }
 </style>
 </head>
-
 <body>
 
-<div class="flash"></div>
-
-<nav class="navbar">
-  <div class="nav-logo">CyberQuiz</div>
-</nav>
-
+<div class="grid-bg"></div>
 <canvas id="particles"></canvas>
 
-<div class="error-container">
+<!-- Navbar -->
+<nav class="navbar">
+  <a href="accueil.html" class="nav-logo">Cyber<span>Quiz</span></a>
+  <a href="accueil.html" class="nav-back">
+    <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
+  </a>
+</nav>
 
-  <div class="error-icon">
-    <i class="fa-solid fa-triangle-exclamation"></i>
+<!-- Contenu -->
+<div class="error-page">
+
+  <div class="error-code-wrap">
+    <span class="error-code">404</span>
+    <div class="error-icon"><i class="fa-solid fa-lock-open"></i></div>
   </div>
 
-  <div class="glitch" data-text="UNE ERREUR EST SURVENUE">
-  UNE ERREUR EST SURVENUE
+  <br>
+  <span class="error-tag">Erreur · Page introuvable</span>
+  <h1 class="error-title">Cette page n'existe pas</h1>
+  <div class="error-line"></div>
+  <p class="error-desc">
+    La page que vous cherchez a peut-être été déplacée, supprimée,
+    ou l'adresse saisie est incorrecte.<br>
+    Vérifiez l'URL ou retournez à l'accueil pour continuer.
+  </p>
+
+  <div class="error-actions">
+    <a href="accueil.html" class="btn-primary">
+      <i class="fa-solid fa-house"></i> Retour à l'accueil
+    </a>
+    <a href="accueil.html#quizzes" class="btn-ghost">
+      <i class="fa-solid fa-list"></i> Voir les quiz
+    </a>
+  </div>
+
+  <div class="error-url" id="errorUrl"></div>
 </div>
-
-<div class="error-bar"></div>
-
-<div class="error-text">
-  Impossible d'accéder à cette page.<br><br>
-  Elle a peut-être été supprimée, déplacée ou l'adresse saisie est incorrecte.<br>
-  Vérifiez l'URL ou retournez à l'accueil pour continuer votre navigation en toute sécurité.
-</div>
-
-  <button class="btn" onclick="location.href='accueil.html'">
-    CONTINUER
-  </button>
-
-</div>
-
-<!-- SON -->
-<audio id="errorSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
 
 <script>
-/* Son au chargement */
-window.addEventListener("load", () => {
-  const sound = document.getElementById("errorSound");
-  sound.volume = 0.4;
+/* Affiche l'URL qui a causé l'erreur */
+document.getElementById('errorUrl').textContent = '> ' + window.location.pathname;
 
-  // contourne les restrictions navigateur
-  setTimeout(() => {
-    sound.play().catch(()=>{});
-  }, 200);
-});
-
-/* Particules */
+/* ── Particules ── */
 const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-let particlesArray = [];
+const ctx    = canvas.getContext('2d');
+let parts    = [];
 
-function initCanvas(){
-  canvas.width = window.innerWidth;
+function initCanvas() {
+  canvas.width  = window.innerWidth;
   canvas.height = window.innerHeight;
 }
 
-class Particle{
-  constructor(){
-    this.x=Math.random()*canvas.width;
-    this.y=Math.random()*canvas.height;
-    this.size=Math.random()*2+1;
-    this.speedX=(Math.random()-0.5)*0.5;
-    this.speedY=(Math.random()-0.5)*0.5;
+window.addEventListener('resize', () => { initCanvas(); initParticles(); });
+
+class Particle {
+  constructor() {
+    this.reset();
+    this.size  = Math.random() * 1.8 + 0.3;
+    this.color = `rgba(0,191,255,${Math.random() * 0.3 + 0.06})`;
   }
-  update(){
-    this.x+=this.speedX;
-    this.y+=this.speedY;
+  reset() {
+    this.x  = Math.random() * canvas.width;
+    this.y  = Math.random() * canvas.height;
+    this.vx = (Math.random() - 0.5) * 0.4;
+    this.vy = (Math.random() - 0.5) * 0.4;
   }
-  draw(){
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < -10 || this.x > canvas.width + 10
+     || this.y < -10 || this.y > canvas.height + 10) this.reset();
+  }
+  draw() {
     ctx.beginPath();
-    ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
-    ctx.fillStyle="rgba(0,191,255,0.5)";
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
     ctx.fill();
   }
 }
 
-function initParticles(){
-  particlesArray=[];
-  for(let i=0;i<80;i++){
-    particlesArray.push(new Particle());
-  }
+function initParticles() {
+  parts = [];
+  const n = Math.max(40, Math.floor(canvas.width * canvas.height / 16000));
+  for (let i = 0; i < n; i++) parts.push(new Particle());
 }
 
-function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  particlesArray.forEach(p=>{
-    p.update();
-    p.draw();
-  });
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  parts.forEach(p => { p.update(); p.draw(); });
   requestAnimationFrame(animate);
 }
 
-initCanvas();
-initParticles();
-animate();
-
-window.addEventListener('resize', initCanvas);
+initCanvas(); initParticles(); animate();
 </script>
 
 </body>
