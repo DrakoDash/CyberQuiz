@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Hors-ligne · CyberQuiz</title>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#0a0f24"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg:     #0a0f24;
+  --accent: #00bfff;
+  --warn:   #f7a81b;
+  --border: rgba(0,191,255,0.18);
+  --muted:  rgba(255,255,255,0.55);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  animation: fadeUp 0.8s ease both;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Icône Wi-Fi barré */
+.icon-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px; height: 90px;
+  border-radius: 22px;
+  background: rgba(247,168,27,0.08);
+  border: 1.5px solid rgba(247,168,27,0.25);
+  font-size: 2.6rem;
+  color: var(--warn);
+  margin-bottom: 28px;
+  animation: pulse-warn 2.5s ease infinite;
+}
+
+@keyframes pulse-warn {
+  0%,100% { box-shadow: 0 0 0 0   rgba(247,168,27,0.3); }
+  50%      { box-shadow: 0 0 0 12px rgba(247,168,27,0); }
+}
+
+.slash {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  width: 3px; height: 70%;
+  background: var(--warn);
+  border-radius: 2px;
+  opacity: 0.8;
+}
+
+.tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--warn);
+  background: rgba(247,168,27,0.08);
+  border: 1px solid rgba(247,168,27,0.22);
+  padding: 3px 12px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+  display: inline-block;
+}
+
+h1 {
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+p {
+  color: var(--muted);
+  font-size: 0.92rem;
+  max-width: 380px;
+  line-height: 1.7;
+  margin: 0 auto 32px;
+}
+
+/* Cartes des pages disponibles hors-ligne */
+.cached-section {
+  margin-bottom: 32px;
+}
+
+.cached-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.cached-label::before,
+.cached-label::after {
+  content: '';
+  flex: 1;
+  max-width: 60px;
+  height: 1px;
+  background: var(--border);
+}
+
+.cached-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 480px;
+}
+
+.cached-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: rgba(17,24,51,0.8);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: 0.2s;
+}
+.cached-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(0,191,255,0.06);
+}
+.cached-link i { font-size: 0.7rem; color: var(--accent); }
+
+/* Bouton retry */
+.retry-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: rgba(255,255,255,0.75);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+}
+.retry-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(0,191,255,0.06);
+}
+.retry-btn i { transition: transform 0.4s; }
+.retry-btn:hover i { transform: rotate(360deg); }
+
+/* Statut réseau */
+.network-status {
+  position: fixed;
+  bottom: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--warn);
+  animation: blink-dot 1.5s step-end infinite;
+}
+
+@keyframes blink-dot {
+  50% { opacity: 0; }
+}
+
+.status-dot.online { background: #7efc6a; animation: none; }
+</style>
+</head>
+<body>
+
+<canvas id="c"></canvas>
+
+<div class="content">
+  <div class="icon-wrap">
+    <i class="fa-solid fa-wifi"></i>
+    <div class="slash"></div>
+  </div>
+
+  <span class="tag">Hors-ligne</span>
+  <h1>Connexion introuvable</h1>
+  <p>
+    Vous n'êtes pas connecté à Internet.<br>
+    Les pages déjà visitées sont accessibles ci-dessous.
+  </p>
+
+  <!-- Pages disponibles en cache -->
+  <div class="cached-section">
+    <div class="cached-label">Pages disponibles hors-ligne</div>
+    <div class="cached-grid" id="cachedPages">
+      <a href="accueil.html"    class="cached-link"><i class="fa-solid fa-house"></i> Accueil</a>
+      <a href="debutant.html"   class="cached-link"><i class="fa-solid fa-graduation-cap"></i> Débutant</a>
+      <a href="pratiques.html"  class="cached-link"><i class="fa-solid fa-shield-halved"></i> Pratiques</a>
+      <a href="menaces.html"    class="cached-link"><i class="fa-solid fa-bug"></i> Menaces</a>
+      <a href="reseaux.html"    class="cached-link"><i class="fa-solid fa-users"></i> Réseaux</a>
+      <a href="quiz-final.html" class="cached-link"><i class="fa-solid fa-trophy"></i> Final</a>
+      <a href="changelog.html"  class="cached-link"><i class="fa-solid fa-code-branch"></i> Changelog</a>
+    </div>
+  </div>
+
+  <button class="retry-btn" onclick="retryConnection()">
+    <i class="fa-solid fa-rotate"></i> Réessayer
+  </button>
+</div>
+
+<!-- Statut réseau -->
+<div class="network-status">
+  <div class="status-dot" id="statusDot"></div>
+  <span id="statusText">HORS-LIGNE</span>
+</div>
+
+<script>
+/* Retry */
+function retryConnection() {
+  window.location.reload();
+}
+
+/* Surveille le retour en ligne */
+window.addEventListener('online', () => {
+  document.getElementById('statusDot').classList.add('online');
+  document.getElementById('statusText').textContent = 'EN LIGNE — Redirection…';
+  setTimeout(() => window.location.href = 'accueil.html', 1200);
+});
+
+window.addEventListener('offline', () => {
+  document.getElementById('statusDot').classList.remove('online');
+  document.getElementById('statusText').textContent = 'HORS-LIGNE';
+});
+
+/* ── Particules ── */
+const c   = document.getElementById('c');
+const ctx = c.getContext('2d');
+let pts   = [];
+
+function init() {
+  c.width = window.innerWidth; c.height = window.innerHeight;
+  pts = Array.from({ length: Math.max(30, Math.floor(c.width * c.height / 20000)) }, () => ({
+    x:  Math.random() * c.width,
+    y:  Math.random() * c.height,
+    vx: (Math.random() - 0.5) * 0.35,
+    vy: (Math.random() - 0.5) * 0.35,
+    r:  Math.random() * 1.5 + 0.3,
+    a:  Math.random() * 0.2 + 0.04,
+  }));
+}
+
+function draw() {
+  ctx.clearRect(0, 0, c.width, c.height);
+  pts.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < -5 || p.x > c.width+5 || p.y < -5 || p.y > c.height+5) {
+      p.x = Math.random() * c.width; p.y = Math.random() * c.height;
+    }
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(0,191,255,${p.a})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(draw);
+}
+
+init(); draw();
+window.addEventListener('resize', init);
+</script>
+  <script src="pwa.js" defer></script>
+</body>
+</html>
