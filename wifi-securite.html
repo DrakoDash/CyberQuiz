@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Quiz WiFi & Sécurité - CyberQuiz</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+
+<style>
+  :root{
+    --bg:#0a0f24;
+    --card:#111833;
+    --accent:#ffa500;
+    --accent-2:#ffb84d;
+    --card-hover:#16204a;
+    --glass: rgba(13,19,43,0.9);
+    --muted: rgba(255,255,255,0.75);
+    --success: #7efc6a;
+    --danger: #ff7b7b;
+  }
+
+  html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:#fff}
+  
+  .navbar {
+    position: fixed; top: 0; width: 100%; background: rgba(10,15,36,0.85);
+    backdrop-filter: blur(6px); border-bottom: 2px solid var(--accent);
+    padding: 12px 25px; display:flex; align-items:center; gap:12px; z-index:999;
+  }
+  
+  .nav-logo { font-size:1.2rem; font-weight:600; color:var(--accent); letter-spacing:1px; }
+  
+  .back-quiz {
+    background: transparent; border: none; color: var(--accent); font-size:1rem;
+    cursor:pointer; display:flex; align-items:center; gap:8px;
+  }
+
+  main { padding: 100px 20px 60px; max-width:900px; margin:0 auto; }
+  
+  .quiz-card {
+    background: linear-gradient(180deg, rgba(17,24,51,0.95), rgba(13,19,43,0.85));
+    border: 2px solid var(--accent);
+    border-radius: 14px; padding: 28px; box-shadow: 0 10px 30px rgba(255,165,0,0.15);
+  }
+
+  .quiz-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+  
+  .quiz-title { 
+    font-size:1.4rem; 
+    color:var(--accent); 
+    margin:0; 
+    display:flex; 
+    align-items:center; 
+    gap:10px;
+  }
+  
+  .quiz-icon { font-size:1.8rem; }
+  
+  .progress {
+    height:10px; background: rgba(255,255,255,0.06); border-radius:999px; overflow:hidden; flex:1; margin-left:16px;
+  }
+  
+  .progress > i { display:block; height:100%; width:0%; background: linear-gradient(90deg,var(--accent),var(--accent-2)); transition:width .35s ease; }
+
+  .question { font-size:1.15rem; margin: 18px 0; color:var(--muted); }
+  
+  .answers { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+  
+  .answer-btn {
+    background: rgba(0,0,0,0.45); border:2px solid rgba(255,165,0,0.15); color:#fff;
+    padding:12px 14px; border-radius:10px; text-align:left; cursor:pointer; transition: transform .12s ease, background .12s ease, border .12s ease;
+  }
+  
+  .answer-btn:hover { 
+    transform: translateY(-3px); 
+    background: rgba(22,32,74,0.95);
+    border-color: var(--accent);
+  }
+  
+  .answer-btn.selected { 
+    background: var(--accent); 
+    color:#000; 
+    border-color: var(--accent-2); 
+    box-shadow: 0 6px 18px rgba(255,165,0,0.2);
+    font-weight:600;
+  }
+
+  .controls { display:flex; gap:12px; margin-top:20px; }
+  
+  .btn { padding:12px 16px; border-radius:10px; border:none; cursor:pointer; font-weight:600; transition: all .2s ease; }
+  
+  .btn-primary { background:var(--accent); color:#000; flex:1; }
+  
+  .btn-primary:hover { 
+    background:var(--accent-2);
+    box-shadow: 0 6px 20px rgba(255,165,0,0.3);
+  }
+  
+  .btn-ghost { background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); }
+  
+  .btn-ghost:hover { 
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .result { text-align:center; padding:18px 10px; }
+  
+  .score { font-size:2.6rem; color:var(--accent); margin:6px 0; font-weight:700; }
+  
+  .result-actions { display:flex; gap:12px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+
+  .correction-item { 
+    background: rgba(255,165,0,0.05); 
+    padding:12px; 
+    border-radius:10px; 
+    margin-bottom:10px;
+    border-left: 4px solid var(--accent);
+    text-align: left;
+  }
+  
+  .correct { color: var(--success); font-weight:700; }
+  
+  .wrong { color: var(--danger); font-weight:700; }
+  
+  .explanation-box {
+    background: rgba(255,165,0,0.08);
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 8px;
+    border-left: 3px solid var(--accent);
+    font-size: 0.9rem;
+  }
+
+  .difficulty-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 10px;
+    background: rgba(255,165,0,0.2);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:1200; }
+  
+  .modal { 
+    background: linear-gradient(180deg, #0b1228, #071028); 
+    padding:18px; 
+    border-radius:12px; 
+    border:2px solid var(--accent);
+    width:320px; 
+    text-align:center;
+    box-shadow: 0 10px 40px rgba(255,165,0,0.15);
+  }
+  
+  .modal p { margin:12px 0; color:var(--muted); }
+
+  @media (max-width:600px) { 
+    .quiz-card { padding:18px; } 
+    .quiz-title { font-size:1.05rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <button class="back-quiz" id="backBtn"><i class="fa-solid fa-arrow-left"></i> Retour</button>
+  <div class="nav-logo">CyberQuiz</div>
+</nav>
+
+<canvas id="particles" style="position:fixed;inset:0;z-index:-1;"></canvas>
+
+<main>
+  <div class="quiz-card" id="quizCard">
+    <div class="quiz-header">
+      <h2 class="quiz-title">
+        <i class="fa-solid fa-wifi quiz-icon"></i>
+        Quiz — WiFi & Sécurité
+      </h2>
+      <div class="progress"><i id="progressBar"></i></div>
+    </div>
+    
+    <div class="difficulty-badge">
+      <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i> Intermédiaire
+    </div>
+
+    <div id="quizStep">
+      <div class="question" id="questionText">Chargement...</div>
+      <div class="answers" id="answersBox"></div>
+      <div class="controls">
+        <button class="btn btn-ghost" id="prevBtn" disabled>Précédent</button>
+        <button class="btn btn-primary" id="nextBtn" disabled>Suivant</button>
+      </div>
+    </div>
+
+    <div id="resultStep" style="display:none;">
+      <div class="result">
+        <div><i class="fa-solid fa-lock" style="font-size:3rem;color:var(--accent);margin-bottom:10px;display:block;"></i></div>
+        <div>Votre score final</div>
+        <div class="score" id="scoreText">0 / 12</div>
+        <div class="result-actions">
+          <button class="btn btn-ghost" id="showCorrectionBtn">Voir les explications</button>
+          <button class="btn btn-primary" id="goHomeBtn">Retour à l'accueil</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="correctionStep" style="display:none;">
+      <h3 style="margin-top:0;color:var(--accent)"><i class="fa-solid fa-book"></i> Correction détaillée</h3>
+      <div id="correctionList" style="max-height: 500px; overflow-y: auto; margin-top:12px"></div>
+      <div style="display:flex;gap:12px;margin-top:14px;">
+        <button class="btn btn-ghost" id="backToResultBtn">Retour au score</button>
+        <button class="btn btn-primary" id="goHomeBtn2">Retour à l'accueil</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="confirmModal" style="display:none;">
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h4 style="color:var(--accent);margin:0"><i class="fa-solid fa-exclamation-triangle"></i> Quitter le quiz ?</h4>
+      <p>Votre progression sera perdue. Confirmer ?</p>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
+        <button class="btn btn-ghost" id="cancelQuit">Rester</button>
+        <button class="btn btn-primary" id="confirmQuit">Quitter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particlesArray = [];
+
+function initCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', () => { initCanvas(); initParticles(); });
+
+class Particle {
+  constructor() { 
+    this.reset(); 
+    this.size = Math.random()*2+0.5; 
+    this.color = `rgba(255,165,0,${Math.random()*0.3+0.1})`; 
+  }
+  reset(){ 
+    this.x = Math.random()*canvas.width; 
+    this.y = Math.random()*canvas.height; 
+    this.speedX=(Math.random()-0.5)*0.5; 
+    this.speedY=(Math.random()-0.5)*0.5; 
+  }
+  update(){ 
+    this.x+=this.speedX; 
+    this.y+=this.speedY; 
+    if(this.x<0||this.x>canvas.width||this.y<0||this.y>canvas.height) this.reset(); 
+  }
+  draw(){ 
+    ctx.beginPath(); 
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2); 
+    ctx.fillStyle=this.color; 
+    ctx.fill(); 
+  }
+}
+
+function initParticles(){ 
+  particlesArray=[]; 
+  for(let i=0;i<50;i++) particlesArray.push(new Particle()); 
+}
+
+function animateParticles(){ 
+  ctx.clearRect(0,0,canvas.width,canvas.height); 
+  particlesArray.forEach(p=>{p.update();p.draw();}); 
+  requestAnimationFrame(animateParticles); 
+}
+
+initCanvas(); 
+initParticles(); 
+animateParticles();
+
+const questions = [
+  { 
+    question: "Quel type de chiffrement est le plus sécurisé pour un WiFi ?",
+    answers: ["WEP", "WPA2/WPA3", "Pas de chiffrement"],
+    correct: 1,
+    explanation: "WPA2 et WPA3 offrent un chiffrement fort. WEP est obsolète et vulnérable."
+  },
+  { 
+    question: "Qu'est-ce qu'un WiFi public dangereux ?",
+    answers: ["Gratuit et rapide", "Non chiffré et accessible à tous", "Fourni par l'école"],
+    correct: 1,
+    explanation: "Les WiFi publics non sécurisés permettent l'interception des données."
+  },
+  { 
+    question: "Que faire sur un WiFi public pour sécuriser vos données ?",
+    answers: ["Rien, c'est sûr", "Utiliser un VPN", "Partager son mot de passe"],
+    correct: 1,
+    explanation: "Un VPN chiffre votre connexion et protège vos données sur WiFi public."
+  },
+  { 
+    question: "Qu'est-ce qu'un VPN ?",
+    answers: ["Un logiciel malveillant", "Un tunnel chiffré pour sécuriser la connexion", "Un antivirus"],
+    correct: 1,
+    explanation: "Un VPN crée une connexion privée et chiffrée entre vous et Internet."
+  },
+  { 
+    question: "Quel est le risque d'une attaque HTTPS stripping ?",
+    answers: ["Aucun", "Convertir HTTPS en HTTP pour intercepter les données", "Améliore la sécurité"],
+    correct: 1,
+    explanation: "HTTPS stripping force la connexion en HTTP non chiffré pour capturer les données."
+  },
+  { 
+    question: "Qu'est-ce qu'un certificat SSL/TLS ?",
+    answers: ["Un fichier de jeu", "Certifie que le site est sécurisé et authentique", "Un malware"],
+    correct: 1,
+    explanation: "Les certificats SSL/TLS chiffrent la communication et authentifient le site."
+  },
+  { 
+    question: "Quel est le danger de se connecter à un WiFi sans mot de passe ?",
+    answers: ["Aucun danger", "Les pirates peuvent voir tout ce que vous faites", "Augmente la vitesse"],
+    correct: 1,
+    explanation: "Sans mot de passe, toute votre activité est visible pour les pirates."
+  },
+  { 
+    question: "Qu'est-ce qu'un rogue WiFi (faux WiFi) ?",
+    answers: ["Un vrai WiFi rapide", "Un faux réseau crée par un pirate pour voler vos données", "Un VPN"],
+    correct: 1,
+    explanation: "Les rogue WiFi imitent des réseaux légitimes pour capturer vos données."
+  },
+  { 
+    question: "Pourquoi changer le SSID par défaut d'un routeur ?",
+    answers: ["Aucune raison", "Pour éviter qu'on identifie facilement le routeur", "Diminue la sécurité"],
+    correct: 1,
+    explanation: "Changer le SSID par défaut rend le routeur moins identifiable aux pirates."
+  },
+  { 
+    question: "Qu'est-ce qu'une bonne pratique pour sécuriser son WiFi ?",
+    answers: ["Utiliser '123456' comme mot de passe", "Changer régulièrement le mot de passe", "Ne jamais mettre de mot de passe"],
+    correct: 1,
+    explanation: "Changer régulièrement le mot de passe WiFi réduit les risques d'accès non autorisé."
+  },
+  { 
+    question: "Quel est le risque d'une portée WiFi trop forte ?",
+    answers: ["Aucun", "Les pirates peuvent accéder de plus loin", "Améliore la sécurité"],
+    correct: 1,
+    explanation: "Une portée forte permet aux pirates d'accéder au WiFi de plus loin."
+  },
+  { 
+    question: "Qu'est-ce que le packet sniffing ?",
+    answers: ["Un antivirus", "La capture et analyse des données en transit sur le réseau", "Un jeu"],
+    correct: 1,
+    explanation: "Le sniffing capture les paquets réseau pour extraire des données sensibles."
+  }
+];
+
+let current = 0;
+const userSelections = new Array(questions.length).fill(null);
+
+const questionText = document.getElementById('questionText');
+const answersBox = document.getElementById('answersBox');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const progressBar = document.getElementById('progressBar');
+const quizStep = document.getElementById('quizStep');
+const resultStep = document.getElementById('resultStep');
+const correctionStep = document.getElementById('correctionStep');
+
+function renderQuestion() {
+  const q = questions[current];
+  questionText.textContent = `Question ${current+1} / ${questions.length} — ${q.question}`;
+  answersBox.innerHTML = '';
+  
+  nextBtn.disabled = userSelections[current] === null;
+  prevBtn.disabled = current === 0;
+  nextBtn.textContent = current === questions.length - 1 ? "Terminer" : "Suivant";
+
+  q.answers.forEach((ans, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    if(userSelections[current] === idx) btn.classList.add('selected');
+    btn.textContent = ans;
+    btn.onclick = () => {
+      document.querySelectorAll('.answer-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      userSelections[current] = idx;
+      nextBtn.disabled = false;
+    };
+    answersBox.appendChild(btn);
+  });
+  
+  progressBar.style.width = ((current) / questions.length * 100) + '%';
+}
+
+nextBtn.onclick = () => {
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+};
+
+prevBtn.onclick = () => {
+  if (current > 0) {
+    current--;
+    renderQuestion();
+  }
+};
+
+function showResults() {
+  quizStep.style.display = 'none';
+  resultStep.style.display = 'block';
+  progressBar.style.width = '100%';
+  
+  let score = 0;
+  userSelections.forEach((sel, i) => {
+    if(sel === questions[i].correct) score++;
+  });
+  document.getElementById('scoreText').textContent = `${score} / ${questions.length}`;
+}
+
+document.getElementById('showCorrectionBtn').onclick = () => {
+  resultStep.style.display = 'none';
+  correctionStep.style.display = 'block';
+  const list = document.getElementById('correctionList');
+  list.innerHTML = '';
+  
+  questions.forEach((q, i) => {
+    const isCorrect = userSelections[i] === q.correct;
+    const item = document.createElement('div');
+    item.className = 'correction-item';
+    item.innerHTML = `
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <strong>Question ${i+1}</strong>
+        <span class="${isCorrect?'correct':'wrong'}">${isCorrect?'✓ Correct':'✗ Incorrect'}</span>
+      </div>
+      <p style="margin:6px 0;color:var(--muted)"><strong>${q.question}</strong></p>
+      <p style="margin:6px 0">Votre réponse : ${userSelections[i]!==null ? q.answers[userSelections[i]] : 'Aucune'}</p>
+      <p style="margin:6px 0">Réponse correcte : <strong>${q.answers[q.correct]}</strong></p>
+      <div class="explanation-box">${q.explanation}</div>
+    `;
+    list.appendChild(item);
+  });
+};
+
+const goHome = () => window.location.href = 'accueil.html';
+document.getElementById('goHomeBtn').onclick = goHome;
+document.getElementById('goHomeBtn2').onclick = goHome;
+document.getElementById('backToResultBtn').onclick = () => {
+  correctionStep.style.display = 'none';
+  resultStep.style.display = 'block';
+};
+
+document.getElementById('backBtn').onclick = () => {
+  document.getElementById('confirmModal').style.display = 'block';
+};
+
+document.getElementById('cancelQuit').onclick = () => {
+  document.getElementById('confirmModal').style.display = 'none';
+};
+
+document.getElementById('confirmQuit').onclick = goHome;
+
+renderQuestion();
+</script>
+</body>
+</html>
