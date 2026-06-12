@@ -425,6 +425,13 @@ footer a:hover { text-decoration: underline; }
 
 .fade-in { animation: fadeUp 0.6s ease both; }
 </style>
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#0a0f24"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="CyberQuiz"/>
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png"/>
 </head>
 <body>
 
@@ -510,6 +517,17 @@ footer a:hover { text-decoration: underline; }
    ============================================================ */
 const VERSIONS = [
   {
+    version: 'v1.2',
+    date:    '11/06/2025',
+    title:   'Système d\'alertes & Notes de version',
+    description:
+`- Ajout d'une bannière d'alerte rouge personnalisable en haut de la page
+- Ajout d'une popup modale d'alerte au chargement de la page
+- Les deux sont fermables avec un bouton ✕ ou la touche Échap
+- Création de cette page de notes de version (changelog.html)
+- Accès depuis la navbar de la page d'accueil`
+  },
+  {
     version: 'v1.1',
     date:    '10/06/2025',
     title:   'Refonte complète de la page d\'accueil',
@@ -524,7 +542,7 @@ const VERSIONS = [
 - Navbar améliorée avec lien actif surligné et animation mobile`
   },
   {
-    version: 'v1.0 Beta',
+    version: 'v1.0',
     date:    '01/06/2025',
     title:   'Lancement initial du site',
     description:
@@ -535,7 +553,8 @@ const VERSIONS = [
 - Quiz Bonnes Pratiques : 10 questions sur les habitudes numériques
 - Quiz Identifier les Menaces : phishing, malware, ransomware
 - Quiz Réseaux Sociaux : vie privée et arnaques en ligne
-- Contrôle Final : question aléatoire difficile`
+- Contrôle Final : question aléatoire difficile
+- Support PWA (Progressive Web App) avec service worker`
   },
 ];
 
@@ -703,5 +722,6 @@ function animateParticles() {
 initCanvas(); initParticles(); animateParticles();
 </script>
 
+  <script src="pwa.js" defer></script>
 </body>
 </html>
