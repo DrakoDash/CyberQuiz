@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Quiz Réseaux - Sécurité - CyberQuiz</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+
+<style>
+  :root{
+    --bg:#0a0f24;
+    --card:#111833;
+    --accent:#00ff88;
+    --accent-2:#00cc6f;
+    --card-hover:#16204a;
+    --glass: rgba(13,19,43,0.9);
+    --muted: rgba(255,255,255,0.75);
+    --success: #7efc6a;
+    --warning: #ffb347;
+    --danger: #ff7b7b;
+  }
+
+  html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:#fff}
+  
+  .navbar {
+    position: fixed; top: 0; width: 100%; background: rgba(10,15,36,0.85);
+    backdrop-filter: blur(6px); border-bottom: 2px solid var(--accent);
+    padding: 12px 25px; display:flex; align-items:center; gap:12px; z-index:999;
+  }
+  
+  .nav-logo { font-size:1.2rem; font-weight:600; color:var(--accent); letter-spacing:1px; }
+  
+  .back-quiz {
+    background: transparent; border: none; color: var(--accent); font-size:1rem;
+    cursor:pointer; display:flex; align-items:center; gap:8px;
+  }
+
+  main { padding: 100px 20px 60px; max-width:900px; margin:0 auto; }
+  
+  .quiz-card {
+    background: linear-gradient(180deg, rgba(17,24,51,0.95), rgba(13,19,43,0.85));
+    border: 2px solid var(--accent);
+    border-radius: 14px; padding: 28px; box-shadow: 0 10px 30px rgba(0,255,136,0.15);
+  }
+
+  .quiz-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
+  
+  .quiz-title { font-size:1.4rem; color:var(--accent); margin:0; display:flex; align-items:center; gap:10px; }
+  
+  .quiz-icon { font-size:1.8rem; }
+  
+  .progress {
+    height:10px; background: rgba(255,255,255,0.06); border-radius:999px; overflow:hidden; flex:1; margin-left:16px;
+  }
+  
+  .progress > i { display:block; height:100%; width:0%; background: linear-gradient(90deg,var(--accent),var(--accent-2)); transition:width .35s ease; }
+
+  .question { font-size:1.15rem; margin: 18px 0; color:var(--muted); }
+  
+  .answers { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
+  
+  .answer-btn {
+    background: rgba(0,0,0,0.45); border:2px solid rgba(0,255,136,0.15); color:#fff;
+    padding:12px 14px; border-radius:10px; text-align:left; cursor:pointer; transition: transform .12s ease, background .12s ease, border .12s ease;
+  }
+  
+  .answer-btn:hover { 
+    transform: translateY(-3px); 
+    background: rgba(22,32,74,0.95);
+    border-color: var(--accent);
+  }
+  
+  .answer-btn.selected { 
+    background: var(--accent); 
+    color:#001; 
+    border-color: var(--accent-2); 
+    box-shadow: 0 6px 18px rgba(0,255,136,0.2);
+    font-weight:600;
+  }
+
+  .controls { display:flex; gap:12px; margin-top:20px; }
+  
+  .btn { padding:12px 16px; border-radius:10px; border:none; cursor:pointer; font-weight:600; transition: all .2s ease; }
+  
+  .btn-primary { background:var(--accent); color:#001; flex:1; }
+  
+  .btn-primary:hover { 
+    background:var(--accent-2);
+    box-shadow: 0 6px 20px rgba(0,255,136,0.3);
+  }
+  
+  .btn-ghost { background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); }
+  
+  .btn-ghost:hover { 
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .result { text-align:center; padding:18px 10px; }
+  
+  .score { font-size:2.6rem; color:var(--accent); margin:6px 0; font-weight:700; }
+  
+  .result-actions { display:flex; gap:12px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+
+  .correction-item { 
+    background: rgba(0,255,136,0.05); 
+    padding:12px; 
+    border-radius:10px; 
+    margin-bottom:10px;
+    border-left: 4px solid rgba(0,255,136,0.3);
+    text-align: left;
+  }
+  
+  .correct { color: var(--success); font-weight:700; }
+  
+  .wrong { color: var(--danger); font-weight:700; }
+  
+  .explanation-box {
+    background: rgba(0,255,136,0.08);
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 8px;
+    border-left: 3px solid var(--accent);
+  }
+
+  .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:1200; }
+  
+  .modal { 
+    background: linear-gradient(180deg, #0b1228, #071028); 
+    padding:18px; 
+    border-radius:12px; 
+    border:2px solid var(--accent);
+    width:320px; 
+    text-align:center;
+    box-shadow: 0 10px 40px rgba(0,255,136,0.15);
+  }
+  
+  .modal p { margin:12px 0; color:var(--muted); }
+
+  .difficulty-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  
+  .difficulty-intermediate {
+    background: rgba(255,179,71,0.2);
+    color: #ffb347;
+    border: 1px solid #ffb347;
+  }
+
+  @media (max-width:600px) { 
+    .quiz-card { padding:18px; } 
+    .quiz-title { font-size:1.05rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <button class="back-quiz" id="backBtn"><i class="fa-solid fa-arrow-left"></i> Retour</button>
+  <div class="nav-logo">CyberQuiz</div>
+</nav>
+
+<canvas id="particles" style="position:fixed;inset:0;z-index:-1;"></canvas>
+
+<main>
+  <div class="quiz-card" id="quizCard">
+    <div class="quiz-header">
+      <h2 class="quiz-title">
+        <i class="fa-solid fa-network-wired quiz-icon"></i>
+        Quiz — Sécurité Réseaux
+      </h2>
+      <div class="progress"><i id="progressBar"></i></div>
+    </div>
+    
+    <div class="difficulty-badge difficulty-intermediate">
+      <i class="fa-solid fa-star"></i> Niveau Intermédiaire
+    </div>
+
+    <div id="quizStep">
+      <div class="question" id="questionText">Chargement...</div>
+      <div class="answers" id="answersBox"></div>
+      <div class="controls">
+        <button class="btn btn-ghost" id="prevBtn" disabled>Précédent</button>
+        <button class="btn btn-primary" id="nextBtn" disabled>Suivant</button>
+      </div>
+    </div>
+
+    <div id="resultStep" style="display:none;">
+      <div class="result">
+        <div>Votre score final</div>
+        <div class="score" id="scoreText">0 / 15</div>
+        <div class="result-actions">
+          <button class="btn btn-ghost" id="showCorrectionBtn">Voir la correction</button>
+          <button class="btn btn-primary" id="goHomeBtn">Retour à l'accueil</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="correctionStep" style="display:none;">
+      <h3 style="margin-top:0;color:var(--accent)"><i class="fa-solid fa-check-circle"></i> Correction détaillée</h3>
+      <div id="correctionList" style="max-height: 500px; overflow-y: auto; margin-top:12px"></div>
+      <div style="display:flex;gap:12px;margin-top:14px;">
+        <button class="btn btn-ghost" id="backToResultBtn">Retour au score</button>
+        <button class="btn btn-primary" id="goHomeBtn2">Retour à l'accueil</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div id="confirmModal" style="display:none;">
+  <div class="modal-backdrop">
+    <div class="modal">
+      <h4 style="color:var(--accent);margin:0"><i class="fa-solid fa-triangle-exclamation"></i> Quitter le quiz ?</h4>
+      <p>Votre progression sera perdue. Confirmer ?</p>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
+        <button class="btn btn-ghost" id="cancelQuit">Rester</button>
+        <button class="btn btn-primary" id="confirmQuit">Quitter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Particules */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particlesArray = [];
+
+function initCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', () => { initCanvas(); initParticles(); });
+
+class Particle {
+  constructor() { 
+    this.reset(); 
+    this.size = Math.random()*2+0.5; 
+    this.color = `rgba(0,255,136,${Math.random()*0.3+0.1})`; 
+  }
+  reset(){ 
+    this.x = Math.random()*canvas.width; 
+    this.y = Math.random()*canvas.height; 
+    this.speedX=(Math.random()-0.5)*0.5; 
+    this.speedY=(Math.random()-0.5)*0.5; 
+  }
+  update(){ 
+    this.x+=this.speedX; 
+    this.y+=this.speedY; 
+    if(this.x<0||this.x>canvas.width||this.y<0||this.y>canvas.height) this.reset(); 
+  }
+  draw(){ 
+    ctx.beginPath(); 
+    ctx.arc(this.x,this.y,this.size,0,Math.PI*2); 
+    ctx.fillStyle=this.color; 
+    ctx.fill(); 
+  }
+}
+
+function initParticles(){ 
+  particlesArray=[]; 
+  for(let i=0;i<50;i++) particlesArray.push(new Particle()); 
+}
+
+function animateParticles(){ 
+  ctx.clearRect(0,0,canvas.width,canvas.height); 
+  particlesArray.forEach(p=>{p.update();p.draw();}); 
+  requestAnimationFrame(animateParticles); 
+}
+
+initCanvas(); 
+initParticles(); 
+animateParticles();
+
+/* Questions sur la Sécurité des Réseaux */
+const questions = [
+  { 
+    question: "Quel protocole assure le chiffrement des données en réseau ?",
+    answers: ["HTTP", "HTTPS", "FTP", "SMTP"],
+    correct: 1,
+    explanation: "HTTPS utilise SSL/TLS pour chiffrer les données transmises entre le client et le serveur."
+  },
+  { 
+    question: "Qu'est-ce qu'un firewall ?",
+    answers: ["Un logiciel de nettoyage", "Un système qui filtre le trafic réseau", "Un type de virus", "Un navigateur web"],
+    correct: 1,
+    explanation: "Un firewall est un dispositif ou logiciel qui filtre et contrôle le trafic réseau entrant et sortant."
+  },
+  { 
+    question: "Quel type d'attaque intercepte les données entre deux points ?",
+    answers: ["DDoS", "Man-in-the-Middle (MITM)", "Phishing", "Brute Force"],
+    correct: 1,
+    explanation: "Une attaque MITM intercepte la communication entre un client et un serveur pour voler les données."
+  },
+  { 
+    question: "Qu'est-ce qu'une adresse IP ?",
+    answers: ["Un code secret", "Un identifiant unique pour un appareil sur le réseau", "Un mot de passe", "Un type de virus"],
+    correct: 1,
+    explanation: "Une adresse IP est un identifiant numérique unique attribué à chaque appareil connecté à un réseau."
+  },
+  { 
+    question: "Quel protocole est utilisé pour envoyer des emails sécurisés ?",
+    answers: ["SMTP", "SMTPS", "POP3", "IMAP"],
+    correct: 1,
+    explanation: "SMTPS (SMTP Secure) chiffre la connexion SMTP pour une transmission sécurisée des emails."
+  },
+  { 
+    question: "Que signifie VPN ?",
+    answers: ["Virtual Public Network", "Virtual Private Network", "Virus Protection Network", "Visual Programming Network"],
+    correct: 1,
+    explanation: "Un VPN (Virtual Private Network) crée un tunnel chiffré entre votre appareil et un serveur, protégeant votre connexion."
+  },
+  { 
+    question: "Qu'est-ce qu'un port réseau ?",
+    answers: ["Une connexion physique", "Un numéro qui identifie un service sur une machine", "Un type de pare-feu", "Un câble de réseau"],
+    correct: 1,
+    explanation: "Un port est un numéro qui identifie un processus ou service spécifique sur une machine. Par exemple : 80 pour HTTP, 443 pour HTTPS."
+  },
+  { 
+    question: "Qu'est-ce qu'une attaque DDoS ?",
+    answers: ["Vol de données", "Envoi massif de requêtes pour surcharger un serveur", "Un virus informatique", "Un type de firewall"],
+    correct: 1,
+    explanation: "Une attaque DDoS (Distributed Denial of Service) vise à rendre un service indisponible en le surchargeant de requêtes."
+  },
+  { 
+    question: "Quel est l'avantage principal du chiffrement ?",
+    answers: ["Augmente la vitesse réseau", "Protège les données contre l'interception", "Réduit la bande passante", "Améliore le signal WiFi"],
+    correct: 1,
+    explanation: "Le chiffrement rend les données illisibles pour toute personne qui les intercepte, protégeant la confidentialité."
+  },
+  { 
+    question: "Qu'est-ce qu'un proxy ?",
+    answers: ["Un antivirus", "Un serveur intermédiaire qui relaye les requêtes réseau", "Un type de malware", "Un mot de passe"],
+    correct: 1,
+    explanation: "Un proxy est un serveur qui agit comme intermédiaire entre vous et Internet, pouvant cacher votre adresse IP."
+  },
+  { 
+    question: "Qu'est-ce que le DNS ?",
+    answers: ["Un logiciel malveillant", "Un système qui traduit les noms de domaine en adresses IP", "Un type de virus", "Un protocole FTP"],
+    correct: 1,
+    explanation: "Le DNS (Domain Name System) traduit les noms de domaine (google.com) en adresses IP pour permettre l'accès aux sites."
+  },
+  { 
+    question: "Qu'est-ce qu'un subnet mask ?",
+    answers: ["Un masque facial", "Un masque qui définit la plage d'adresses IP d'un réseau", "Un type de virus", "Un pare-feu"],
+    correct: 1,
+    explanation: "Un subnet mask est utilisé pour diviser un réseau en sous-réseaux et déterminer quels appareils peuvent communiquer."
+  },
+  { 
+    question: "Quelle est une bonne pratique de sécurité réseau ?",
+    answers: ["Ne jamais mettre à jour les routeurs", "Utiliser des mots de passe faibles", "Changer régulièrement les mots de passe du routeur", "Désactiver le firewall"],
+    correct: 2,
+    explanation: "Changer régulièrement les mots de passe du routeur et des appareils réseau réduit les risques d'accès non autorisé."
+  },
+  { 
+    question: "Qu'est-ce qu'une DMZ (Demilitarized Zone) ?",
+    answers: ["Une zone interdite", "Un segment réseau isolé entre le réseau privé et l'Internet", "Un logiciel antivirus", "Un type de malware"],
+    correct: 1,
+    explanation: "Une DMZ est une zone de sécurité intermédiaire qui isole les serveurs publics du réseau privé pour plus de sécurité."
+  },
+  { 
+    question: "Quel protocole est dépassé et non sécurisé ?",
+    answers: ["HTTPS", "SSH", "Telnet", "DNS-SEC"],
+    correct: 2,
+    explanation: "Telnet transmet les données en clair sans chiffrement, le rendant vulnérable. SSH le remplace de façon sécurisée."
+  }
+];
+
+let current = 0;
+const userSelections = new Array(questions.length).fill(null);
+
+const questionText = document.getElementById('questionText');
+const answersBox = document.getElementById('answersBox');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const progressBar = document.getElementById('progressBar');
+const quizStep = document.getElementById('quizStep');
+const resultStep = document.getElementById('resultStep');
+const correctionStep = document.getElementById('correctionStep');
+
+function renderQuestion() {
+  const q = questions[current];
+  questionText.textContent = `Question ${current+1} / ${questions.length} — ${q.question}`;
+  answersBox.innerHTML = '';
+  
+  nextBtn.disabled = userSelections[current] === null;
+  prevBtn.disabled = current === 0;
+  nextBtn.textContent = current === questions.length - 1 ? "Terminer" : "Suivant";
+
+  q.answers.forEach((ans, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'answer-btn';
+    if(userSelections[current] === idx) btn.classList.add('selected');
+    btn.textContent = ans;
+    btn.onclick = () => {
+      document.querySelectorAll('.answer-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      userSelections[current] = idx;
+      nextBtn.disabled = false;
+    };
+    answersBox.appendChild(btn);
+  });
+  
+  progressBar.style.width = ((current) / questions.length * 100) + '%';
+}
+
+nextBtn.onclick = () => {
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
+  } else {
+    showResults();
+  }
+};
+
+prevBtn.onclick = () => {
+  if (current > 0) {
+    current--;
+    renderQuestion();
+  }
+};
+
+function showResults() {
+  quizStep.style.display = 'none';
+  resultStep.style.display = 'block';
+  progressBar.style.width = '100%';
+  
+  let score = 0;
+  userSelections.forEach((sel, i) => {
+    if(sel === questions[i].correct) score++;
+  });
+  document.getElementById('scoreText').textContent = `${score} / ${questions.length}`;
+}
+
+document.getElementById('showCorrectionBtn').onclick = () => {
+  resultStep.style.display = 'none';
+  correctionStep.style.display = 'block';
+  const list = document.getElementById('correctionList');
+  list.innerHTML = '';
+  
+  questions.forEach((q, i) => {
+    const isCorrect = userSelections[i] === q.correct;
+    const item = document.createElement('div');
+    item.className = 'correction-item';
+    item.innerHTML = `
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <strong>Question ${i+1}</strong>
+        <span class="${isCorrect?'correct':'wrong'}">${isCorrect?'✓ Correct':'✗ Incorrect'}</span>
+      </div>
+      <p style="margin:6px 0;color:var(--muted)"><strong>${q.question}</strong></p>
+      <p style="margin:6px 0">Ta réponse : ${userSelections[i]!==null ? q.answers[userSelections[i]] : 'Aucune'}</p>
+      <p style="margin:6px 0">Réponse correcte : <strong>${q.answers[q.correct]}</strong></p>
+      <div class="explanation-box">${q.explanation}</div>
+    `;
+    list.appendChild(item);
+  });
+};
+
+const goHome = () => window.location.href = 'accueil.html';
+document.getElementById('goHomeBtn').onclick = goHome;
+document.getElementById('goHomeBtn2').onclick = goHome;
+document.getElementById('backToResultBtn').onclick = () => {
+  correctionStep.style.display = 'none';
+  resultStep.style.display = 'block';
+};
+
+document.getElementById('backBtn').onclick = () => {
+  document.getElementById('confirmModal').style.display = 'block';
+};
+
+document.getElementById('cancelQuit').onclick = () => {
+  document.getElementById('confirmModal').style.display = 'none';
+};
+
+document.getElementById('confirmQuit').onclick = goHome;
+
+renderQuestion();
+</script>
+</body>
+</html>
