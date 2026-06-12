@@ -1015,6 +1015,13 @@ body.has-alert .hero { padding-top: 168px; }
   border-color: rgba(255,80,80,0.6);
 }
 </style>
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#0a0f24"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="CyberQuiz"/>
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png"/>
 </head>
 <body>
 
@@ -1672,5 +1679,6 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 initAlert();
 </script>
 
+  <script src="pwa.js" defer></script>
 </body>
 </html>
