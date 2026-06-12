@@ -3,282 +3,619 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CyberQuiz — Introduction</title>
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
-
+<title>CyberQuiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  :root {
-    --bg: #0a0f24;
-    --accent: #00bfff;
-    --accent2: #4cc9f0;
-  }
+:root {
+  --bg:      #0a0f24;
+  --accent:  #00bfff;
+  --accent2: #4cc9f0;
+  --green:   #00ff9d;
+  --border:  rgba(0,191,255,0.18);
+}
 
-  body {
-    margin: 0;
-    background: var(--bg);
-    font-family: 'Poppins', sans-serif;
-    color: white;
-    overflow: hidden;
-  }
+*, *::before, *::after { box-sizing: border-box; }
 
-  /* Canvas particules */
-  #particles {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-  }
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+  overflow: hidden;
+  height: 100vh;
+}
 
-  /* Animation terminal */
-  #intro-screen {
-    position: fixed;
-    inset: 0;
-    background: black;
-    color: #00ffea;
-    font-family: monospace;
-    padding: 40px;
-    font-size: 1.1rem;
-    line-height: 1.5;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    z-index: 10;
-    overflow: hidden;
-    animation: fadeOut 1s ease forwards;
-    animation-delay: 5.2s; /* Intro ralentie */
-  }
+/* ── Canvas fond ── */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
 
-  .typing-line {
-    white-space: nowrap;
-    overflow: hidden;
-    border-right: 2px solid #00ffea;
-    width: 0;
-    animation: typing 1.8s steps(40) forwards, blink 0.7s infinite;
-  }
+/* ── Grille hex de scan ── */
+#scan-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
 
-  @keyframes typing {
-    to { width: 100%; }
-  }
+/* ── ÉCRAN TERMINAL ── */
+#terminal {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgba(0,0,0,0.96);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(24px, 6vw, 80px);
+  font-family: 'Share Tech Mono', monospace;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
 
-  @keyframes blink {
-    50% { border-color: transparent; }
-  }
+#terminal.hide {
+  opacity: 0;
+  transform: translateY(-12px);
+  pointer-events: none;
+}
 
-  @keyframes fadeOut {
-    to { opacity: 0; visibility: hidden; }
-  }
+.term-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(0,191,255,0.15);
+}
 
-  /* Page d'intro */
-  .intro-container {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    opacity: 0;
-    animation: fadeIn 1.5s ease forwards;
-    animation-delay: 6s; /* Apparition ralentie */
-  }
+.term-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+}
+.term-dot.red   { background: #ff5f57; }
+.term-dot.amber { background: #febc2e; }
+.term-dot.green { background: #28c840; }
 
-  @keyframes fadeIn {
-    to { opacity: 1; }
-  }
+.term-title {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-left: 6px;
+}
 
-  /* Effet glitch */
-  h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
-    color: var(--accent);
-    position: relative;
-    text-shadow: 0 0 12px var(--accent);
-  }
+.term-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 700px;
+}
 
-  h1::before, h1::after {
-    content: "CyberQuiz";
-    position: absolute;
-    left: 0;
-    top: 0;
-    opacity: 0.6;
-  }
+.term-line {
+  font-size: clamp(0.78rem, 2vw, 1rem);
+  line-height: 1.5;
+  opacity: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-  h1::before {
-    color: #ff00c8;
-    animation: glitch1 2s infinite;
-  }
+.term-line.show { opacity: 1; }
 
-  h1::after {
-    color: #00fff2;
-    animation: glitch2 2s infinite;
-  }
+/* Animation de frappe */
+.term-line.typing {
+  opacity: 1;
+  overflow: hidden;
+  animation: expand-line 0.001s forwards;
+  width: 0;
+}
 
-  @keyframes glitch1 {
-    0% { transform: translate(0); }
-    20% { transform: translate(-3px, 2px); }
-    40% { transform: translate(3px, -2px); }
-    60% { transform: translate(-2px, 1px); }
-    80% { transform: translate(2px, -1px); }
-    100% { transform: translate(0); }
-  }
+@keyframes expand-line {
+  to { width: 100%; }
+}
 
-  @keyframes glitch2 {
-    0% { transform: translate(0); }
-    20% { transform: translate(3px, -2px); }
-    40% { transform: translate(-3px, 2px); }
-    60% { transform: translate(2px, -1px); }
-    80% { transform: translate(-2px, 1px); }
-    100% { transform: translate(0); }
-  }
+.term-prompt { color: var(--accent); flex-shrink: 0; }
+.term-text   { color: rgba(255,255,255,0.88); }
+.term-ok     { color: var(--green); font-size: 0.8rem; }
+.term-warn   { color: #f7a81b; font-size: 0.8rem; }
+.term-cursor {
+  display: inline-block;
+  width: 8px; height: 1.1em;
+  background: var(--accent);
+  margin-left: 3px;
+  animation: blink 0.7s step-end infinite;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
 
-  p {
-    font-size: 1.2rem;
-    opacity: 0.85;
-    max-width: 600px;
-  }
+@keyframes blink { 50% { opacity: 0; } }
 
-  /* Message d'avertissement */
-  .warning {
-    margin-top: 25px;
-    font-size: 0.95rem;
-    color: #ff6b6b;
-    background: rgba(255, 0, 0, 0.1);
-    padding: 10px 18px;
-    border-radius: 8px;
-    border-left: 3px solid #ff6b6b;
-    max-width: 500px;
-  }
+/* Barre de progression dans le terminal */
+.term-progress-wrap {
+  margin-top: 4px;
+  display: none;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+}
 
-  /* Bouton */
-  .enter-btn {
-    margin-top: 30px;
-    padding: 14px 32px;
-    font-size: 1.2rem;
-    border: 2px solid var(--accent);
-    background: transparent;
-    color: white;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+.term-progress-wrap.show { display: flex; }
 
-  .enter-btn:hover {
-    background: var(--accent);
-    color: black;
-    box-shadow: 0 0 15px var(--accent);
-  }
+.term-bar {
+  flex: 1;
+  height: 4px;
+  max-width: 300px;
+  background: rgba(0,191,255,0.12);
+  border-radius: 999px;
+  overflow: hidden;
+}
 
-  /* Mobile */
-  @media (max-width: 480px) {
-    h1 { font-size: 2.2rem; }
-    p { font-size: 1rem; }
-    .warning { font-size: 0.85rem; }
-    .enter-btn { font-size: 1.1rem; padding: 12px 26px; }
-  }
+.term-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--green));
+  border-radius: 999px;
+  width: 0%;
+  transition: width 0.05s linear;
+}
+
+.term-pct { color: var(--accent); font-size: 0.78rem; min-width: 36px; }
+
+/* ── PAGE HERO ── */
+#hero {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  opacity: 0;
+  transform: scale(0.97);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+  pointer-events: none;
+}
+
+#hero.show {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: all;
+}
+
+/* ── Bouclier animé ── */
+.shield-wrap {
+  position: relative;
+  margin-bottom: 28px;
+}
+
+.shield-icon {
+  font-size: clamp(3rem, 8vw, 5rem);
+  color: var(--accent);
+  text-shadow: 0 0 30px rgba(0,191,255,0.4);
+  animation: shield-pulse 3s ease infinite;
+}
+
+@keyframes shield-pulse {
+  0%,100% { text-shadow: 0 0 20px rgba(0,191,255,0.3); }
+  50%      { text-shadow: 0 0 50px rgba(0,191,255,0.7), 0 0 80px rgba(0,191,255,0.3); }
+}
+
+.shield-ring {
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,191,255,0.2);
+  animation: ring-expand 3s ease infinite;
+}
+
+.shield-ring:nth-child(2) {
+  inset: -32px;
+  border-color: rgba(0,191,255,0.1);
+  animation-delay: 0.5s;
+}
+
+@keyframes ring-expand {
+  0%   { transform: scale(0.85); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+/* ── Titre glitch ── */
+.hero-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 4px;
+  margin: 0 0 6px;
+  text-shadow: 0 0 20px rgba(0,191,255,0.35);
+  position: relative;
+  display: inline-block;
+}
+
+.hero-title::before,
+.hero-title::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.hero-title:hover::before {
+  color: #ff00c8;
+  opacity: 0.6;
+  animation: gt1 0.4s steps(2) forwards;
+}
+
+.hero-title:hover::after {
+  color: #00fff2;
+  opacity: 0.6;
+  animation: gt2 0.4s steps(2) 0.05s forwards;
+}
+
+@keyframes gt1 {
+  0%  { transform: translate(0); clip-path: inset(20% 0 60% 0); }
+  50% { transform: translate(-5px, 3px); clip-path: inset(50% 0 20% 0); }
+  100%{ transform: translate(0); opacity: 0; }
+}
+
+@keyframes gt2 {
+  0%  { transform: translate(0); clip-path: inset(60% 0 10% 0); }
+  50% { transform: translate(5px, -3px); clip-path: inset(10% 0 70% 0); }
+  100%{ transform: translate(0); opacity: 0; }
+}
+
+.hero-sub {
+  font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+  color: rgba(255,255,255,0.65);
+  margin: 8px 0 0;
+  letter-spacing: 1px;
+}
+
+.hero-sub span { color: var(--accent2); }
+
+/* ── Divider ── */
+.hero-divider {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  margin: 28px auto;
+}
+
+/* ── Tags ── */
+.hero-tags {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+.tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--accent);
+  background: rgba(0,191,255,0.06);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── Bouton ── */
+.enter-btn {
+  padding: 16px 44px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  background: var(--accent);
+  color: #001a2e;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 0 0 rgba(0,191,255,0.4);
+}
+
+.enter-btn:hover {
+  background: var(--accent2);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0,191,255,0.4);
+}
+
+.enter-btn i { font-size: 0.9rem; }
+
+/* ── Skip ── */
+.skip-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 20;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+  background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: 0.2s;
+}
+.skip-btn:hover { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.3); }
+.skip-btn.hidden { opacity: 0; pointer-events: none; }
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .term-line  { white-space: normal; font-size: 0.75rem; }
+  .tag        { font-size: 0.65rem; padding: 4px 10px; }
+  .enter-btn  { padding: 14px 32px; font-size: 0.95rem; }
+}
 </style>
 </head>
-
 <body>
 
-<!-- Particules -->
 <canvas id="particles"></canvas>
+<canvas id="scan-canvas"></canvas>
 
-<!-- Animation terminal -->
-<div id="intro-screen">
-  <div class="typing-line" style="animation-delay:0s">> Initialisation du système…</div>
-  <div class="typing-line" style="animation-delay:1s">> Chargement des modules de cybersécurité…</div>
-  <div class="typing-line" style="animation-delay:2s">> Vérification de l’intégrité… OK</div>
-  <div class="typing-line" style="animation-delay:3s">> Analyse des menaces… OK</div>
-  <div class="typing-line" style="animation-delay:4s">> Bienvenue utilisateur.</div>
-</div>
+<!-- Bouton passer l'intro -->
+<button class="skip-btn" id="skipBtn" onclick="skipIntro()">PASSER ›</button>
 
-<!-- Page d'intro -->
-<div class="intro-container">
-  <h1>CyberQuiz</h1>
-  <p>Découvrez une plateforme immersive pour apprendre la cybersécurité en vous amusant.  
-  Testez vos connaissances, progressez et devenez incollable.</p>
-
-  <div class="warning">
-    ⚠️ La cybersécurité commence par la vigilance.  
-    Ce site vous apprend à reconnaître les menaces les plus courantes.
+<!-- ── TERMINAL ── -->
+<div id="terminal">
+  <div class="term-header">
+    <div class="term-dot red"></div>
+    <div class="term-dot amber"></div>
+    <div class="term-dot green"></div>
+    <span class="term-title">CyberQuiz — Boot Sequence v1.2</span>
   </div>
 
-  <button class="enter-btn" onclick="enterSite()">Entrer</button>
+  <div class="term-lines" id="termLines">
+    <!-- Injecté par JS -->
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<div id="hero">
+  <div class="shield-wrap">
+    <div class="shield-ring"></div>
+    <div class="shield-ring"></div>
+    <i class="fa-solid fa-shield-halved shield-icon"></i>
+  </div>
+
+  <h1 class="hero-title" data-text="CyberQuiz">CyberQuiz</h1>
+  <p class="hero-sub">Testez vos connaissances · <span>Protégez-vous</span> · Progressez</p>
+
+  <div class="hero-divider"></div>
+
+  <div class="hero-tags">
+    <span class="tag"><i class="fa-solid fa-circle" style="font-size:0.4rem;margin-right:4px"></i> 9 Quiz</span>
+    <span class="tag"><i class="fa-solid fa-circle" style="font-size:0.4rem;margin-right:4px"></i> 130+ Questions</span>
+    <span class="tag"><i class="fa-solid fa-circle" style="font-size:0.4rem;margin-right:4px"></i> Gratuit</span>
+    <span class="tag"><i class="fa-solid fa-circle" style="font-size:0.4rem;margin-right:4px"></i> Interactif</span>
+  </div>
+
+  <button class="enter-btn" onclick="enterSite()">
+    <i class="fa-solid fa-play"></i> Commencer
+  </button>
 </div>
 
 <script>
-/* Transition fluide */
-function enterSite() {
-  document.body.style.transition = "opacity 0.8s";
-  document.body.style.opacity = "0";
-  setTimeout(() => {
-    window.location.href = "accueil.html";
-  }, 800);
+/* ══════════════════════════════════════════════
+   PARTICULES (fond)
+══════════════════════════════════════════════ */
+const pc = document.getElementById('particles');
+const px = pc.getContext('2d');
+let pts  = [];
+
+function initPCanvas() {
+  pc.width  = window.innerWidth;
+  pc.height = window.innerHeight;
 }
 
-/* Disparition automatique de l'intro */
-setTimeout(() => {
-  document.getElementById("intro-screen").classList.add("fade-out");
-}, 5200); /* Intro ralentie */
-
-/* Particules */
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-let particlesArray = [];
-
-function initCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-
-window.addEventListener('resize', () => {
-  initCanvas();
-  initParticles();
-});
-
-class Particle {
+class P {
   constructor() {
     this.reset();
-    this.size = Math.random() * 2.5 + 0.6;
-    this.color = `rgba(0,191,255,${Math.random() * 0.45 + 0.15})`;
+    this.s = Math.random() * 1.6 + 0.3;
+    this.c = `rgba(0,191,255,${Math.random() * 0.25 + 0.05})`;
   }
   reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.speedX = (Math.random() - 0.5) * 0.6;
-    this.speedY = (Math.random() - 0.5) * 0.6;
+    this.x  = Math.random() * pc.width;
+    this.y  = Math.random() * pc.height;
+    this.vx = (Math.random() - 0.5) * 0.4;
+    this.vy = (Math.random() - 0.5) * 0.4;
   }
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    if (this.x < -10 || this.x > canvas.width + 10 || this.y < -10 || this.y > canvas.height + 10) {
-      this.reset();
+  tick() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < -10 || this.x > pc.width + 10 ||
+        this.y < -10 || this.y > pc.height + 10) this.reset();
+    px.beginPath();
+    px.arc(this.x, this.y, this.s, 0, Math.PI * 2);
+    px.fillStyle = this.c;
+    px.fill();
+  }
+}
+
+function initParts() {
+  pts = [];
+  const n = Math.max(50, Math.floor(pc.width * pc.height / 14000));
+  for (let i = 0; i < n; i++) pts.push(new P());
+}
+
+function animParts() {
+  px.clearRect(0, 0, pc.width, pc.height);
+  pts.forEach(p => p.tick());
+  requestAnimationFrame(animParts);
+}
+
+initPCanvas(); initParts(); animParts();
+window.addEventListener('resize', () => { initPCanvas(); initParts(); });
+
+/* ══════════════════════════════════════════════
+   SCAN CANVAS (caractères hex qui tombent)
+══════════════════════════════════════════════ */
+const sc  = document.getElementById('scan-canvas');
+const sx  = sc.getContext('2d');
+let cols  = [];
+let scanOn = true;
+
+function initScan() {
+  sc.width  = window.innerWidth;
+  sc.height = window.innerHeight;
+  const cw  = 18;
+  const num = Math.floor(sc.width / cw);
+  cols = Array.from({ length: num }, () => ({
+    x:   Math.floor(Math.random() * num) * cw,
+    y:   Math.random() * -sc.height,
+    spd: Math.random() * 0.8 + 0.3,
+    chr: () => Math.random() > 0.5
+         ? Math.floor(Math.random() * 256).toString(16).padStart(2,'0').toUpperCase()
+         : String.fromCharCode(0x30A0 + Math.floor(Math.random() * 96)),
+    alpha: Math.random() * 0.12 + 0.03,
+  }));
+}
+
+function animScan() {
+  if (!scanOn) { sx.clearRect(0, 0, sc.width, sc.height); return; }
+  sx.clearRect(0, 0, sc.width, sc.height);
+  sx.font = '11px Share Tech Mono';
+
+  cols.forEach(c => {
+    sx.fillStyle = `rgba(0,191,255,${c.alpha})`;
+    sx.fillText(c.chr(), c.x, c.y);
+    c.y += c.spd;
+    if (c.y > sc.height) {
+      c.y = Math.random() * -60;
+      c.x = Math.floor(Math.random() * (sc.width / 18)) * 18;
+      c.alpha = Math.random() * 0.12 + 0.03;
+    }
+  });
+
+  requestAnimationFrame(animScan);
+}
+
+initScan(); animScan();
+window.addEventListener('resize', initScan);
+
+/* ══════════════════════════════════════════════
+   SÉQUENCE TERMINAL
+══════════════════════════════════════════════ */
+const SEQUENCE = [
+  { delay: 200,  text: 'Initialisation du système de sécurité…',    color: 'rgba(255,255,255,0.85)', badge: null },
+  { delay: 900,  text: 'Chargement des modules de protection…',      color: 'rgba(255,255,255,0.85)', badge: null },
+  { delay: 1700, text: 'Scan des vulnérabilités connues…',           color: 'rgba(255,255,255,0.85)', badge: null, progress: true },
+  { delay: 3200, text: 'Vérification de l\'intégrité du système…',   color: 'rgba(255,255,255,0.85)', badge: '✓ OK',  badgeColor: '#00ff9d' },
+  { delay: 4000, text: 'Chiffrement des communications…',            color: 'rgba(255,255,255,0.85)', badge: '✓ OK',  badgeColor: '#00ff9d' },
+  { delay: 4700, text: 'Analyse des menaces actives…',               color: 'rgba(255,255,255,0.85)', badge: '✓ CLEAR', badgeColor: '#00ff9d' },
+  { delay: 5400, text: 'MODULE CyberQuiz v1.2 — Prêt.',              color: '#00bfff',               badge: '● LIVE',  badgeColor: '#00bfff' },
+];
+
+const termLines = document.getElementById('termLines');
+let cursor = null;
+
+function addLine(text, color, badge, badgeColor) {
+  if (cursor) cursor.remove();
+
+  const row = document.createElement('div');
+  row.className = 'term-line show';
+  row.innerHTML = `
+    <span class="term-prompt">>&nbsp;</span>
+    <span class="term-text" style="color:${color}">${text}</span>
+    ${badge ? `<span class="term-ok" style="color:${badgeColor};margin-left:auto;padding-left:16px;flex-shrink:0">${badge}</span>` : ''}
+  `;
+  termLines.appendChild(row);
+
+  cursor = document.createElement('span');
+  cursor.className = 'term-cursor';
+  row.appendChild(cursor);
+
+  return row;
+}
+
+function addProgressLine() {
+  if (cursor) cursor.remove();
+
+  const row = document.createElement('div');
+  row.className = 'term-line show';
+  row.innerHTML = `
+    <span class="term-prompt">>&nbsp;</span>
+    <span class="term-text">Scan des vulnérabilités connues…</span>
+  `;
+  termLines.appendChild(row);
+
+  const pw = document.createElement('div');
+  pw.className = 'term-progress-wrap show';
+  pw.innerHTML = `
+    <div class="term-bar"><div class="term-bar-fill" id="tBar"></div></div>
+    <span class="term-pct" id="tPct">0%</span>
+  `;
+  termLines.appendChild(pw);
+
+  return new Promise(res => {
+    let val = 0;
+    const iv = setInterval(() => {
+      val += Math.random() * 6 + 2;
+      if (val >= 100) { val = 100; clearInterval(iv); res(); }
+      document.getElementById('tBar').style.width = val + '%';
+      document.getElementById('tPct').textContent = Math.floor(val) + '%';
+    }, 40);
+  });
+}
+
+async function runSequence() {
+  for (let i = 0; i < SEQUENCE.length; i++) {
+    const step = SEQUENCE[i];
+    await new Promise(r => setTimeout(r, i === 0 ? step.delay : (step.delay - SEQUENCE[i-1].delay)));
+
+    if (step.progress) {
+      await addProgressLine();
+    } else {
+      addLine(step.text, step.color, step.badge, step.badgeColor);
     }
   }
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = this.color;
-    ctx.fill();
-  }
+
+  /* Fin de la séquence → transition */
+  await new Promise(r => setTimeout(r, 900));
+  showHero();
 }
 
-function initParticles() {
-  particlesArray = [];
-  const number = Math.max(40, Math.floor((canvas.width * canvas.height) / 16000));
-  for (let i = 0; i < number; i++) particlesArray.push(new Particle());
+function showHero() {
+  document.getElementById('skipBtn').classList.add('hidden');
+  scanOn = false;
+
+  const term = document.getElementById('terminal');
+  term.classList.add('hide');
+
+  setTimeout(() => {
+    term.style.display = 'none';
+    document.getElementById('hero').classList.add('show');
+  }, 650);
 }
 
-function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particlesArray.forEach(p => { p.update(); p.draw(); });
-  requestAnimationFrame(animateParticles);
+function skipIntro() {
+  showHero();
 }
 
-initCanvas();
-initParticles();
-animateParticles();
+runSequence();
+
+/* ══════════════════════════════════════════════
+   TRANSITION VERS ACCUEIL
+══════════════════════════════════════════════ */
+function enterSite() {
+  document.body.style.transition = 'opacity 0.7s ease';
+  document.body.style.opacity = '0';
+  setTimeout(() => { window.location.href = 'accueil.html'; }, 700);
+}
 </script>
 
 </body>
