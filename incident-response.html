@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>CyberQuiz — Incident Response Simulator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Share+Tech+Mono&display=swap">
+    <style>
+        /* ─── Variables ─────────────────────────────── */
+        :root {
+            --bg: #0a0f24;
+            --card: #111833;
+            --accent: #00bfff;
+            --accent2: #4cc9f0;
+            --danger: #ff6b6b;
+            --warn: #f7a81b;
+            --success: #7efc6a;
+            --glass: rgba(13,19,43,0.92);
+            --border: rgba(0,191,255,0.18);
+            --muted: rgba(255,255,255,0.6);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+        /* ─── NAVBAR ────────────────────────────────── */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10,15,36,0.88);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 28px;
+            height: 62px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .nav-logo {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.35rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0,191,255,0.5);
+            text-decoration: none;
+        }
+
+        .nav-logo span { color: #fff; }
+
+        .nav-links {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 0.88rem;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--accent);
+            background: rgba(0,191,255,0.1);
+            border-color: var(--border);
+        }
+
+        .nav-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--accent);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 62px;
+                right: -100%;
+                width: 72%;
+                height: calc(100vh - 62px);
+                background: rgba(8,12,30,0.97);
+                backdrop-filter: blur(12px);
+                flex-direction: column;
+                padding: 32px 20px;
+                gap: 8px;
+                transition: right 0.35s;
+                border-left: 1px solid var(--border);
+            }
+            .nav-links.open { right: 0; }
+            .nav-toggle { display: block; }
+        }
+
+        /* ─── HERO/HEADER ───────────────────────────── */
+        .quiz-header {
+            padding: 100px 24px 40px;
+            background: linear-gradient(135deg, rgba(0,191,255,0.05), rgba(76,201,240,0.03));
+            border-bottom: 1px solid var(--border);
+            margin-top: 62px;
+            text-align: center;
+        }
+
+        .quiz-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(0,191,255,0.2);
+        }
+
+        .quiz-subtitle {
+            font-size: 1rem;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        /* ─── PROGRESS BAR ──────────────────────────── */
+        .progress-container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+        }
+
+        .progress-label { color: var(--muted); }
+        .progress-num { 
+            color: var(--accent);
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 999px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 999px;
+        }
+
+        /* ─── QUIZ CONTAINER ────────────────────────── */
+        .quiz-container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px 60px;
+        }
+
+        /* ─── QUESTION CARD ─────────────────────────── */
+        .question-card {
+            background: linear-gradient(160deg, rgba(17,24,51,0.96), rgba(13,18,40,0.9));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 40px;
+            opacity: 0;
+            animation: slideIn 0.5s ease both;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-context {
+            background: rgba(0,191,255,0.08);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .context-label {
+            font-size: 0.75rem;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+            margin: 0 0 8px;
+        }
+
+        .context-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            margin: 0 0 10px;
+        }
+
+        .context-text {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.8);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .question-number {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+            margin: 0 0 28px;
+            line-height: 1.5;
+        }
+
+        /* ─── OPTIONS ───────────────────────────────── */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .option {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .option-input {
+            display: none;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 18px;
+            background: rgba(17,24,51,0.6);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            transition: all 0.25s;
+            cursor: pointer;
+        }
+
+        .option-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.25s;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.5;
+        }
+
+        .option-input:hover + .option-label {
+            border-color: var(--accent);
+            background: rgba(0,191,255,0.06);
+        }
+
+        .option-input:checked + .option-label {
+            border-color: var(--accent);
+            background: rgba(0,191,255,0.12);
+        }
+
+        .option-input:checked + .option-label .option-checkbox {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #001;
+        }
+
+        /* ─── FEEDBACK ──────────────────────────────── */
+        .feedback {
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 10px;
+            border-left: 4px solid;
+            display: none;
+            animation: popIn 0.3s ease;
+        }
+
+        .feedback.correct {
+            background: rgba(126,252,106,0.1);
+            border-color: var(--success);
+        }
+
+        .feedback.incorrect {
+            background: rgba(255,107,107,0.1);
+            border-color: var(--danger);
+        }
+
+        .feedback-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+
+        .feedback.correct .feedback-icon { color: var(--success); }
+        .feedback.incorrect .feedback-icon { color: var(--danger); }
+
+        .feedback-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+        }
+
+        .feedback-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.8);
+        }
+
+        @keyframes popIn {
+            from { 
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+            to { 
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* ─── BUTTONS ───────────────────────────────── */
+        .button-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #001;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent2);
+            box-shadow: 0 6px 20px rgba(0,191,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(0,191,255,0.08);
+            border-color: var(--accent);
+        }
+
+        /* ─── RÉSULTATS ─────────────────────────────── */
+        .results-screen {
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        .results-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .results-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .results-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: var(--accent);
+        }
+
+        .results-score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: 'Share Tech Mono', monospace;
+            margin: 20px 0;
+            text-shadow: 0 0 20px rgba(0,191,255,0.2);
+        }
+
+        .results-feedback {
+            font-size: 1rem;
+            color: var(--muted);
+            margin: 20px 0 40px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .results-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin: 40px 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stat {
+            background: rgba(17,24,51,0.7);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .button-container.results {
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        /* ─── FOOTER ─────────────────────────────────── */
+        footer {
+            border-top: 1px solid var(--border);
+            background: rgba(8,12,28,0.8);
+            padding: 30px 24px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .footer-text {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .quiz-header { padding: 80px 20px 30px; }
+            .quiz-title { font-size: 1.8rem; }
+            .question-card { padding: 24px; }
+            .question-text { font-size: 1.1rem; }
+            .results-score { font-size: 2.4rem; }
+        }
+
+        /* ─── Particles Background ──────────────────── */
+        #particles {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles -->
+    <canvas id="particles"></canvas>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <a href="accueil.html" class="nav-logo">Cyber<span>Quiz</span></a>
+        <div class="nav-links" id="navLinks">
+            <a href="accueil.html">Accueil</a>
+            <a href="debutant.html">Débutant</a>
+            <a href="menaces.html">Menaces</a>
+            <a href="mdp.html">Mots de passe</a>
+            <a href="incident-response.html" class="active">Incidents</a>
+        </div>
+        <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+    </nav>
+
+    <!-- HEADER -->
+    <div class="quiz-header">
+        <h1 class="quiz-title">🚨 Incident Response Simulator</h1>
+        <p class="quiz-subtitle">15 scénarios difficiles - Maîtrisez la réponse aux incidents de sécurité</p>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="progress-container">
+        <div class="progress-header">
+            <span class="progress-label">Progression</span>
+            <span class="progress-num"><span id="currentQuestion">1</span> / 15</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <!-- QUIZ CONTAINER -->
+    <div class="quiz-container">
+        <div class="question-card" id="questionCard">
+            <!-- Content dynamically inserted -->
+        </div>
+
+        <div class="results-screen" id="resultsScreen">
+            <!-- Results dynamically inserted -->
+        </div>
+
+        <div class="button-container" id="buttonContainer">
+            <button class="btn btn-ghost" id="prevBtn" style="display:none;">
+                <i class="fas fa-arrow-left"></i> Précédent
+            </button>
+            <button class="btn btn-primary" id="nextBtn" disabled>
+                Suivant <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p class="footer-text">© 2024 CyberQuiz - Plateforme d'apprentissage en cybersécurité</p>
+    </footer>
+
+    <script>
+        // Quiz Data
+        const quizData = [
+            {
+                id: 1,
+                scenario: "Incident détecté : Volume anormal de trafic sortant",
+                question: "Votre SOC détecte un volume massif de données sortantes depuis un serveur de production. Quelle est votre première action ?",
+                options: [
+                    { text: "Isoler immédiatement le serveur du réseau sans investigation", correct: false, feedback: "❌ Risqué ! Isoler sans preuves peut masquer des traces. Il faut d'abord analyser les logs." },
+                    { text: "Analyser les logs en temps réel pour identifier la source et la destination", correct: true, feedback: "✅ Excellente réponse ! C'est le bon réflexe - comprendre d'abord, puis agir." },
+                    { text: "Ignorer, c'est probablement une fausse alerte", correct: false, feedback: "❌ Dangereuse hypothèse ! Les volumes anormaux nécessitent une investigation rapide." },
+                    { text: "Redémarrer le serveur pour arrêter l'exfiltration", correct: false, feedback: "❌ Redémarrer peut perdre des preuves critiques et la continuité de service." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 2,
+                scenario: "Ransomware détecté sur une workstation utilisateur",
+                question: "Un ransomware chiffre les fichiers sur la machine d'un utilisateur. Le fichier 'Note.txt' demande 0.5 BTC. Que faites-vous ?",
+                options: [
+                    { text: "Payer la rançon pour récupérer les données", correct: false, feedback: "❌ Payer finance les criminels et ne garantit pas la récupération. Mauvaise pratique." },
+                    { text: "Isoler la machine, analyser les IOCs, restaurer à partir d'une sauvegarde", correct: true, feedback: "✅ Parfait ! Isolation → Analyse → Restauration = la bonne stratégie." },
+                    { text: "Demander à l'utilisateur de relancer l'antivirus", correct: false, feedback: "❌ C'est trop tard pour l'antivirus une fois infecté. Isolation d'urgence requise." },
+                    { text: "Faire un dump mémoire et fermer l'application malveillante", correct: false, feedback: "❌ Faire un dump est utile mais l'isolation doit venir en premier." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 3,
+                scenario: "Compromission d'une API - Accès non autorisé détecté",
+                question: "Vous découvrez que votre API publique accepte les requêtes sans token valide et expose des données sensibles. Quelle est la priorité ?",
+                options: [
+                    { text: "Patcher l'authentification en production sans downtime", correct: false, feedback: "❌ Risqué ! Patcher en live peut créer de nouvelles vulnérabilités ou apporter du downtime." },
+                    { text: "Mettre immédiatement l'API hors ligne, analyser les logs d'accès, puis redéployer sécurisée", correct: true, feedback: "✅ Excellente priorité ! Protection des données > Disponibilité > Correction." },
+                    { text: "Ignorer car la majorité des données est anonymisée", correct: false, feedback: "❌ 'Anonymisée' ≠ 'Non sensible'. RGPD et légalités peuvent s'appliquer." },
+                    { text: "Notifier les clients mais continuer à servir l'API compromise", correct: false, feedback: "❌ Continuer à servir une API compromise = exposer davantage de données." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 4,
+                scenario: "Phishing massif ciblant vos employés",
+                question: "200 de vos 1000 employés ont cliqué sur un lien de phishing. Votre action prioritaire ?",
+                options: [
+                    { text: "Forcer un changement de mot de passe pour tous", correct: false, feedback: "❌ Utile mais tardif. Il faut d'abord isoler les machines compromise et vérifier les logs." },
+                    { text: "Analyser les logs des 200 machines, vérifier si des credentials ont été utilisés malveillamment", correct: true, feedback: "✅ Bonne stratégie ! Identification des compromissions réelles avant action globale." },
+                    { text: "Bloquer tout accès à la plateforme de phishing sur le proxy", correct: false, feedback: "❌ Le domaine est probablement déjà offline. Focus sur les machines clientes." },
+                    { text: "Fermer les 200 comptes utilisateurs temporairement", correct: false, feedback: "❌ Trop extrême et impact opérationnel majeur sans preuves de compromission." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 5,
+                scenario: "Détection d'une backdoor dans le code source",
+                question: "Une scan SAST détecte une backdoor PHP obfusquée dans votre application web. Elle permet l'exécution de commandes arbitraires. Action immédiate ?",
+                options: [
+                    { text: "Continuer les deployments normalement, la scan est peut-être une fausse positive", correct: false, feedback: "❌ Déployer une backdoor = livrer un cheval de Troie. Impossible à accepter." },
+                    { text: "Pull request immédiate pour retirer la backdoor en production", correct: false, feedback: "❌ Une PR seule prend du temps. Il faut hotfix critique ET investigation." },
+                    { text: "Arrêter les deployments, créer un hotfix critique, audit du dépôt git pour tracer son origine", correct: true, feedback: "✅ Parfait ! Stop → Hotfix urgent → Forensics = réponse appropriée." },
+                    { text: "Contacter le mainteneur du package externe qui la contient", correct: false, feedback: "❌ Si c'est dans votre code, c'est votre responsabilité immédiate." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 6,
+                scenario: "Certificat SSL expiré en production",
+                question: "Votre certificat SSL expire dans 3 heures. Les clients HTTPS ne peuvent plus accéder au site. Que faites-vous ?",
+                options: [
+                    { text: "Attendre la fin du mois pour renouveler lors de la maintenance prévue", correct: false, feedback: "❌ Catastrophique ! Les utilisateurs ne pourront pas accéder à votre service." },
+                    { text: "Générer et déployer un nouveau certificat en urgence dans les 3 heures", correct: true, feedback: "✅ Correct ! Déploiement urgent du certificat = rétablir le service immédiatement." },
+                    { text: "Passer en HTTP temporairement pour éviter l'expiration du SSL", correct: false, feedback: "❌ HTTP = pas de chiffrement. Sécurité baisse drastiquement." },
+                    { text: "Contacter Let's Encrypt pour une exception spéciale", correct: false, feedback: "❌ Let's Encrypt ne fait pas d'exceptions. Auto-renouvellement aurait dû être en place." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 7,
+                scenario: "Fuite de données détectée - 100k enregistrements clients",
+                question: "Vous découvrez que 100 000 enregistrements clients (noms, emails, numéros de téléphone) sont en vente sur le dark web. Étape légale/compliance prioritaire ?",
+                options: [
+                    { text: "Garder le silence, espérer que personne ne le remarque", correct: false, feedback: "❌ Légalement obligatoire de notifier les autorités (RGPD = 72h). Silence = risques légaux." },
+                    { text: "Notifier les autorités compétentes et les clients affectés dans les 72 heures", correct: true, feedback: "✅ Exact ! RGPD mandate la notification dans les 72h. C'est légalement requis." },
+                    { text: "Payer les cybercriminels pour retirer les données", correct: false, feedback: "❌ Payer ne garantit rien et finance la criminalité. Solutions légales seules." },
+                    { text: "Laisser le département juridique gérer, aucune notification immédiate", correct: false, feedback: "❌ Les délais légaux ne permettent pas d'attendre. Action immédiate." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 8,
+                scenario: "Compromission du compte administrateur Domain Controller",
+                question: "L'administrateur du Domain Controller Active Directory est compromis. Un attaquant a accès depuis 48h. Votre stratégie ?",
+                options: [
+                    { text: "Simplement réinitialiser le mot de passe du compte", correct: false, feedback: "❌ Insuffisant ! L'attaquant a peut-être créé des comptes de backdoor." },
+                    { text: "Changer tous les mots de passe AD, vérifier les règles de groupe, auditer les logs de 48h", correct: true, feedback: "✅ Excellent ! Réinitialisation complète + audit forensique = approche complète." },
+                    { text: "Restaurer le Domain Controller à partir d'une sauvegarde d'une semaine", correct: false, feedback: "❌ La sauvegarde peut aussi être compromise si l'attaque remonte à une semaine." },
+                    { text: "Ignorer, c'est 'juste' un compte admin", correct: false, feedback: "❌ Le compte admin AD est le PLUS CRITIQUE. Compromise = accès à toute l'infrastructure." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 9,
+                scenario: "Fournisseur tiers compromis - Supply Chain Attack",
+                question: "Un fournisseur de logiciel que vous utilisez est compromis. Une version du logiciel avec malware a été distribuée. Vous avez la v3.2 installée (la dernière version avant compromise). Que faire ?",
+                options: [
+                    { text: "Attendre la correction du fournisseur, continuer avec v3.2", correct: false, feedback: "❌ v3.2 était aussi en distribution. Elle peut aussi être compromise." },
+                    { text: "Évaluer le risque: était-ce une version compromise? Isoler les systèmes, scruter les logs, patcher dès que possible", correct: true, feedback: "✅ Parfait ! Évaluation du risque + isolation + monitoring = réponse appropriée." },
+                    { text: "Désinstaller complètement le logiciel immédiatement", correct: false, feedback: "❌ Peut être votre seul choix à long terme, mais d'abord évaluer le risque." },
+                    { text: "Ignorer, si c'est un fournisseur réputé ce ne peut pas être compromise", correct: false, feedback: "❌ Les fournisseurs réputés sont souvent les cibles principales. Confiance ≠ Sécurité." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 10,
+                scenario: "DDoS attaque en cours - Infrastructure surchargée",
+                question: "Votre infrastructure reçoit un DDoS d'amplification DNS. Votre application est inaccessible. Action prioritaire ?",
+                options: [
+                    { text: "Augmenter la bande passante du serveur pour absorber l'attaque", correct: false, feedback: "❌ Non scalable ! Coûteux et l'attaque peut toujours augmenter." },
+                    { text: "Contacter votre fournisseur DDoS mitigation, activer les règles de filtrage", correct: true, feedback: "✅ Correct ! DDoS mitigation service + filtrage = stratégie standard." },
+                    { text: "Bloquer manuellement chaque adresse IP attaquante dans le firewall", correct: false, feedback: "❌ Spoofing d'IP rend cela inefficace. Besoin d'une solution DDoS." },
+                    { text: "Attendre que l'attaque se termine d'elle-même", correct: false, feedback: "❌ Les DDoS peuvent durer heures/jours/semaines. Action immédiate requise." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 11,
+                scenario: "Configuration AWS mal sécurisée découverte",
+                question: "Un bucket S3 est accidentellement laissé en 'public read'. Il contient 500GB de données sensibles. L'analyse des logs montre 10 000 téléchargements de sources inconnues. Étape première ?",
+                options: [
+                    { text: "Simplement rendre le bucket privé et espérer que personne ne copie les données", correct: false, feedback: "❌ Trop tard ! Les logs prouvent déjà une exposition massive." },
+                    { text: "Faire un inventaire des données exposées, notifier les parties concernées, patcher le bucket", correct: true, feedback: "✅ Excellent ! Inventaire → Notification → Patch = réponse appropriée." },
+                    { text: "Supprimer le bucket entièrement pour éviter d'autres fuites", correct: false, feedback: "❌ Supprimer détruit les preuves et peut impacter les opérations." },
+                    { text: "Garder le bucket secret et espérer que les logs se corrompent", correct: false, feedback: "❌ Les logs sont immuables dans AWS. Cela sera découvert. Honnêteté requise." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 12,
+                scenario: "Attaque XSS sophistiquée sur votre application web",
+                question: "Un XSS stored est découvert. Il peut exécuter du code JavaScript dans le navigateur des utilisateurs. Vous ne savez pas depuis combien de temps c'est actif. Priorité ?",
+                options: [
+                    { text: "Ignorer car c'est 'juste' du JavaScript client-side", correct: false, feedback: "❌ XSS stored = vol de sessions, cookies, données. Impact CRITIQUE." },
+                    { text: "Patcher immédiatement + invalider les sessions actives + nettoyer le DOM cache", correct: true, feedback: "✅ Parfait ! Patch + Session invalidation + Cache clean = neutralisation complète." },
+                    { text: "Ajouter du WAF pour bloquer les futures requêtes XSS", correct: false, feedback: "❌ Utile préventivement, mais ne nettoie pas l'infection existante." },
+                    { text: "Attendre que tous les utilisateurs se déconnectent naturellement", correct: false, feedback: "❌ Trop lent ! Les utilisateurs doivent être forcés à se reconnecter rapidement." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 13,
+                scenario: "Accès non autorisé aux bases de données de production détecté",
+                question: "Votre WAF détecte des SQL injections réussies depuis une adresse IP interne. La base de données de prod a été interrogée mais non modifiée. Étape critique ?",
+                options: [
+                    { text: "Vérifier les logs complets de la requête: quelle adresse, quelles données ont été extraites", correct: true, feedback: "✅ Excellent ! Forensics complète = identifier l'attaquant et la portée." },
+                    { text: "Simplement patcher la SQL injection et fermer le port de la base de données", correct: false, feedback: "❌ Patcher est important mais vérifier les dégâts d'abord est critique." },
+                    { text: "Alerter immédiatement les clients sans investigation", correct: false, feedback: "❌ Investigation d'abord, notification seulement si réellement compromis." },
+                    { text: "Réinitialiser toutes les données de la base de données", correct: false, feedback: "❌ Extrême et peut nuire à la continuité. Investigation d'abord." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 14,
+                scenario: "Insider Threat détecté - Employé télécharge massivement des fichiers",
+                question: "Vous détectez qu'un employé IT a téléchargé 50GB de fichiers confidentiels vers un service cloud personnel. Son dernier jour est demain. Que faites-vous ?",
+                options: [
+                    { text: "Ignorer, il part de toute façon", correct: false, feedback: "❌ Insider threat est GRAVE ! Même en départ, la propriété intellectuelle doit être protégée." },
+                    { text: "Désactiver immédiatement ses accès, enquête HR/légale, audit de tous ses téléchargements", correct: true, feedback: "✅ Parfait ! Isolation d'urgence + Investigation + Documentation légale." },
+                    { text: "Le confronter directement sur le vol de données", correct: false, feedback: "❌ Mauvais ! Pourrait détruire des preuves. Laisser à HR/Légal." },
+                    { text: "Simplement noter son comportement et lui interdire les accès demain", correct: false, feedback: "❌ Trop lent ! 50GB = dégâts potentiels massifs. Action immédiate." }
+                ],
+                difficulty: "hard"
+            },
+            {
+                id: 15,
+                scenario: "Incident majeur multi-vecteur - Récupération complète",
+                question: "Vous subissez une attaque combinée: ransomware + backdoor + exfiltration de données. Comment établissez-vous votre plan de récupération ?",
+                options: [
+                    { text: "Restaurer les sauvegardes et redémarrer. Incident terminé.", correct: false, feedback: "❌ Restaurer sur une backdoor = re-infection. Nécessite investigation forensique complète." },
+                    { text: "Forensics complète, identifier tous les vecteurs, nettoyer les backdoors, PUIS restaurer les sauvegardes", correct: true, feedback: "✅ Excellent ! Investigation → Nettoyage → Restauration = seul moyen sûr." },
+                    { text: "Payer les attaquants car le ransomware chiffre les données", correct: false, feedback: "❌ Payer ne garantit rien. Forensics + Backups propres = seule solution fiable." },
+                    { text: "Isoler tout et demander aux attaquants quelle est la meilleure stratégie", correct: false, feedback: "❌ Les attaquants ne vous aident pas. Vous devez être autonome dans la récupération." }
+                ],
+                difficulty: "hard"
+            }
+        ];
+
+        // State
+        let currentQuestion = 0;
+        let answers = new Array(quizData.length).fill(null);
+        let answered = new Array(quizData.length).fill(false);
+
+        // DOM Elements
+        const questionCard = document.getElementById('questionCard');
+        const resultsScreen = document.getElementById('resultsScreen');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const progressFill = document.getElementById('progressFill');
+        const currentQuestionSpan = document.getElementById('currentQuestion');
+        const buttonContainer = document.getElementById('buttonContainer');
+        const navToggle = document.getElementById('navToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        // Navbar Toggle
+        navToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        // Initialize
+        init();
+
+        function init() {
+            renderQuestion();
+            updateProgress();
+            updateButtons();
+        }
+
+        function renderQuestion() {
+            const q = quizData[currentQuestion];
+            const isAnswered = answered[currentQuestion];
+
+            let html = `
+                <div class="question-context">
+                    <div class="context-label"><i class="fas fa-exclamation-circle"></i> Scénario</div>
+                    <div class="context-title">${q.scenario}</div>
+                </div>
+                <div class="question-number">Question ${currentQuestion + 1} / ${quizData.length}</div>
+                <h2 class="question-text">${q.question}</h2>
+                <div class="options-container">
+            `;
+
+            q.options.forEach((opt, idx) => {
+                const optionId = `option-${currentQuestion}-${idx}`;
+                const isSelected = answers[currentQuestion] === idx;
+                html += `
+                    <div class="option">
+                        <input type="radio" id="${optionId}" name="question-${currentQuestion}" class="option-input" value="${idx}" ${isSelected ? 'checked' : ''} ${isAnswered ? 'disabled' : ''}>
+                        <label for="${optionId}" class="option-label">
+                            <span class="option-checkbox"></span>
+                            <span class="option-text">${opt.text}</span>
+                        </label>
+                    </div>
+                `;
+            });
+
+            html += `</div>`;
+
+            if (isAnswered) {
+                const selectedIdx = answers[currentQuestion];
+                const selectedOpt = q.options[selectedIdx];
+                const isCorrect = selectedOpt.correct;
+                html += `
+                    <div class="feedback ${isCorrect ? 'correct' : 'incorrect'}">
+                        <div class="feedback-title">
+                            <span class="feedback-icon">${isCorrect ? '✅' : '❌'}</span>
+                            ${isCorrect ? 'Excellent !' : 'Incorrect'}
+                        </div>
+                        <div class="feedback-text">${selectedOpt.feedback}</div>
+                    </div>
+                `;
+            }
+
+            questionCard.innerHTML = html;
+
+            // Add event listeners
+            if (!isAnswered) {
+                document.querySelectorAll(`input[name="question-${currentQuestion}"]`).forEach(input => {
+                    input.addEventListener('change', () => {
+                        selectAnswer(parseInt(input.value));
+                    });
+                });
+            }
+        }
+
+        function selectAnswer(optionIdx) {
+            answers[currentQuestion] = optionIdx;
+            answered[currentQuestion] = true;
+            renderQuestion();
+            updateButtons();
+        }
+
+        function updateProgress() {
+            const percent = ((currentQuestion + 1) / quizData.length) * 100;
+            progressFill.style.width = percent + '%';
+            currentQuestionSpan.textContent = currentQuestion + 1;
+        }
+
+        function updateButtons() {
+            const isAnswered = answered[currentQuestion];
+            nextBtn.disabled = !isAnswered;
+
+            if (currentQuestion > 0) {
+                prevBtn.style.display = 'flex';
+            } else {
+                prevBtn.style.display = 'none';
+            }
+
+            if (currentQuestion === quizData.length - 1 && isAnswered) {
+                nextBtn.innerHTML = 'Voir les résultats <i class="fas fa-check"></i>';
+            } else {
+                nextBtn.innerHTML = 'Suivant <i class="fas fa-arrow-right"></i>';
+            }
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestion === quizData.length - 1) {
+                showResults();
+            } else {
+                currentQuestion++;
+                renderQuestion();
+                updateProgress();
+                updateButtons();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+                updateProgress();
+                updateButtons();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+
+        function showResults() {
+            questionCard.style.display = 'none';
+            buttonContainer.innerHTML = '<a href="accueil.html" class="btn btn-primary"><i class="fas fa-home"></i> Retour à l\'accueil</a>';
+
+            const correctCount = answers.reduce((sum, idx, qIdx) => {
+                return sum + (quizData[qIdx].options[idx].correct ? 1 : 0);
+            }, 0);
+
+            const score = Math.round((correctCount / quizData.length) * 100);
+            let feedback = '';
+            let emoji = '';
+
+            if (score >= 80) {
+                emoji = '🏆';
+                feedback = 'Excellent ! Vous maîtrisez la réponse aux incidents. Vous êtes prêt pour les situations réelles.';
+            } else if (score >= 60) {
+                emoji = '👍';
+                feedback = 'Bon travail ! Vous avez de bonnes bases. Continuez l\'apprentissage pour maîtriser tous les scénarios.';
+            } else if (score >= 40) {
+                emoji = '📚';
+                feedback = 'Résultats modérés. Reviendra aux fondamentaux et pratiquez davantage les scénarios complexes.';
+            } else {
+                emoji = '💪';
+                feedback = 'Continuez vos efforts ! La sécurité des incidents demande de la pratique et de l\'expérience.';
+            }
+
+            let html = `
+                <div class="results-container">
+                    <div class="results-icon">${emoji}</div>
+                    <h2 class="results-title">Quiz complété !</h2>
+                    <div class="results-score">${score}%</div>
+                    <div class="results-feedback">${feedback}</div>
+                    
+                    <div class="results-stats">
+                        <div class="stat">
+                            <div class="stat-label">Correct</div>
+                            <div class="stat-value">${correctCount}</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Total</div>
+                            <div class="stat-value">${quizData.length}</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Taux</div>
+                            <div class="stat-value">${score}%</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            resultsScreen.innerHTML = html;
+            resultsScreen.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Particles Animation
+        function initParticles() {
+            const canvas = document.getElementById('particles');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 2 + 0.5;
+                    this.speedX = Math.random() * 1 - 0.5;
+                    this.speedY = Math.random() * 1 - 0.5;
+                    this.opacity = Math.random() * 0.5 + 0.2;
+                }
+
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+
+                    if (this.x > canvas.width) this.x = 0;
+                    if (this.x < 0) this.x = canvas.width;
+                    if (this.y > canvas.height) this.y = 0;
+                    if (this.y < 0) this.y = canvas.height;
+                }
+
+                draw() {
+                    ctx.fillStyle = `rgba(0, 191, 255, ${this.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < 50; i++) {
+                particles.push(new Particle());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+
+        initParticles();
+    </script>
+</body>
+</html>
