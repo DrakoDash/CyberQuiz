@@ -1,417 +1,711 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>Quiz Débutant Amélioré - CyberQuiz</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
-
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<title>Les Fondamentaux — CyberQuiz</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"/>
 <style>
-  :root{
-    --bg:#0a0f24;
-    --card:#111833;
-    --accent:#00bfff;
-    --accent-2:#4cc9f0;
-    --card-hover:#16204a;
-    --glass: rgba(13,19,43,0.9);
-    --muted: rgba(255,255,255,0.75);
-    --success: #7efc6a;
-    --danger: #ff7b7b;
-  }
+:root {
+  --bg: #070b1a;
+  --card: #0d1228;
+  --card2: #111833;
+  --accent: #00bfff;
+  --accent2: #4cc9f0;
+  --glow: rgba(0,191,255,0.18);
+  --border: rgba(0,191,255,0.18);
+  --muted: rgba(255,255,255,0.7);
+  --success: #4dff91;
+  --fail: #ff5555;
+  --text: #e8eaf6;
+}
 
-  html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:#fff}
-  
-  .navbar {
-    position: fixed; top: 0; width: 100%; background: rgba(10,15,36,0.85);
-    backdrop-filter: blur(6px); border-bottom: 2px solid var(--accent);
-    padding: 12px 25px; display:flex; align-items:center; gap:12px; z-index:999;
-  }
-  
-  .nav-logo { font-size:1.2rem; font-weight:600; color:var(--accent); letter-spacing:1px; }
-  
-  .back-quiz {
-    background: transparent; border: none; color: var(--accent); font-size:1rem;
-    cursor:pointer; display:flex; align-items:center; gap:8px;
-  }
+*, *::before, *::after { box-sizing: border-box; }
 
-  main { padding: 100px 20px 60px; max-width:900px; margin:0 auto; }
-  
-  .quiz-card {
-    background: linear-gradient(180deg, rgba(17,24,51,0.95), rgba(13,19,43,0.85));
-    border: 2px solid var(--accent);
-    border-radius: 14px; padding: 28px; box-shadow: 0 10px 30px rgba(0,191,255,0.15);
-  }
+html, body {
+  margin: 0; padding: 0; min-height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
 
-  .quiz-header { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px; }
-  
-  .quiz-title { 
-    font-size:1.4rem; 
-    color:var(--accent); 
-    margin:0; 
-    display:flex; 
-    align-items:center; 
-    gap:10px;
-  }
-  
-  .quiz-icon { font-size:1.8rem; }
-  
-  .progress {
-    height:10px; background: rgba(255,255,255,0.06); border-radius:999px; overflow:hidden; flex:1; margin-left:16px;
-  }
-  
-  .progress > i { display:block; height:100%; width:0%; background: linear-gradient(90deg,var(--accent),var(--accent-2)); transition:width .35s ease; }
+/* ── PARTICLES ─────────────────────── */
+#particles {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
 
-  .question { font-size:1.15rem; margin: 18px 0; color:var(--muted); }
-  
-  .answers { display:flex; flex-direction:column; gap:12px; margin-top:8px; }
-  
-  .answer-btn {
-    background: rgba(0,0,0,0.45); border:2px solid rgba(0,191,255,0.15); color:#fff;
-    padding:12px 14px; border-radius:10px; text-align:left; cursor:pointer; transition: transform .12s ease, background .12s ease, border .12s ease;
-  }
-  
-  .answer-btn:hover { 
-    transform: translateY(-3px); 
-    background: rgba(22,32,74,0.95);
-    border-color: var(--accent);
-  }
-  
-  .answer-btn.selected { 
-    background: var(--accent); 
-    color:#001; 
-    border-color: var(--accent-2); 
-    box-shadow: 0 6px 18px rgba(0,191,255,0.2);
-    font-weight:600;
-  }
+/* ── NAVBAR ─────────────────────────── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(7,11,26,0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 900;
+}
 
-  .controls { display:flex; gap:12px; margin-top:20px; }
-  
-  .btn { padding:12px 16px; border-radius:10px; border:none; cursor:pointer; font-weight:600; transition: all .2s ease; }
-  
-  .btn-primary { background:var(--accent); color:#001; flex:1; }
-  
-  .btn-primary:hover { 
-    background:var(--accent-2);
-    box-shadow: 0 6px 20px rgba(0,191,255,0.3);
-  }
-  
-  .btn-ghost { background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); }
-  
-  .btn-ghost:hover { 
-    border-color: var(--accent);
-    color: var(--accent);
-  }
+.nav-back {
+  background: none; border: none; cursor: pointer;
+  color: var(--accent); font-size: 0.9rem;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: background 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+.nav-back:hover { background: var(--glow); }
 
-  .result { text-align:center; padding:18px 10px; }
-  
-  .score { font-size:2.6rem; color:var(--accent); margin:6px 0; font-weight:700; }
-  
-  .result-actions { display:flex; gap:12px; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+.nav-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem; color: var(--accent); letter-spacing: 2px;
+}
 
-  .correction-item { 
-    background: rgba(0,191,255,0.05); 
-    padding:12px; 
-    border-radius:10px; 
-    margin-bottom:10px;
-    border-left: 4px solid var(--accent);
-    text-align: left;
-  }
-  
-  .correct { color: var(--success); font-weight:700; }
-  
-  .wrong { color: var(--danger); font-weight:700; }
-  
-  .explanation-box {
-    background: rgba(0,191,255,0.08);
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 8px;
-    border-left: 3px solid var(--accent);
-    font-size: 0.9rem;
-  }
+.nav-badge {
+  font-size: 0.75rem; color: var(--muted);
+  background: rgba(0,191,255,0.08);
+  border: 1px solid var(--border);
+  padding: 4px 10px; border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
 
-  .difficulty-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-top: 10px;
-    background: rgba(0,191,255,0.2);
-    color: var(--accent);
-    border: 1px solid var(--accent);
-  }
+/* ── MAIN ───────────────────────────── */
+main {
+  position: relative; z-index: 1;
+  padding: 82px 16px 60px;
+  max-width: 820px; margin: 0 auto;
+}
 
-  .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:1200; }
-  
-  .modal { 
-    background: linear-gradient(180deg, #0b1228, #071028); 
-    padding:18px; 
-    border-radius:12px; 
-    border:2px solid var(--accent);
-    width:320px; 
-    text-align:center;
-    box-shadow: 0 10px 40px rgba(0,191,255,0.15);
-  }
-  
-  .modal p { margin:12px 0; color:var(--muted); }
+/* ── QUIZ CARD ──────────────────────── */
+.quiz-card {
+  background: linear-gradient(160deg, rgba(15,20,48,0.98), rgba(10,13,33,0.98));
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0,191,255,0.07), 0 20px 40px rgba(0,0,0,0.5);
+}
 
-  @media (max-width:600px) { 
-    .quiz-card { padding:18px; } 
-    .quiz-title { font-size:1.05rem; }
-  }
+/* ── HERO BANNER ────────────────────── */
+.quiz-hero {
+  background: linear-gradient(120deg, rgba(0,191,255,0.1) 0%, rgba(76,201,240,0.06) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 28px 32px 22px;
+  display: flex; align-items: center; gap: 20px;
+}
+
+.hero-icon {
+  width: 58px; height: 58px; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(0,191,255,0.15), rgba(76,201,240,0.08));
+  border: 1px solid rgba(0,191,255,0.3);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+}
+
+.hero-text h1 {
+  margin: 0 0 4px;
+  font-size: 1.35rem; font-weight: 700;
+  color: #fff;
+}
+
+.hero-text p {
+  margin: 0;
+  font-size: 0.82rem; color: var(--muted); line-height: 1.4;
+}
+
+.hero-label {
+  display: inline-block; margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); background: rgba(0,191,255,0.08);
+  border: 1px solid rgba(0,191,255,0.25);
+  padding: 2px 8px; border-radius: 4px;
+}
+
+/* ── PROGRESS ───────────────────────── */
+.progress-zone {
+  padding: 16px 32px 0;
+  display: flex; align-items: center; gap: 14px;
+}
+
+.progress-bar {
+  flex: 1; height: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 99px; overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 99px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(0,191,255,0.5);
+}
+
+.progress-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; color: var(--muted); white-space: nowrap;
+}
+
+/* ── QUIZ BODY ──────────────────────── */
+.quiz-body { padding: 28px 32px 32px; }
+
+.question-meta {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+}
+
+.q-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--accent); background: rgba(0,191,255,0.08);
+  border: 1px solid rgba(0,191,255,0.2);
+  padding: 3px 10px; border-radius: 5px;
+}
+
+.question-text {
+  font-size: 1.1rem; font-weight: 500; line-height: 1.65;
+  color: #f0f2ff; margin: 0 0 24px;
+}
+
+/* ── ANSWERS ────────────────────────── */
+.answers { display: flex; flex-direction: column; gap: 10px; }
+
+.answer-btn {
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px; padding: 14px 16px;
+  cursor: pointer; text-align: left;
+  transition: all 0.18s ease;
+  color: var(--text); font-family: 'Poppins', sans-serif; font-size: 0.92rem;
+}
+
+.answer-btn:hover {
+  background: rgba(0,191,255,0.07);
+  border-color: rgba(0,191,255,0.3);
+  transform: translateX(4px);
+}
+
+.answer-badge {
+  min-width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem; font-weight: 600; color: var(--muted);
+  transition: all 0.18s ease; flex-shrink: 0;
+}
+
+.answer-btn.selected {
+  background: rgba(0,191,255,0.12);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(0,191,255,0.2);
+}
+
+.answer-btn.selected .answer-badge {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #001;
+}
+
+/* ── CONTROLS ───────────────────────── */
+.controls {
+  display: flex; gap: 12px; margin-top: 28px;
+}
+
+.btn {
+  padding: 12px 20px; border-radius: 10px; border: none;
+  cursor: pointer; font-weight: 600; font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #001; flex: 1;
+  box-shadow: 0 4px 15px rgba(0,191,255,0.25);
+}
+.btn-primary:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,191,255,0.35);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted);
+}
+.btn-ghost:not(:disabled):hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* ── RESULT SCREEN ──────────────────── */
+#resultStep { display: none; text-align: center; padding: 10px 0 6px; }
+
+.score-ring {
+  position: relative; width: 130px; height: 130px;
+  margin: 0 auto 20px;
+}
+
+.score-ring svg { transform: rotate(-90deg); }
+
+.score-ring-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+
+.score-ring-fill {
+  fill: none; stroke-width: 8; stroke-linecap: round;
+  stroke: var(--accent);
+  stroke-dasharray: 345;
+  stroke-dashoffset: 345;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 0 6px rgba(0,191,255,0.5));
+}
+
+.score-ring-text {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+
+.score-number {
+  font-size: 2rem; font-weight: 700; color: #fff;
+  font-family: 'JetBrains Mono', monospace; line-height: 1;
+}
+
+.score-total { font-size: 0.75rem; color: var(--muted); }
+
+.score-msg {
+  font-size: 1.1rem; font-weight: 600; margin-bottom: 6px;
+}
+
+.score-sub {
+  font-size: 0.82rem; color: var(--muted); margin-bottom: 24px;
+}
+
+.result-actions {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+}
+
+/* ── CORRECTION SCREEN ──────────────── */
+#corrStep { display: none; }
+
+.corr-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+
+.corr-header h3 {
+  margin: 0; font-size: 1.1rem; color: #fff;
+}
+
+.corr-list {
+  max-height: 440px; overflow-y: auto;
+  padding-right: 6px; display: flex; flex-direction: column; gap: 10px;
+}
+
+.corr-list::-webkit-scrollbar { width: 4px; }
+.corr-list::-webkit-scrollbar-track { background: transparent; }
+.corr-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.corr-item {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px; padding: 16px;
+  border-left: 3px solid transparent;
+}
+
+.corr-item.ok { border-left-color: var(--success); }
+.corr-item.ko { border-left-color: var(--fail); }
+
+.corr-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 10px; margin-bottom: 10px;
+}
+
+.corr-q { font-size: 0.88rem; font-weight: 500; color: #f0f2ff; line-height: 1.4; }
+
+.corr-status {
+  font-size: 0.72rem; font-weight: 600; white-space: nowrap;
+  padding: 3px 8px; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.corr-status.ok { background: rgba(77,255,145,0.1); color: var(--success); }
+.corr-status.ko { background: rgba(255,85,85,0.1); color: var(--fail); }
+
+.corr-answers { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+.corr-answers strong { color: #fff; }
+
+.corr-expl {
+  margin-top: 8px; font-size: 0.8rem;
+  color: rgba(76,201,240,0.9);
+  font-style: italic; line-height: 1.5;
+  padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.corr-footer {
+  display: flex; gap: 10px; margin-top: 18px;
+}
+
+/* ── MODAL ──────────────────────────── */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1200;
+}
+
+.modal {
+  background: #0d1228;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px; width: 320px; text-align: center;
+  box-shadow: 0 0 40px rgba(0,191,255,0.1);
+}
+
+.modal h4 {
+  margin: 0 0 10px; font-size: 1.05rem; color: #fff;
+}
+
+.modal p { margin: 0 0 22px; font-size: 0.88rem; color: var(--muted); }
+
+.modal-actions { display: flex; gap: 10px; }
+
+/* ── RESPONSIVE ─────────────────────── */
+@media (max-width: 600px) {
+  .quiz-hero { padding: 20px 20px 16px; gap: 14px; }
+  .quiz-body { padding: 20px 20px 24px; }
+  .progress-zone { padding: 14px 20px 0; }
+  .hero-text h1 { font-size: 1.1rem; }
+  .hero-icon { width: 48px; height: 48px; font-size: 1.4rem; border-radius: 10px; }
+  .question-text { font-size: 1rem; }
+}
 </style>
 </head>
 <body>
 
+<canvas id="particles"></canvas>
+
+<!-- NAVBAR -->
 <nav class="navbar">
-  <button class="back-quiz" id="backBtn"><i class="fa-solid fa-arrow-left"></i> Retour</button>
-  <div class="nav-logo">CyberQuiz</div>
+  <button class="nav-back" id="backBtn">
+    <i class="fa-solid fa-arrow-left"></i> Retour
+  </button>
+  <div class="nav-logo">CYBER<span style="opacity:.4">QUIZ</span></div>
+  <div class="nav-badge"><i class="fa-solid fa-graduation-cap" style="margin-right:5px"></i>Niveau 1</div>
 </nav>
 
-<canvas id="particles" style="position:fixed;inset:0;z-index:-1;"></canvas>
-
+<!-- MAIN -->
 <main>
-  <div class="quiz-card" id="quizCard">
-    <div class="quiz-header">
-      <h2 class="quiz-title">
-        <i class="fa-solid fa-graduation-cap quiz-icon"></i>
-        Quiz — Débutant
-      </h2>
-      <div class="progress"><i id="progressBar"></i></div>
-    </div>
-    
-    <div class="difficulty-badge">
-      <i class="fa-solid fa-star"></i> Niveau Débutant
-    </div>
+  <div class="quiz-card">
 
-    <div id="quizStep">
-      <div class="question" id="questionText">Chargement...</div>
-      <div class="answers" id="answersBox"></div>
-      <div class="controls">
-        <button class="btn btn-ghost" id="prevBtn" disabled>Précédent</button>
-        <button class="btn btn-primary" id="nextBtn" disabled>Suivant</button>
+    <!-- HERO -->
+    <div class="quiz-hero">
+      <div class="hero-icon">🎓</div>
+      <div class="hero-text">
+        <div class="hero-label">Module 01</div>
+        <h1>Les Fondamentaux</h1>
+        <p>Mots de passe, antivirus, mises à jour, HTTPS… Découvre les bases essentielles pour te protéger en ligne.</p>
       </div>
     </div>
 
-    <div id="resultStep" style="display:none;">
-      <div class="result">
-        <div><i class="fa-solid fa-trophy" style="font-size:3rem;color:var(--accent);margin-bottom:10px;display:block;"></i></div>
-        <div>Votre score final</div>
-        <div class="score" id="scoreText">0 / 20</div>
-        <div class="result-actions">
-          <button class="btn btn-ghost" id="showCorrectionBtn">Voir les explications</button>
-          <button class="btn btn-primary" id="goHomeBtn">Retour à l'accueil</button>
+    <!-- PROGRESS -->
+    <div class="progress-zone">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">0 / 20</div>
+    </div>
+
+    <!-- QUIZ STEP -->
+    <div class="quiz-body" id="quizStep">
+      <div class="question-meta">
+        <span class="q-number" id="qNumber">Question 01</span>
+      </div>
+      <div class="question-text" id="qText"></div>
+      <div class="answers" id="ansBox"></div>
+      <div class="controls">
+        <button class="btn btn-ghost" id="prevBtn" disabled>
+          <i class="fa-solid fa-chevron-left"></i> Précédent
+        </button>
+        <button class="btn btn-primary" id="nextBtn" disabled>
+          Suivant <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- RESULT STEP -->
+    <div class="quiz-body" id="resultStep">
+      <div class="score-ring">
+        <svg width="130" height="130" viewBox="0 0 130 130">
+          <circle class="score-ring-track" cx="65" cy="65" r="55"/>
+          <circle class="score-ring-fill" id="ringFill" cx="65" cy="65" r="55"/>
+        </svg>
+        <div class="score-ring-text">
+          <div class="score-number" id="scoreNum">0</div>
+          <div class="score-total" id="scoreTotal">/ 20</div>
         </div>
       </div>
-    </div>
-
-    <div id="correctionStep" style="display:none;">
-      <h3 style="margin-top:0;color:var(--accent)"><i class="fa-solid fa-book"></i> Correction détaillée</h3>
-      <div id="correctionList" style="max-height: 500px; overflow-y: auto; margin-top:12px"></div>
-      <div style="display:flex;gap:12px;margin-top:14px;">
-        <button class="btn btn-ghost" id="backToResultBtn">Retour au score</button>
-        <button class="btn btn-primary" id="goHomeBtn2">Retour à l'accueil</button>
+      <div class="score-msg" id="scoreMsg"></div>
+      <div class="score-sub" id="scoreSub"></div>
+      <div class="result-actions">
+        <button class="btn btn-ghost" id="showCorrBtn">
+          <i class="fa-solid fa-list-check"></i> Voir la correction
+        </button>
+        <button class="btn btn-primary" id="goHomeBtn">
+          <i class="fa-solid fa-house"></i> Accueil
+        </button>
       </div>
     </div>
+
+    <!-- CORRECTION STEP -->
+    <div class="quiz-body" id="corrStep">
+      <div class="corr-header">
+        <i class="fa-solid fa-magnifying-glass" style="color:var(--accent)"></i>
+        <h3>Correction détaillée</h3>
+      </div>
+      <div class="corr-list" id="corrList"></div>
+      <div class="corr-footer">
+        <button class="btn btn-ghost" id="backToResultBtn">
+          <i class="fa-solid fa-arrow-left"></i> Score
+        </button>
+        <button class="btn btn-primary" id="goHomeBtn2">
+          <i class="fa-solid fa-house"></i> Accueil
+        </button>
+      </div>
+    </div>
+
   </div>
 </main>
 
-<div id="confirmModal" style="display:none;">
+<!-- QUIT MODAL -->
+<div id="quitModal" style="display:none">
   <div class="modal-backdrop">
     <div class="modal">
-      <h4 style="color:var(--accent);margin:0"><i class="fa-solid fa-exclamation-triangle"></i> Quitter le quiz ?</h4>
-      <p>Votre progression sera perdue. Confirmer ?</p>
-      <div style="display:flex;gap:10px;justify-content:center;margin-top:8px;">
-        <button class="btn btn-ghost" id="cancelQuit">Rester</button>
-        <button class="btn btn-primary" id="confirmQuit">Quitter</button>
+      <h4>⚠️ Quitter le quiz ?</h4>
+      <p>Ta progression sera perdue. Tu es sûr ?</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelQuit" style="flex:1">Rester</button>
+        <button class="btn btn-primary" id="confirmQuit" style="flex:1">Quitter</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-const canvas = document.getElementById('particles');
-const ctx = canvas.getContext('2d');
-let particlesArray = [];
-
-function initCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-window.addEventListener('resize', () => { initCanvas(); initParticles(); });
-
-class Particle {
-  constructor() { 
-    this.reset(); 
-    this.size = Math.random()*2+0.5; 
-    this.color = `rgba(0,191,255,${Math.random()*0.3+0.1})`; 
-  }
-  reset(){ 
-    this.x = Math.random()*canvas.width; 
-    this.y = Math.random()*canvas.height; 
-    this.speedX=(Math.random()-0.5)*0.5; 
-    this.speedY=(Math.random()-0.5)*0.5; 
-  }
-  update(){ 
-    this.x+=this.speedX; 
-    this.y+=this.speedY; 
-    if(this.x<0||this.x>canvas.width||this.y<0||this.y>canvas.height) this.reset(); 
-  }
-  draw(){ 
-    ctx.beginPath(); 
-    ctx.arc(this.x,this.y,this.size,0,Math.PI*2); 
-    ctx.fillStyle=this.color; 
-    ctx.fill(); 
-  }
-}
-
-function initParticles(){ 
-  particlesArray=[]; 
-  for(let i=0;i<50;i++) particlesArray.push(new Particle()); 
-}
-
-function animateParticles(){ 
-  ctx.clearRect(0,0,canvas.width,canvas.height); 
-  particlesArray.forEach(p=>{p.update();p.draw();}); 
-  requestAnimationFrame(animateParticles); 
-}
-
-initCanvas(); 
-initParticles(); 
-animateParticles();
-
+/* ── QUESTIONS ──────────────────────── */
 const questions = [
-  { question: "Quel mot de passe est le plus sécurisé ?", answers: ["soleil123", "azerty", "G@9!fL27#"], correct: 2, explanation: "Les mots de passe sécurisés combinent majuscules, minuscules, chiffres et caractères spéciaux." },
-  { question: "Que faire si tu reçois un mail suspect ?", answers: ["Cliquer dessus", "Le supprimer", "Répondre au mail"], correct: 1, explanation: "Supprimer un mail suspect évite les arnaquesau phishing et les malwares." },
-  { question: "Quel outil protège un ordinateur ?", answers: ["Antivirus", "Bloc-notes", "Paint"], correct: 0, explanation: "Un antivirus détecte et bloque les menaces informatiques." },
-  { question: "Que signifie HTTPS ?", answers: ["Secure", "Super rapide", "Non sécurisé"], correct: 0, explanation: "HTTPS signifie que vos données sont chiffrées en transit." },
-  { question: "Un exemple de phishing :", answers: ["Un mail demandant ton mot de passe", "Un message d'un ami", "Une demande normale"], correct: 0, explanation: "Le phishing cherche à voler vos identifiants par tromperie." },
-  { question: "Une mise à jour sert à :", answers: ["Ajouter des virus", "Corriger des failles", "Supprimer des fichiers"], correct: 1, explanation: "Les mises à jour corrigent des failles de sécurité importantes." },
-  { question: "Une bonne pratique :", answers: ["Partager son mot de passe", "Utiliser un mot de passe différent partout", "Mettre 123456"], correct: 1, explanation: "Utiliser plusieurs mots de passe uniques réduit les risques." },
-  { question: "Quel fichier peut être dangereux ?", answers: ["photo.jpg", "setup.exe téléchargé au hasard", "musique.mp3"], correct: 1, explanation: "Les .exe peuvent installer un malware ou un ransomware." },
-  { question: "Qu'est-ce qu'un malware ?", answers: ["Logiciel malveillant", "Photo", "Navigateur"], correct: 0, explanation: "Malware = logiciel malveillant qui infecte votre système." },
-  { question: "Pourquoi sauvegarder ?", answers: ["Pour perdre des données", "Pour les récupérer en cas de problème", "Pour décorer"], correct: 1, explanation: "Une sauvegarde protège contre la perte de données." },
-  { question: "Indice d'un site frauduleux :", answers: ["Pas de HTTPS", "Logo normal", "Texte clair"], correct: 0, explanation: "Sans HTTPS, le site ne chiffre pas vos données." },
-  { question: "Avant de télécharger une app :", answers: ["Vérifier l'éditeur", "Télécharger au hasard", "Ignorer les avis"], correct: 0, explanation: "Vérifier l'éditeur réduit les risques de malware." },
-  { question: "Un Wi-Fi public est :", answers: ["Toujours sécurisé", "Parfois dangereux", "Idéal pour taper ses mots de passe"], correct: 1, explanation: "Les pirates peuvent intercepter les données sur Wi-Fi public." },
-  { question: "Arnaque typique :", answers: ["Vous avez gagné un iPhone !", "Une facture normale", "Un message d'un ami"], correct: 0, explanation: "Les cadeaux miraculeux sont des pièges courants." },
-  { question: "Mot de passe sécurisé :", answers: ["azerty", "123456", "H#9fL2@9"], correct: 2, explanation: "Un mot de passe fort est long et complexe." },
-  { question: "Un ransomware :", answers: ["Chiffre vos fichiers", "Améliore le PC", "Accélère Internet"], correct: 0, explanation: "Le ransomware bloque vos données contre une rançon." },
-  { question: "Sur les réseaux sociaux :", answers: ["Ne pas partager d'infos perso", "Donner son adresse", "Envoyer ses codes"], correct: 0, explanation: "Ne jamais partager ses informations personnelles en ligne." },
-  { question: "Un lien raccourci peut :", answers: ["Être sûr", "Être dangereux", "Toujours fiable"], correct: 1, explanation: "Un lien raccourci peut cacher un site piégé ou malveillant." },
-  { question: "Pourquoi un gestionnaire de mots de passe ?", answers: ["Créer des mots de passe forts", "Diminuer la sécurité", "Partager les codes"], correct: 0, explanation: "Il crée et stocke des mots de passe forts et uniques." },
-  { question: "Le phishing cherche à :", answers: ["Voler vos infos", "Vous protéger", "Effacer vos spams"], correct: 0, explanation: "Le phishing vise à voler vos données personnelles." }
+  { q: "Quel mot de passe est le plus sécurisé ?", a: ["soleil123", "azerty", "G@9!fL27#"], c: 2, e: "Les mots de passe sécurisés combinent majuscules, minuscules, chiffres et caractères spéciaux." },
+  { q: "Que faire si tu reçois un mail suspect ?", a: ["Cliquer dessus", "Le supprimer", "Répondre au mail"], c: 1, e: "Supprimer un mail suspect évite les arnaques au phishing et les malwares." },
+  { q: "Quel outil protège un ordinateur ?", a: ["Antivirus", "Bloc-notes", "Paint"], c: 0, e: "Un antivirus détecte et bloque les menaces informatiques." },
+  { q: "Que signifie HTTPS ?", a: ["Secure", "Super rapide", "Non sécurisé"], c: 0, e: "HTTPS signifie que vos données sont chiffrées en transit." },
+  { q: "Un exemple de phishing :", a: ["Un mail demandant ton mot de passe", "Un message d'un ami", "Une demande normale"], c: 0, e: "Le phishing cherche à voler vos identifiants par tromperie." },
+  { q: "Une mise à jour sert à :", a: ["Ajouter des virus", "Corriger des failles", "Supprimer des fichiers"], c: 1, e: "Les mises à jour corrigent des failles de sécurité importantes." },
+  { q: "Une bonne pratique :", a: ["Partager son mot de passe", "Utiliser un mot de passe différent partout", "Mettre 123456"], c: 1, e: "Utiliser plusieurs mots de passe uniques réduit les risques." },
+  { q: "Quel fichier peut être dangereux ?", a: ["photo.jpg", "setup.exe téléchargé au hasard", "musique.mp3"], c: 1, e: "Les .exe peuvent installer un malware ou un ransomware." },
+  { q: "Qu'est-ce qu'un malware ?", a: ["Logiciel malveillant", "Photo", "Navigateur"], c: 0, e: "Malware = logiciel malveillant qui infecte votre système." },
+  { q: "Pourquoi sauvegarder ?", a: ["Pour perdre des données", "Pour les récupérer en cas de problème", "Pour décorer"], c: 1, e: "Une sauvegarde protège contre la perte de données." },
+  { q: "Indice d'un site frauduleux :", a: ["Pas de HTTPS", "Logo normal", "Texte clair"], c: 0, e: "Sans HTTPS, le site ne chiffre pas vos données." },
+  { q: "Avant de télécharger une app :", a: ["Vérifier l'éditeur", "Télécharger au hasard", "Ignorer les avis"], c: 0, e: "Vérifier l'éditeur réduit les risques de malware." },
+  { q: "Un Wi-Fi public est :", a: ["Toujours sécurisé", "Parfois dangereux", "Idéal pour taper ses mots de passe"], c: 1, e: "Les pirates peuvent intercepter les données sur Wi-Fi public." },
+  { q: "Arnaque typique :", a: ["Vous avez gagné un iPhone !", "Une facture normale", "Un message d'un ami"], c: 0, e: "Les cadeaux miraculeux sont des pièges courants." },
+  { q: "Mot de passe sécurisé :", a: ["azerty", "123456", "H#9fL2@9"], c: 2, e: "Un mot de passe fort est long et complexe." },
+  { q: "Un ransomware :", a: ["Chiffre vos fichiers", "Améliore le PC", "Accélère Internet"], c: 0, e: "Le ransomware bloque vos données contre une rançon." },
+  { q: "Sur les réseaux sociaux :", a: ["Ne pas partager d'infos perso", "Donner son adresse", "Envoyer ses codes"], c: 0, e: "Ne jamais partager ses informations personnelles en ligne." },
+  { q: "Un lien raccourci peut :", a: ["Être sûr", "Être dangereux", "Toujours fiable"], c: 1, e: "Un lien raccourci peut cacher un site piégé ou malveillant." },
+  { q: "Pourquoi un gestionnaire de mots de passe ?", a: ["Créer des mots de passe forts", "Diminuer la sécurité", "Partager les codes"], c: 0, e: "Il crée et stocke des mots de passe forts et uniques." },
+  { q: "Le phishing cherche à :", a: ["Voler vos infos", "Vous protéger", "Effacer vos spams"], c: 0, e: "Le phishing vise à voler vos données personnelles." }
 ];
 
-let current = 0;
-const userSelections = new Array(questions.length).fill(null);
+/* ── STATE ──────────────────────────── */
+let cur = 0;
+const userAns = new Array(questions.length).fill(null);
+const LABELS = ['A', 'B', 'C', 'D'];
 
-const questionText = document.getElementById('questionText');
-const answersBox = document.getElementById('answersBox');
-const nextBtn = document.getElementById('nextBtn');
-const prevBtn = document.getElementById('prevBtn');
-const progressBar = document.getElementById('progressBar');
-const quizStep = document.getElementById('quizStep');
+/* ── ELEMENTS ───────────────────────── */
+const quizStep   = document.getElementById('quizStep');
 const resultStep = document.getElementById('resultStep');
-const correctionStep = document.getElementById('correctionStep');
+const corrStep   = document.getElementById('corrStep');
+const qText      = document.getElementById('qText');
+const ansBox     = document.getElementById('ansBox');
+const nextBtn    = document.getElementById('nextBtn');
+const prevBtn    = document.getElementById('prevBtn');
+const progressFill  = document.getElementById('progressFill');
+const progressLabel = document.getElementById('progressLabel');
+const qNumber    = document.getElementById('qNumber');
 
-function renderQuestion() {
-  const q = questions[current];
-  questionText.textContent = `Question ${current+1} / ${questions.length} — ${q.question}`;
-  answersBox.innerHTML = '';
-  
-  nextBtn.disabled = userSelections[current] === null;
-  prevBtn.disabled = current === 0;
-  nextBtn.textContent = current === questions.length - 1 ? "Terminer" : "Suivant";
+/* ── RENDER QUESTION ────────────────── */
+function renderQ() {
+  const q = questions[cur];
+  qNumber.textContent = `Question ${String(cur + 1).padStart(2, '0')}`;
+  qText.textContent = q.q;
+  ansBox.innerHTML = '';
 
-  q.answers.forEach((ans, idx) => {
+  prevBtn.disabled = cur === 0;
+  nextBtn.disabled = userAns[cur] === null;
+  nextBtn.innerHTML = cur === questions.length - 1
+    ? 'Terminer <i class="fa-solid fa-flag-checkered"></i>'
+    : 'Suivant <i class="fa-solid fa-chevron-right"></i>';
+
+  q.a.forEach((ans, i) => {
     const btn = document.createElement('button');
-    btn.className = 'answer-btn';
-    if(userSelections[current] === idx) btn.classList.add('selected');
-    btn.textContent = ans;
+    btn.className = 'answer-btn' + (userAns[cur] === i ? ' selected' : '');
+    btn.innerHTML = `
+      <div class="answer-badge">${LABELS[i]}</div>
+      <span>${ans}</span>
+    `;
     btn.onclick = () => {
       document.querySelectorAll('.answer-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
-      userSelections[current] = idx;
+      userAns[cur] = i;
       nextBtn.disabled = false;
     };
-    answersBox.appendChild(btn);
+    ansBox.appendChild(btn);
   });
-  
-  progressBar.style.width = ((current) / questions.length * 100) + '%';
+
+  const pct = (cur / questions.length) * 100;
+  progressFill.style.width = pct + '%';
+  progressLabel.textContent = `${cur} / ${questions.length}`;
 }
 
+/* ── NAVIGATION ─────────────────────── */
 nextBtn.onclick = () => {
-  if (current < questions.length - 1) {
-    current++;
-    renderQuestion();
-  } else {
-    showResults();
-  }
+  if (cur < questions.length - 1) { cur++; renderQ(); }
+  else showResults();
 };
 
-prevBtn.onclick = () => {
-  if (current > 0) {
-    current--;
-    renderQuestion();
-  }
-};
+prevBtn.onclick = () => { if (cur > 0) { cur--; renderQ(); } };
 
+/* ── RESULTS ────────────────────────── */
 function showResults() {
   quizStep.style.display = 'none';
   resultStep.style.display = 'block';
-  progressBar.style.width = '100%';
-  
+  progressFill.style.width = '100%';
+  progressLabel.textContent = `${questions.length} / ${questions.length}`;
+
   let score = 0;
-  userSelections.forEach((sel, i) => {
-    if(sel === questions[i].correct) score++;
-  });
-  document.getElementById('scoreText').textContent = `${score} / ${questions.length}`;
+  userAns.forEach((a, i) => { if (a === questions[i].c) score++; });
+  const pct = Math.round((score / questions.length) * 100);
+
+  // Animated number
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('scoreTotal').textContent = `/ ${questions.length}`;
+
+  // Ring animation
+  const ring = document.getElementById('ringFill');
+  const circ = 2 * Math.PI * 55;
+  ring.style.strokeDasharray = circ;
+  ring.style.strokeDashoffset = circ;
+  setTimeout(() => {
+    ring.style.strokeDashoffset = circ * (1 - pct / 100);
+  }, 100);
+
+  // Color + message
+  let msg, sub, color;
+  if (pct >= 90)      { msg = '🏆 Excellent !'; sub = 'Tu maîtrises les fondamentaux de la cybersécurité.'; color = '#4dff91'; }
+  else if (pct >= 70) { msg = '🎯 Bien joué !'; sub = 'Quelques points à approfondir encore.'; color = '#00bfff'; }
+  else if (pct >= 50) { msg = '👍 Pas mal !'; sub = 'Revois les bonnes pratiques de base.'; color = '#ffd166'; }
+  else                { msg = '📚 À revoir'; sub = 'Les fondamentaux méritent plus d\'attention.'; color = '#ff4444'; }
+
+  ring.style.stroke = color;
+  const msgEl = document.getElementById('scoreMsg');
+  msgEl.textContent = msg;
+  msgEl.style.color = color;
+  document.getElementById('scoreSub').textContent = sub;
 }
 
-document.getElementById('showCorrectionBtn').onclick = () => {
+/* ── CORRECTION ─────────────────────── */
+document.getElementById('showCorrBtn').onclick = () => {
   resultStep.style.display = 'none';
-  correctionStep.style.display = 'block';
-  const list = document.getElementById('correctionList');
+  corrStep.style.display = 'block';
+  const list = document.getElementById('corrList');
   list.innerHTML = '';
-  
+
   questions.forEach((q, i) => {
-    const isCorrect = userSelections[i] === q.correct;
-    const item = document.createElement('div');
-    item.className = 'correction-item';
-    item.innerHTML = `
-      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
-        <strong>Question ${i+1}</strong>
-        <span class="${isCorrect?'correct':'wrong'}">${isCorrect?'✓ Correct':'✗ Incorrect'}</span>
+    const ok = userAns[i] === q.c;
+    const chosen = userAns[i] !== null ? q.a[userAns[i]] : 'Aucune réponse';
+    list.innerHTML += `
+      <div class="corr-item ${ok ? 'ok' : 'ko'}">
+        <div class="corr-top">
+          <div class="corr-q"><strong>${i + 1}.</strong> ${q.q}</div>
+          <span class="corr-status ${ok ? 'ok' : 'ko'}">${ok ? '✓ Correct' : '✗ Incorrect'}</span>
+        </div>
+        <div class="corr-answers">
+          Ta réponse : <strong style="color:${ok ? 'var(--success)' : 'var(--fail)'}">${chosen}</strong>
+          ${!ok ? `<br>Bonne réponse : <strong style="color:var(--success)">${q.a[q.c]}</strong>` : ''}
+        </div>
+        <div class="corr-expl"><i class="fa-solid fa-circle-info" style="margin-right:5px"></i>${q.e}</div>
       </div>
-      <p style="margin:6px 0;color:var(--muted)"><strong>${q.question}</strong></p>
-      <p style="margin:6px 0">Votre réponse : ${userSelections[i]!==null ? q.answers[userSelections[i]] : 'Aucune'}</p>
-      <p style="margin:6px 0">Réponse correcte : <strong>${q.answers[q.correct]}</strong></p>
-      <div class="explanation-box">${q.explanation}</div>
     `;
-    list.appendChild(item);
   });
 };
 
-const goHome = () => window.location.href = 'accueil.html';
-document.getElementById('goHomeBtn').onclick = goHome;
-document.getElementById('goHomeBtn2').onclick = goHome;
 document.getElementById('backToResultBtn').onclick = () => {
-  correctionStep.style.display = 'none';
+  corrStep.style.display = 'none';
   resultStep.style.display = 'block';
 };
 
+/* ── HOME & MODAL ───────────────────── */
+const goHome = () => { window.location.href = 'accueil.html'; };
+document.getElementById('goHomeBtn').onclick = goHome;
+document.getElementById('goHomeBtn2').onclick = goHome;
+
 document.getElementById('backBtn').onclick = () => {
-  document.getElementById('confirmModal').style.display = 'block';
+  document.getElementById('quitModal').style.display = 'block';
 };
-
 document.getElementById('cancelQuit').onclick = () => {
-  document.getElementById('confirmModal').style.display = 'none';
+  document.getElementById('quitModal').style.display = 'none';
 };
-
 document.getElementById('confirmQuit').onclick = goHome;
 
-renderQuestion();
+/* ── PARTICLES ──────────────────────── */
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+
+class Particle {
+  constructor() { this.reset(true); }
+  reset(init = false) {
+    this.x = Math.random() * canvas.width;
+    this.y = init ? Math.random() * canvas.height : -5;
+    this.size = Math.random() * 1.8 + 0.3;
+    this.speedY = Math.random() * 0.4 + 0.1;
+    this.speedX = (Math.random() - 0.5) * 0.2;
+    this.opacity = Math.random() * 0.3 + 0.05;
+    this.color = Math.random() > 0.6 ? `rgba(0,191,255,${this.opacity})` : `rgba(76,201,240,${this.opacity})`;
+  }
+  update() {
+    this.x += this.speedX; this.y += this.speedY;
+    if (this.y > canvas.height + 5) this.reset();
+  }
+  draw() {
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = this.color; ctx.fill();
+  }
+}
+
+function initParticles() {
+  particles = [];
+  const n = Math.max(40, Math.floor(canvas.width * canvas.height / 18000));
+  for (let i = 0; i < n; i++) particles.push(new Particle());
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', () => { resize(); initParticles(); });
+resize(); initParticles(); animate();
+
+/* ── INIT ───────────────────────────── */
+renderQ();
 </script>
 </body>
 </html>
