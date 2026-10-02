@@ -311,7 +311,7 @@ body {
   display: block;
 }
 
-/* ─── GRADE / BADGE UTILISATEUR (Suggestion 2) ─── */
+/* ─── GRADE / BADGE UTILISATEUR ─── */
 .user-rank-banner {
   max-width: 820px;
   margin: 30px auto 0;
@@ -329,11 +329,27 @@ body {
 .user-rank-info i { color: var(--warn); font-size: 1.2rem; }
 .user-rank-title { font-family: 'Share Tech Mono', monospace; color: var(--accent2); font-weight: 600; }
 
+.reset-btn {
+  background: transparent;
+  border: 1px solid rgba(255,107,107,0.3);
+  color: var(--danger);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-btn:hover {
+  background: rgba(255,107,107,0.15);
+  border-color: var(--danger);
+}
+
 @media (max-width: 640px) {
   .user-rank-banner { flex-direction: column; gap: 8px; text-align: center; }
 }
 
-/* ─── PROGRESS GLOBAL ───────────────────────── */
+/* ─── PROGRESS GLOBAL & RECOMMANDATION ───────────────────────── */
 .progress-section {
   max-width: 820px;
   margin: 20px auto 0;
@@ -371,11 +387,44 @@ body {
   width: 0%;
 }
 
-/* ─── FILTRES DE QUIZ (Suggestion 1) ────────── */
-.quiz-filters {
+.recommended-box {
+  margin-top: 14px;
+  background: rgba(17, 24, 51, 0.6);
+  border: 1px dashed var(--border);
+  padding: 10px 16px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.recommended-box a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.recommended-box a:hover {
+  text-decoration: underline;
+}
+
+/* ─── FILTRES & RECHERCHE ────────── */
+.controls-container {
   max-width: 1100px;
   margin: 40px auto 20px;
   padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.quiz-filters {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -396,6 +445,39 @@ body {
   background: rgba(0, 191, 255, 0.15);
   color: var(--accent);
   border-color: var(--accent);
+}
+
+.search-box {
+  position: relative;
+  min-width: 260px;
+  flex-grow: 1;
+  max-width: 360px;
+}
+
+.search-box input {
+  width: 100%;
+  background: rgba(17, 24, 51, 0.8);
+  border: 1px solid var(--border);
+  padding: 8px 14px 8px 36px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.85rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-box input:focus {
+  border-color: var(--accent);
+}
+
+.search-box i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 0.85rem;
 }
 
 /* ─── SECTION QUIZZES ───────────────────────── */
@@ -760,7 +842,7 @@ footer {
 body.has-alert .hero { padding-top: 168px; }
 </style>
 </head>
-<body>
+<body class="has-alert">
 
 <canvas id="particles"></canvas>
 
@@ -816,7 +898,7 @@ body.has-alert .hero { padding-top: 168px; }
     </a>
   </div>
 
-  <!-- Stats bar (mis à jour à 10 quiz et ajout du temps global estimé) -->
+  <!-- Stats bar -->
   <div class="stats-bar">
     <div class="stat-item">
       <span class="stat-num" data-target="10">0</span>
@@ -837,13 +919,16 @@ body.has-alert .hero { padding-top: 168px; }
   </div>
 </section>
 
-<!-- ──── GRADE UTILISATEUR (Suggestion 2) ──── -->
+<!-- ──── GRADE UTILISATEUR ──── -->
 <div class="user-rank-banner">
   <div class="user-rank-info">
     <i class="fa-solid fa-shield-cat"></i>
     <span>Grade actuel : <strong class="user-rank-title" id="userRank">Initié(e)</strong></span>
   </div>
-  <span style="font-size: 0.8rem; color: var(--muted);" id="userRankDesc">Complétez des quiz pour progresser !</span>
+  <div style="display: flex; align-items: center; gap: 12px;">
+    <span style="font-size: 0.8rem; color: var(--muted);" id="userRankDesc">Complétez des quiz pour progresser !</span>
+    <button class="reset-btn" onclick="resetProgress()" title="Réinitialiser votre progression"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+  </div>
 </div>
 
 <!-- ──── BARRE PROGRESSION GLOBALE ──── -->
@@ -858,14 +943,28 @@ body.has-alert .hero { padding-top: 168px; }
   <div class="progress-track">
     <div class="progress-fill" id="progressFill"></div>
   </div>
+  
+  <!-- PROCHAINE ÉTAPE CONSEILLÉE (Proposition 2) -->
+  <div class="recommended-box" id="recommendedBox">
+    <span><i class="fa-solid fa-bullseye" style="color: var(--accent);"></i> Prochaine étape conseillée :</span>
+    <a href="debutant.html" id="nextQuizLink">Quiz Débutant <i class="fa-solid fa-arrow-right"></i></a>
+  </div>
 </div>
 
-<!-- ──── FILTRES DE DIFFICULTÉ (Suggestion 1) ──── -->
-<div class="quiz-filters">
-  <button class="filter-btn active" onclick="filterQuiz('all', this)">Tous les quiz</button>
-  <button class="filter-btn" onclick="filterQuiz('easy', this)">🟢 Facile</button>
-  <button class="filter-btn" onclick="filterQuiz('medium', this)">🟡 Moyen</button>
-  <button class="filter-btn" onclick="filterQuiz('hard', this)">🔴 Difficile / Expert</button>
+<!-- ──── FILTRES ET RECHERCHE (Proposition 1) ──── -->
+<div class="controls-container">
+  <div class="quiz-filters">
+    <button class="filter-btn active" onclick="filterQuiz('all', this)">Tous les quiz</button>
+    <button class="filter-btn" onclick="filterQuiz('easy', this)">🟢 Facile</button>
+    <button class="filter-btn" onclick="filterQuiz('medium', this)">🟡 Moyen</button>
+    <button class="filter-btn" onclick="filterQuiz('hard', this)">🔴 Difficile / Expert</button>
+  </div>
+  
+  <!-- Champ de recherche par mot-clé -->
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="searchInput" placeholder="Rechercher un sujet, mot-clé..." onkeyup="searchQuizzes()">
+  </div>
 </div>
 
 <!-- ──── QUIZ SECTION ──── -->
@@ -1109,20 +1208,37 @@ function animateCounter(el, target, duration = 1200) {
 }
 document.querySelectorAll('[data-target]').forEach(el => animateCounter(el, parseInt(el.dataset.target)));
 
-/* Progression & Grades dynamiques (Suggestion 2) */
-const ALL_QUIZZES = ['debutant','pratiques','menaces','mdp','reseaux','wifi','vie-privee','ingenierie-sociale','avance','quiz-final'];
+/* Liste complète des quiz */
+const ALL_QUIZZES = [
+  { key: 'debutant', title: 'Quiz Débutant', url: 'debutant.html' },
+  { key: 'pratiques', title: 'Bonnes Pratiques', url: 'pratiques.html' },
+  { key: 'menaces', title: 'Identifier les Menaces', url: 'menaces.html' },
+  { key: 'mdp', title: 'Mots de Passe', url: 'mdp.html' },
+  { key: 'reseaux', title: 'Réseaux Sociaux', url: 'reseaux.html' },
+  { key: 'wifi', title: 'Sécurité Wi-Fi', url: 'wifi.html' },
+  { key: 'vie-privee', title: 'Vie Privée Numérique', url: 'vie-privee.html' },
+  { key: 'ingenierie-sociale', title: 'Ingénierie Sociale', url: 'ingenierie-sociale.html' },
+  { key: 'avance', title: 'Quiz Avancé', url: 'avance.html' },
+  { key: 'quiz-final', title: 'Contrôle Final', url: 'quiz-final.html' }
+];
+
+/* Progression & Grades dynamiques */
 function loadProgress() {
   let done = 0;
-  ALL_QUIZZES.forEach(key => {
-    const saved = localStorage.getItem(`cyberquiz_${key}`);
+  let nextQuiz = null;
+
+  ALL_QUIZZES.forEach(q => {
+    const saved = localStorage.getItem(`cyberquiz_${q.key}`);
     if (saved) {
       const data = JSON.parse(saved);
-      const statusEl = document.getElementById(`status-${key}`);
+      const statusEl = document.getElementById(`status-${q.key}`);
       if (statusEl) {
         statusEl.className = 'card-status status-done';
         statusEl.innerHTML = `<i class="fa-solid fa-check"></i> ${data.score}/${data.total}`;
       }
       done++;
+    } else if (!nextQuiz) {
+      nextQuiz = q; // Le premier quiz non fait est le quiz recommandé
     }
   });
 
@@ -1130,6 +1246,16 @@ function loadProgress() {
   const pct = Math.round((done / ALL_QUIZZES.length) * 100);
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressPct').textContent = pct + '%';
+
+  // Recommendation dynamique (Proposition 2)
+  const nextQuizLink = document.getElementById('nextQuizLink');
+  const recommendedBox = document.getElementById('recommendedBox');
+  if (nextQuiz) {
+    nextQuizLink.href = nextQuiz.url;
+    nextQuizLink.innerHTML = `${nextQuiz.title} <i class="fa-solid fa-arrow-right"></i>`;
+  } else {
+    recommendedBox.innerHTML = `<span><i class="fa-solid fa-trophy" style="color: var(--warn);"></i> Félicitations, vous avez complété tous les quiz !</span>`;
+  }
 
   // Attribution du grade utilisateur selon la progression
   const rankEl = document.getElementById('userRank');
@@ -1143,16 +1269,48 @@ function loadProgress() {
   } else if (done >= 1) {
     rankEl.textContent = "Apprenti Veilleur 💻";
     rankDesc.textContent = "Premiers pas validés dans le bain de la sécurité.";
+  } else {
+    rankEl.textContent = "Initié(e)";
+    rankDesc.textContent = "Complétez des quiz pour progresser !";
   }
 }
 loadProgress();
 
-/* Filtrage des quiz par difficulté (Suggestion 1) */
+/* Réinitialisation de la progression */
+function resetProgress() {
+  if (confirm("Voulez-vous vraiment réinitialiser toute votre progression ?")) {
+    ALL_QUIZZES.forEach(q => localStorage.removeItem(`cyberquiz_${q.key}`));
+    location.reload();
+  }
+}
+
+/* Filtrage par niveau */
+let currentFilter = 'all';
 function filterQuiz(diff, btn) {
+  currentFilter = diff;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  applyFilters();
+}
+
+/* Recherche par mot-clé (Proposition 1) */
+function searchQuizzes() {
+  applyFilters();
+}
+
+/* Application combinée des filtres (Niveau + Recherche) */
+function applyFilters() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+
   document.querySelectorAll('.quiz-card').forEach(card => {
-    if (diff === 'all' || card.dataset.diff === diff) {
+    const cardDiff = card.dataset.diff;
+    const title = card.querySelector('.card-title').textContent.toLowerCase();
+    const desc = card.querySelector('.card-desc').textContent.toLowerCase();
+
+    const matchesDiff = (currentFilter === 'all' || cardDiff === currentFilter);
+    const matchesSearch = (title.includes(searchTerm) || desc.includes(searchTerm));
+
+    if (matchesDiff && matchesSearch) {
       card.classList.remove('hidden-card');
     } else {
       card.classList.add('hidden-card');
