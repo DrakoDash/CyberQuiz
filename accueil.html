@@ -901,16 +901,16 @@ body.has-alert .hero { padding-top: 168px; }
   <!-- Stats bar -->
   <div class="stats-bar">
     <div class="stat-item">
-      <span class="stat-num" data-target="10">0</span>
+      <span class="stat-num" data-target="13">0</span>
       <span class="stat-label">Quiz dispo</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num" data-target="130">0</span>
+      <span class="stat-num" data-target="184">0</span>
       <span class="stat-label">Questions</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num">~45m</span>
-      <span class="stat-label">Temps estimé</span>
+      <span class="stat-num">À ton rythme</span>
+      <span class="stat-label">Apprentissage</span>
     </div>
     <div class="stat-item">
       <span class="stat-num" id="doneCount">0</span>
@@ -969,168 +969,25 @@ body.has-alert .hero { padding-top: 168px; }
 
 <!-- ──── QUIZ SECTION ──── -->
 <section class="section-quizzes" id="quizzes">
-
-  <!-- Bases & Initiation -->
-  <div class="section-label">
-    <span class="section-label-text">01 · Bases & Initiation</span>
-    <div class="section-line"></div>
-  </div>
-  <h2 class="section-title">💡 Pour <span>débutants</span></h2>
-
-  <div class="quiz-grid">
-    <a href="debutant.html" class="quiz-card" data-diff="easy" style="--card-accent:#00bfff">
-      <div class="card-top">
-        <div class="card-icon-wrap"><i class="fa-solid fa-graduation-cap"></i></div>
-        <span class="badge badge-easy">Facile</span>
-      </div>
-      <div class="card-title">Quiz Débutant</div>
-      <div class="card-desc">Maîtrisez les bases de la cybersécurité : mots de passe, antivirus, HTTPS et bonnes pratiques essentielles.</div>
-      <div class="card-footer">
-        <div class="card-meta">
-          <span class="card-meta-item"><i class="fa-solid fa-circle-question"></i> 20 questions</span>
-        </div>
-        <span class="card-status status-new" id="status-debutant"><i class="fa-solid fa-circle"></i> Nouveau</span>
-      </div>
-    </a>
-
-    <a href="pratiques.html" class="quiz-card" data-diff="easy" style="--card-accent:#4cc9f0">
-      <div class="card-top">
-        <div class="card-icon-wrap"><i class="fa-solid fa-shield-halved"></i></div>
-        <span class="badge badge-easy">Facile</span>
-      </div>
-      <div class="card-title">Bonnes Pratiques</div>
-      <div class="card-desc">Êtes-vous réellement protégé ? Testez vos habitudes numériques et adoptez les bons réflexes.</div>
-      <div class="card-footer">
-        <div class="card-meta">
-          <span class="card-meta-item"><i class="fa-solid fa-circle-question"></i> 10 questions</span>
-        </div>
-        <span class="card-status status-new" id="status-pratiques"><i class="fa-solid fa-circle"></i> Nouveau</span>
-      </div>
-    </a>
-  </div>
-
-  <!-- Menaces & Sécurité -->
-  <div class="section-label">
-    <span class="section-label-text">02 · Menaces & Sécurité</span>
-    <div class="section-line"></div>
-  </div>
-  <h2 class="section-title">🔍 Reconnaître les <span>menaces</span></h2>
-
-  <div class="quiz-grid">
-    <a href="menaces.html" class="quiz-card" data-diff="medium" style="--card-accent:#f7a81b">
-      <div class="card-top">
-        <div class="card-icon-wrap"><i class="fa-solid fa-bug"></i></div>
-        <span class="badge badge-medium">Moyen</span>
-      </div>
-      <div class="card-title">Identifier les Menaces</div>
-      <div class="card-desc">Phishing, malware, ransomware… Apprenez à reconnaître et éviter les attaques les plus courantes.</div>
-      <div class="card-footer">
-        <div class="card-meta"><span class="card-meta-item"><i class="fa-solid fa-circle-question"></i> 10 questions</span></div>
-        <span class="card-status status-new" id="status-menaces"><i class="fa-solid fa-circle"></i> Nouveau</span>
-      </div>
-    </a>
-
-    <a href="mdp.html" class="quiz-card" data-diff="medium" style="--card-accent:#f7a81b">
-      <div class="card-top">
-        <div class="card-icon-wrap"><i class="fa-solid fa-key"></i></div>
-        <span class="badge badge-medium">Moyen</span>
-      </div>
-      <div class="card-title">Mots de Passe</div>
-      <div class="card-desc">Repérez les mots de passe faibles, comprenez les règles d'un bon mot de passe et l'utilité d'un gestionnaire.</div>
-      <div class="card-footer">
-        <div class="card-meta"><span class="card-meta-item"><i class="fa-solid fa-circle-question"></i> 10 questions</span></div>
-        <span class="card-status status-new" id="status-mdp"><i class="fa-solid fa-circle"></i> Nouveau</span>
-      </div>
-    </a>
-
-    <a href="reseaux.html" class="quiz-card" data-diff="medium" style="--card-accent:#a78bfa">
-      <div class="card-top">
-        <div class="card-icon-wrap"><i class="fa-solid fa-users"></i></div>
-        <span class="badge badge-medium">Moyen</span>
-      </div>
-      <div class="card-title">Réseaux Sociaux</div>
-      <div class="card-desc">Vie privée, arnaques, faux profils… Naviguez en toute sécurité sur les plateformes sociales.</div>
-      <div class="card-footer">
-        <div class="card-meta"><span class="card-meta-item"><i class="fa-solid fa-circle-question"></i> 10 questions</span></div>
-        <span class="card-status status-new" id="status-reseaux"><i class="fa-solid fa-circle"></i> Nouveau</span>
-      </div>
-    </a>
-
-    <a href="wifi.html" class="quiz-card" data-diff="medium" style="--card-accent:#a78bfa">
-      <div class="card-top">
-        <div class="card-icon-wrap"><i class="fa-solid fa-wifi"></i></div>
-        <span class="badge badge-medium">Moyen</span>
-      </div>
-      <div class="card-title">Sécurité Wi-Fi</div>
-      <div class="card-desc">Réseaux publics, WPA2, VPN… Apprenez à sécuriser vos connexions sans fil et éviter les pièges.</div>
-      <div class="card-footer">
-        <div class="card-meta"><span class="card-meta-item"><i class="fa-solid fa-circle-question"></i> 10 questions</span></div>
-        <span class="card-status status-new" id="status-wifi"><i class="fa-solid fa-circle"></i> Nouveau</span>
-      </div>
-    </a>
-
-    <a href="vie-privee.html" class="quiz-card" data-diff="medium" style="--card-accent:#c084fc">
-      <div class="card-top">
-        <div class="card-icon-wrap"><i class="fa-solid fa-user-shield"></i></div>
-        <span class="badge badge-medium">Moyen</span>
-      </div>
-      <div class="card-title">Vie Privée Numérique</div>
-      <div class="card-desc">Trackers, cookies, RGPD et données personnelles : comprenez comment protéger votre vie privée en ligne.</div>
-      <div class="card-footer">
-        <div class="card-meta"><span class="card-meta-item"><i class="fa-solid fa-circle-question"></i> 10 questions</span></div>
-        <span class="card-status status-new" id="status-vie-privee"><i class="fa-solid fa-circle"></i> Nouveau</span>
-      </div>
-    </a>
-  </div>
-
-  <!-- Avancé & Final -->
-  <div class="section-label">
-    <span class="section-label-text">03 · Niveau Avancé</span>
-    <div class="section-line"></div>
-  </div>
-  <h2 class="section-title">🧠 Pour les <span>experts</span></h2>
-
-  <div class="quiz-grid">
-    <a href="ingenierie-sociale.html" class="quiz-card" data-diff="hard" style="--card-accent:#f97316">
-      <div class="card-top">
-        <div class="card-icon-wrap"><i class="fa-solid fa-user-secret"></i></div>
-        <span class="badge badge-hard">Difficile</span>
-      </div>
-      <div class="card-title">Ingénierie Sociale</div>
-      <div class="card-desc">Manipulation, prétexting, baiting… Démasquez les tactiques d'attaque psychologique.</div>
-      <div class="card-footer">
-        <div class="card-meta"><span class="card-meta-item"><i class="fa-solid fa-circle-question"></i> 12 questions</span></div>
-        <span class="card-status status-new" id="status-ingenierie-sociale"><i class="fa-solid fa-circle"></i> Nouveau</span>
-      </div>
-    </a>
-
-    <a href="avance.html" class="quiz-card" data-diff="hard" style="--card-accent:#ff6b6b">
-      <div class="card-top">
-        <div class="card-icon-wrap"><i class="fa-solid fa-brain"></i></div>
-        <span class="badge badge-hard">Difficile</span>
-      </div>
-      <div class="card-title">Quiz Avancé</div>
-      <div class="card-desc">Cryptographie, protocoles réseau, vulnérabilités : défiez vos connaissances techniques.</div>
-      <div class="card-footer">
-        <div class="card-meta"><span class="card-meta-item"><i class="fa-solid fa-circle-question"></i> 15 questions</span></div>
-        <span class="card-status status-new" id="status-avance"><i class="fa-solid fa-circle"></i> Nouveau</span>
-      </div>
-    </a>
-
-    <a href="quiz-final.html" class="quiz-card card-final" data-diff="hard" style="--card-accent:#f7a81b">
-      <div class="card-top">
-        <div class="card-icon-wrap" style="background:rgba(247,168,27,0.12);color:#f7a81b;"><i class="fa-solid fa-trophy"></i></div>
-        <span class="badge badge-hard">Défi</span>
-      </div>
-      <div class="card-title">⚡ Contrôle Final</div>
-      <div class="card-desc">Une question aléatoire difficile tirée de tous les thèmes. Le vrai test de vos connaissances globales.</div>
-      <div class="card-footer">
-        <div class="card-meta"><span class="card-meta-item"><i class="fa-solid fa-dice"></i> Aléatoire</span></div>
-        <span class="card-status status-new" id="status-quiz-final"><i class="fa-solid fa-circle"></i> Nouveau</span>
-      </div>
-    </a>
-  </div>
-
+<div class="section-label"><span class="section-label-text">01 · Les bases</span><div class="section-line"></div></div><div class="quiz-grid">
+<a href="debutant.html" class="quiz-card" data-diff="easy" style="--card-accent:rgb(94, 213, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-4-3-8-2-9-1v15c3-1 6-1 9 2 3-3 6-3 9-2V4c-1-1-5-2-9 1Zm0 0v16"/></svg></div><span class="badge badge-easy">Facile</span></div><div class="card-title">Les Fondamentaux</div><div class="card-desc">Les bases de la cybersécurité et les premiers réflexes pour se protéger.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">20 questions</span></div><span class="card-status status-new" id="status-debutant">Nouveau</span></div></a>
+<a href="pratiques.html" class="quiz-card" data-diff="easy" style="--card-accent:rgb(102, 229, 181)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6Z"/><path d="m8 12 3 3 5-6"/></svg></div><span class="badge badge-easy">Facile</span></div><div class="card-title">Bonnes Pratiques</div><div class="card-desc">Les réflexes du quotidien : mises à jour, sauvegardes, téléchargements et liens suspects.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">15 questions</span></div><span class="card-status status-new" id="status-pratiques">Nouveau</span></div></a>
+</div>
+<div class="section-label"><span class="section-label-text">02 · Se protéger au quotidien</span><div class="section-line"></div></div><div class="quiz-grid">
+<a href="menaces.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(255, 120, 112)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 10 18H2Z M12 9v5M12 17v1"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Identifier les Menaces</div><div class="card-desc">Phishing, rançongiciels, logiciels espions et attaques : identifier les risques.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">20 questions</span></div><span class="card-status status-new" id="status-menaces">Nouveau</span></div></a>
+<a href="mdp.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(255, 209, 112)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Mots de Passe</div><div class="card-desc">Secrets robustes, gestionnaires, MFA et protection contre le phishing.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">20 questions</span></div><span class="card-status status-new" id="status-mdp">Nouveau</span></div></a>
+<a href="reseaux.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(182, 162, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 5v2"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Réseaux Sociaux</div><div class="card-desc">Faux profils, comptes compromis, publications, permissions et cyberharcèlement.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">10 questions</span></div><span class="card-status status-new" id="status-reseaux">Nouveau</span></div></a>
+<a href="wifi.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(99, 216, 242)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M9 16a4 4 0 0 1 6 0"/><circle cx="12" cy="20" r="1"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Sécurité Wi-Fi</div><div class="card-desc">Réseaux publics, HTTPS, VPN et sécurité de la box : distinguer les protections.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">12 questions</span></div><span class="card-status status-new" id="status-wifi">Nouveau</span></div></a>
+<a href="vie-privee.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(205, 166, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Vie Privée Numérique</div><div class="card-desc">Données personnelles, permissions, cookies, navigation privée et traces numériques.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">10 questions</span></div><span class="card-status status-new" id="status-vie-privee">Nouveau</span></div></a>
+</div>
+<div class="section-label"><span class="section-label-text">03 · Approfondir et pratiquer</span><div class="section-line"></div></div><div class="quiz-grid">
+<a href="ingenierie-sociale.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(255, 172, 120)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 5v2"/></svg></div><span class="badge badge-hard">Difficile</span></div><div class="card-title">Ingénierie Sociale</div><div class="card-desc">Déjouer les demandes urgentes, les faux supports et les manipulations ciblées.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">12 questions</span></div><span class="card-status status-new" id="status-ingenierie-sociale">Nouveau</span></div></a>
+<a href="avance.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(144, 166, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-4-3-8-2-9-1v15c3-1 6-1 9 2 3-3 6-3 9-2V4c-1-1-5-2-9 1Zm0 0v16"/></svg></div><span class="badge badge-hard">Difficile</span></div><div class="card-title">Quiz Avancé</div><div class="card-desc">Développement web, cryptographie, droits, segmentation et analyse de sécurité.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">15 questions</span></div><span class="card-status status-new" id="status-avance">Nouveau</span></div></a>
+<a href="reseaux-securite.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(103, 221, 205)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4M5 16v-4h14v4"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Sécurité des Réseaux</div><div class="card-desc">IP, DNS, ports, TLS, pare-feu et segmentation : les bases techniques du réseau.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">15 questions</span></div><span class="card-status status-new" id="status-reseaux-securite">Nouveau</span></div></a>
+<a href="wifi-interactif.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(107, 207, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M9 16a4 4 0 0 1 6 0"/><circle cx="12" cy="20" r="1"/></svg></div><span class="badge badge-hard">Difficile</span></div><div class="card-title">Wi-Fi : mises en situation</div><div class="card-desc">10 situations pratiques pour comprendre les réglages et les pièges du Wi-Fi.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">10 questions</span></div><span class="card-status status-new" id="status-wifi-interactif">Nouveau</span></div></a>
+<a href="incident-response.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(255, 162, 131)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 10 18H2Z M12 9v5M12 17v1"/></svg></div><span class="badge badge-hard">Difficile</span></div><div class="card-title">Réponse aux Incidents</div><div class="card-desc">15 situations pour apprendre à alerter, contenir, préserver les traces et rétablir le service.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">15 questions</span></div><span class="card-status status-new" id="status-incident-response">Nouveau</span></div></a>
+<a href="quiz-final.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(249, 211, 123)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6Z"/><path d="m8 12 3 3 5-6"/></svg></div><span class="badge badge-hard">Défi</span></div><div class="card-title">Contrôle Final</div><div class="card-desc">10 questions mélangées avec validation, explications et score final.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">10 questions</span></div><span class="card-status status-new" id="status-quiz-final">Nouveau</span></div></a>
+</div>
 </section>
 
 <!-- ──── FOOTER ──── -->
@@ -1210,78 +1067,121 @@ document.querySelectorAll('[data-target]').forEach(el => animateCounter(el, pars
 
 /* Liste complète des quiz */
 const ALL_QUIZZES = [
-  { key: 'debutant', title: 'Quiz Débutant', url: 'debutant.html' },
-  { key: 'pratiques', title: 'Bonnes Pratiques', url: 'pratiques.html' },
-  { key: 'menaces', title: 'Identifier les Menaces', url: 'menaces.html' },
-  { key: 'mdp', title: 'Mots de Passe', url: 'mdp.html' },
-  { key: 'reseaux', title: 'Réseaux Sociaux', url: 'reseaux.html' },
-  { key: 'wifi', title: 'Sécurité Wi-Fi', url: 'wifi.html' },
-  { key: 'vie-privee', title: 'Vie Privée Numérique', url: 'vie-privee.html' },
-  { key: 'ingenierie-sociale', title: 'Ingénierie Sociale', url: 'ingenierie-sociale.html' },
-  { key: 'avance', title: 'Quiz Avancé', url: 'avance.html' },
-  { key: 'quiz-final', title: 'Contrôle Final', url: 'quiz-final.html' }
+  {
+    "key": "debutant",
+    "title": "Les Fondamentaux",
+    "url": "debutant.html",
+    "total": 20
+  },
+  {
+    "key": "pratiques",
+    "title": "Bonnes Pratiques",
+    "url": "pratiques.html",
+    "total": 15
+  },
+  {
+    "key": "menaces",
+    "title": "Identifier les Menaces",
+    "url": "menaces.html",
+    "total": 20
+  },
+  {
+    "key": "mdp",
+    "title": "Mots de Passe",
+    "url": "mdp.html",
+    "total": 20
+  },
+  {
+    "key": "reseaux",
+    "title": "Réseaux Sociaux",
+    "url": "reseaux.html",
+    "total": 10
+  },
+  {
+    "key": "wifi",
+    "title": "Sécurité Wi-Fi",
+    "url": "wifi.html",
+    "total": 12
+  },
+  {
+    "key": "vie-privee",
+    "title": "Vie Privée Numérique",
+    "url": "vie-privee.html",
+    "total": 10
+  },
+  {
+    "key": "ingenierie-sociale",
+    "title": "Ingénierie Sociale",
+    "url": "ingenierie-sociale.html",
+    "total": 12
+  },
+  {
+    "key": "avance",
+    "title": "Quiz Avancé",
+    "url": "avance.html",
+    "total": 15
+  },
+  {
+    "key": "reseaux-securite",
+    "title": "Sécurité des Réseaux",
+    "url": "reseaux-securite.html",
+    "total": 15
+  },
+  {
+    "key": "wifi-interactif",
+    "title": "Wi-Fi : mises en situation",
+    "url": "wifi-interactif.html",
+    "total": 10
+  },
+  {
+    "key": "incident-response",
+    "title": "Réponse aux Incidents",
+    "url": "incident-response.html",
+    "total": 15
+  },
+  {
+    "key": "quiz-final",
+    "title": "Contrôle Final",
+    "url": "quiz-final.html",
+    "total": 10
+  }
 ];
 
 /* Progression & Grades dynamiques */
 function loadProgress() {
-  let done = 0;
-  let nextQuiz = null;
-
+  let done = 0, nextQuiz = null;
   ALL_QUIZZES.forEach(q => {
-    const saved = localStorage.getItem(`cyberquiz_${q.key}`);
-    if (saved) {
-      const data = JSON.parse(saved);
-      const statusEl = document.getElementById(`status-${q.key}`);
-      if (statusEl) {
-        statusEl.className = 'card-status status-done';
-        statusEl.innerHTML = `<i class="fa-solid fa-check"></i> ${data.score}/${data.total}`;
-      }
-      done++;
-    } else if (!nextQuiz) {
-      nextQuiz = q; // Le premier quiz non fait est le quiz recommandé
-    }
+    let data = null;
+    try { data = JSON.parse(localStorage.getItem(`cyberquiz_${q.key}`)); } catch { /* Stockage indisponible ou corrompu : afficher Nouveau. */ }
+    const valid = data && !Array.isArray(data) && Number.isInteger(data.score) && data.total === q.total && data.score >= 0 && data.score <= data.total;
+    const status = document.getElementById(`status-${q.key}`);
+    status.className = 'card-status ' + (valid ? 'status-done' : 'status-new');
+    status.textContent = valid ? `${data.score}/${data.total}` : 'Nouveau';
+    if (valid) done++; else if (!nextQuiz) nextQuiz = q;
   });
-
   animateCounter(document.getElementById('doneCount'), done);
-  const pct = Math.round((done / ALL_QUIZZES.length) * 100);
+  const pct = Math.round(done / ALL_QUIZZES.length * 100);
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressPct').textContent = pct + '%';
-
-  // Recommendation dynamique (Proposition 2)
-  const nextQuizLink = document.getElementById('nextQuizLink');
-  const recommendedBox = document.getElementById('recommendedBox');
+  const box = document.getElementById('recommendedBox');
   if (nextQuiz) {
-    nextQuizLink.href = nextQuiz.url;
-    nextQuizLink.innerHTML = `${nextQuiz.title} <i class="fa-solid fa-arrow-right"></i>`;
-  } else {
-    recommendedBox.innerHTML = `<span><i class="fa-solid fa-trophy" style="color: var(--warn);"></i> Félicitations, vous avez complété tous les quiz !</span>`;
-  }
-
-  // Attribution du grade utilisateur selon la progression
-  const rankEl = document.getElementById('userRank');
-  const rankDesc = document.getElementById('userRankDesc');
-  if (done >= 10) {
-    rankEl.textContent = "Maître de la Cybersécurité 🛡️";
-    rankDesc.textContent = "Tous les quiz validés ! Excellent travail.";
-  } else if (done >= 5) {
-    rankEl.textContent = "Analyste SOC Junior 🔍";
-    rankDesc.textContent = "Belle progression, continuez ainsi !";
-  } else if (done >= 1) {
-    rankEl.textContent = "Apprenti Veilleur 💻";
-    rankDesc.textContent = "Premiers pas validés dans le bain de la sécurité.";
-  } else {
-    rankEl.textContent = "Initié(e)";
-    rankDesc.textContent = "Complétez des quiz pour progresser !";
-  }
+    const link = document.getElementById('nextQuizLink');
+    link.href = nextQuiz.url; link.textContent = nextQuiz.title;
+  } else { box.textContent = 'Tous les quiz sont terminés ! Tu peux les recommencer pour réviser.'; }
+  document.getElementById('userRank').textContent = done === ALL_QUIZZES.length ? 'Parcours terminé 🛡️' : done >= 5 ? 'Explorateur cyber 🔍' : done >= 1 ? 'Apprenti veilleur 💻' : 'Initié(e)';
+  document.getElementById('userRankDesc').textContent = `${done} / ${ALL_QUIZZES.length} quiz terminés. Les scores indiquent les notions à réviser.`;
 }
 loadProgress();
 
-/* Réinitialisation de la progression */
 function resetProgress() {
-  if (confirm("Voulez-vous vraiment réinitialiser toute votre progression ?")) {
-    ALL_QUIZZES.forEach(q => localStorage.removeItem(`cyberquiz_${q.key}`));
+  if (!confirm('Effacer les scores et toutes les parties en cours ?')) return;
+  try {
+    ALL_QUIZZES.forEach(q => {
+      localStorage.removeItem(`cyberquiz_${q.key}`);
+      localStorage.removeItem(`cyberquiz_session_${q.key}`);
+    });
     location.reload();
-  }
+  } catch { alert('Le navigateur ne permet pas de modifier le stockage local. Vérifie ses paramètres.'); }
 }
 
 /* Filtrage par niveau */
