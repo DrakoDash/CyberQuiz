@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberQuiz — À propos</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap">
+  <style>
+    :root {
+      --bg: #0a0f24;
+      --bg-2: #0d142d;
+      --card: #111833;
+      --card-strong: #151e3d;
+      --accent: #00bfff;
+      --accent-2: #4cc9f0;
+      --accent-soft: rgba(0, 191, 255, 0.12);
+      --green: #7efc6a;
+      --warning: #f7a81b;
+      --pink: #ff5ca8;
+      --muted: rgba(255,255,255,0.7);
+      --border: rgba(0,191,255,0.18);
+      --shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(0,191,255,0.14), transparent 35%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: radial-gradient(circle at center, black 35%, transparent 100%);
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      border-radius: 999px;
+    }
+
+    a { text-decoration: none; }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      width: 100%;
+      height: 72px;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 15, 36, 0.8);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--accent);
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      text-shadow: 0 0 12px rgba(0,191,255,0.4);
+    }
+
+    .nav-logo span { color: white; }
+
+    .nav-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: rgba(255,255,255,0.78);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      border: 1px solid transparent;
+      transition: 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+      background: rgba(0,191,255,0.08);
+      border-color: var(--border);
+    }
+
+    .nav-links a.final {
+      color: var(--warning);
+      border-color: rgba(247,168,27,0.25);
+    }
+
+    .nav-links a.final:hover {
+      background: rgba(247,168,27,0.08);
+    }
+
+    .page-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 54px 22px 80px;
+    }
+
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 70px 16px 36px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 18px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(0,191,255,0.08);
+      color: var(--accent);
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow i { font-size: 0.7rem; animation: pulse 1.8s ease-in-out infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.1;
+      color: var(--accent);
+      text-shadow: 0 0 22px rgba(0,191,255,0.45);
+      letter-spacing: 1.5px;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 20px auto 0;
+      color: var(--muted);
+      font-size: 1.06rem;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 26px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #02121f;
+      box-shadow: 0 10px 24px rgba(0,191,255,0.35);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--accent);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+      margin-top: 42px;
+    }
+
+    .stat-card {
+      background: rgba(17,24,51,0.72);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 18px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card .value {
+      display: block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    .stat-card .label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .section {
+      margin-top: 72px;
+      background: rgba(17,24,51,0.5);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 30px 24px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .section-head .line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(0,191,255,0.4), transparent);
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .mission-grid,
+    .value-grid,
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(20,26,52,0.9), rgba(11,17,35,0.9));
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px 18px;
+      min-height: 190px;
+      transition: transform 0.22s ease, border-color 0.22s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0,191,255,0.45);
+    }
+
+    .card i {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      background: rgba(0,191,255,0.08);
+      color: var(--accent);
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+      color: white;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.92rem;
+    }
+
+    .story {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+      margin-top: 18px;
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 18px;
+      padding-left: 18px;
+      margin-top: 18px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(0,191,255,0.1), rgba(0,191,255,0.8), rgba(0,191,255,0.1));
+    }
+
+    .timeline-item {
+      position: relative;
+      background: rgba(15,22,42,0.8);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 18px 18px 24px;
+      margin-left: 12px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -19px;
+      top: 20px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 16px rgba(0,191,255,0.7);
+    }
+
+    .timeline-item .date {
+      color: var(--accent);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.76rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .timeline-item p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .team-card {
+      text-align: center;
+      padding-top: 28px;
+    }
+
+    .team-avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      font-size: 2rem;
+      background: linear-gradient(135deg, rgba(0,191,255,0.22), rgba(76,201,240,0.08));
+      border: 1px solid var(--border);
+      color: var(--accent);
+    }
+
+    .team-card h3 {
+      margin: 0 0 6px;
+      font-size: 1.06rem;
+    }
+
+    .team-role {
+      color: var(--accent);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .team-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 0.92rem;
+    }
+
+    .cta {
+      text-align: center;
+      padding: 28px 18px 12px;
+    }
+
+    .cta h3 {
+      margin: 0 0 10px;
+      font-size: clamp(1.5rem, 2vw, 2.2rem);
+      color: white;
+    }
+
+    .cta p {
+      max-width: 720px;
+      margin: 0 auto 24px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    footer {
+      margin-top: 30px;
+      border-top: 1px solid var(--border);
+      padding: 28px 0 16px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    footer a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 760px) {
+      .navbar {
+        height: auto;
+        padding: 16px 18px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        justify-content: center;
+      }
+
+      .section {
+        padding: 24px 18px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="accueil.html" class="nav-logo">Cyber<span>Quiz</span></a>
+    <div class="nav-links">
+      <a href="accueil.html">Accueil</a>
+      <a href="debutant.html">Débutant</a>
+      <a href="pratiques.html">Pratiques</a>
+      <a href="menaces.html">Menaces</a>
+      <a href="reseaux.html">Réseaux</a>
+      <a href="avance.html">Avancé</a>
+      <a href="quiz-final.html" class="final">Contrôle Final</a>
+      <a href="about.html" class="active">À propos</a>
+    </div>
+  </nav>
+
+  <main class="page-shell">
+    <header class="hero">
+      <div class="eyebrow"><i class="fa-solid fa-shield-halved"></i> CyberQuiz</div>
+      <h1>À propos de nous</h1>
+      <p>
+        CyberQuiz est une plateforme pédagogique pensée pour rendre l’apprentissage de la cybersécurité accessible,
+        concret et engageant. Nous croyons que la sécurité numérique est un enjeu de tous les jours et qu’il faut
+        pouvoir la comprendre, la pratiquer et la maîtriser dès le plus jeune âge.
+      </p>
+
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="accueil.html"><i class="fa-solid fa-house"></i> Revenir à l'accueil</a>
+        <a class="btn btn-secondary" href="debutant.html"><i class="fa-solid fa-play"></i> Commencer un quiz</a>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card">
+          <span class="value">13</span>
+          <span class="label">Quiz</span>
+        </div>
+        <div class="stat-card">
+          <span class="value">184</span>
+          <span class="label">Questions</span>
+        </div>
+        <div class="stat-card">
+          <span class="value">100%</span>
+          <span class="label">Pédagogie</span>
+        </div>
+        <div class="stat-card">
+          <span class="value">24/7</span>
+          <span class="label">Sensibilisation</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Notre mission</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="mission-grid">
+        <article class="card">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <h3>Éduquer</h3>
+          <p>Mettre à disposition des contenus simples, lisibles et utiles pour comprendre les bases de la cybersécurité.</p>
+        </article>
+
+        <article class="card">
+          <i class="fa-solid fa-gamepad"></i>
+          <h3>Engager</h3>
+          <p>Transformer l’apprentissage en expérience interactive avec des quiz, des défis et des parcours progressifs.</p>
+        </article>
+
+        <article class="card">
+          <i class="fa-solid fa-shield-heart"></i>
+          <h3>Protéger</h3>
+          <p>Sensibiliser à la sécurité numérique pour mieux prévenir les cybermenaces et adopter de bonnes pratiques.</p>
+        </article>
+
+        <article class="card">
+          <i class="fa-solid fa-rocket"></i>
+          <h3>Innover</h3>
+          <p>Construire une plateforme moderne avec une expérience immersive inspirée du design cyber et technique.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Notre histoire</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="story">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="date">2025</div>
+            <p>Naissance du projet CyberQuiz avec l’idée de créer un outil simple, moderne et pédagogique pour la cybersécurité.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="date">2026</div>
+            <p>Développement des premiers modules et parcours thématiques, en phase avec les besoins d’apprentissage moderne.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="date">Aujourd'hui</div>
+            <p>CyberQuiz est devenu une plateforme d’initiation et de sensibilisation qui met l’accent sur la compréhension, la progression et l’interaction.</p>
+          </div>
+        </div>
+
+        <div class="card" style="min-height: 100%;">
+          <i class="fa-solid fa-lightbulb"></i>
+          <h3>Notre vision</h3>
+          <p>
+            Nous voulons que chaque personne puisse acquérir des compétences utiles en sécurité numérique sans jargon inutile,
+            sans friction, et avec une vraie logique de progression. La cybersécurité n’est pas réservée aux experts : elle concerne tout le monde.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Nos valeurs</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="value-grid">
+        <article class="card">
+          <i class="fa-solid fa-universal-access"></i>
+          <h3>Accessibilité</h3>
+          <p>Des contenus compréhensibles et un parcours conçu pour aider aussi bien les débutants que les utilisateurs plus curieux.</p>
+        </article>
+
+        <article class="card">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <h3>Pédagogie</h3>
+          <p>L’apprentissage doit être progressif, clair et ancré dans des situations concrètes du quotidien numérique.</p>
+        </article>
+
+        <article class="card">
+          <i class="fa-solid fa-users"></i>
+          <h3>Communauté</h3>
+          <p>CyberQuiz s’inscrit dans une logique d’ouverture, de partage et d’amélioration continue avec les utilisateurs et contributeurs.</p>
+        </article>
+
+        <article class="card">
+          <i class="fa-solid fa-lock"></i>
+          <h3>Confiance</h3>
+          <p>Nous privilégions une approche honnête et utile, avec des contenus placés au service de la sécurité et de la compréhension.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>L'équipe</h2>
+        <div class="line"></div>
+      </div>
+
+      <div class="team-grid">
+        <article class="card team-card">
+          <div class="team-avatar"><i class="fa-solid fa-user-astronaut"></i></div>
+          <h3>DrakoDash</h3>
+          <div class="team-role">Créateur & Mainteneur</div>
+          <p>Passionné par la technologie, la cybersécurité et la création d’expériences d’apprentissage immersives.</p>
+        </article>
+
+        <article class="card team-card">
+          <div class="team-avatar"><i class="fa-solid fa-people-group"></i></div>
+          <h3>Communauté</h3>
+          <div class="team-role">Contributeurs</div>
+          <p>Des personnes curieuses, motivées et désireuses de faire avancer la sensibilisation à la cybersécurité.</p>
+        </article>
+
+        <article class="card team-card">
+          <div class="team-avatar"><i class="fa-solid fa-handshake-angle"></i></div>
+          <h3>Vous</h3>
+          <div class="team-role">Apprenants & Partenaires</div>
+          <p>Chaque personne qui utilise CyberQuiz participe à la croissance de cette initiative éducative et utile.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section cta">
+      <h3>Prêt à apprendre autrement ?</h3>
+      <p>
+        Rejoignez CyberQuiz pour découvrir les bases de la cybersécurité, développer vos connaissances et adopter de meilleures habitudes sur le web.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="debutant.html"><i class="fa-solid fa-arrow-right"></i> Démarrer</a>
+        <a class="btn btn-secondary" href="https://github.com/DrakoDash/CyberQuiz" target="_blank" rel="noreferrer"><i class="fa-brands fa-github"></i> GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Fait avec ❤️ pour la cybersécurité • <a href="accueil.html">Accueil</a> • <a href="about.html">À propos</a>
+  </footer>
+</body>
+</html>
