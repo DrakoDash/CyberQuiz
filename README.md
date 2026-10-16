@@ -50,6 +50,26 @@ CyberQuiz est une web app (PWA) : ouvre le site dans Edge ou Chrome puis clique 
 Sur iPhone : Safari → Partager → « Sur l'écran d'accueil ». L'application fonctionne hors-ligne.
 Pour voir le mode application sans l'installer : ajoute `?mode=app` à l'adresse d'une page.
 
+## 🛠️ Mettre le site en maintenance
+
+Tout se règle dans **`maintenance.json`**, modifiable directement sur GitHub (icône crayon ✏️ puis « Commit changes ») :
+
+| `"mode"` | Effet |
+|---|---|
+| `"off"` | Site normal |
+| `"annonce"` | Bandeau d'information, le site reste utilisable (ex. maintenance prévue ce soir) |
+| `"maintenance"` | Écran de maintenance : le site et l'application installée sont bloqués |
+
+- `"titre"` et `"message"` : les textes affichés.
+- `"debut"` (annonce) et `"fin"` (maintenance) : dates au format `"2026-10-20T18:00:00+02:00"`, ou `""`.
+- Le changement est visible une à deux minutes après le commit (temps de publication de GitHub Pages).
+  Les visiteurs bloqués sont libérés automatiquement dès le retour à `"off"` (vérification toutes les 30 s).
+- **Accès développeur** pendant la maintenance : ouvrir une page avec `?dev=LA_CLÉ`. Pour changer la clé :
+  console du navigateur (F12) → `CyberMaintenance.hash('nouvelle-clé')` → coller le résultat dans `"cle_dev_sha256"`.
+- ⚠ Le blocage se fait dans le navigateur : il sert à informer, ce n'est pas une protection de sécurité.
+
+**Conseil :** déposer tous les fichiers d'une mise à jour **en un seul commit**, puis repasser en `"off"`.
+
 ## 🚀 Accès au site
 
 Le site est accessible ici :
@@ -76,6 +96,8 @@ CyberQuiz/
 ├── quiz-final.html
 ├── changelog.html
 ├── style.css
+├── maintenance.json  # interrupteur du mode maintenance (voir plus bas)
+├── maintenance.js
 ├── pwa.js            # installation, mises à jour, hors-ligne
 ├── app.js / app.css  # style « application » une fois installé
 ├── audio.js          # musique et effets sonores (Web Audio)

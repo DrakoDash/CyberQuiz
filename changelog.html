@@ -432,6 +432,7 @@ footer a:hover { text-decoration: underline; }
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="CyberQuiz"/>
   <link rel="apple-touch-icon" href="assets/icons/icon-192.png"/>
+<script src="maintenance.js"></script>
 <link rel="stylesheet" href="app.css">
 <script src="app.js"></script>
 </head>
@@ -518,6 +519,16 @@ footer a:hover { text-decoration: underline; }
    3. Remplissez version, date, title et description
    ============================================================ */
 const VERSIONS = [
+  {
+    version: 'Beta 27.1',
+    date:    '16/10/2026',
+    title:   'Mode maintenance',
+    description:
+`- Écran de maintenance pilotable depuis maintenance.json (off / annonce / maintenance)
+- Bandeau d'annonce pour prévenir d'une maintenance à venir
+- Compte à rebours, vérification automatique et retour du site sans recharger à la main
+- Accès développeur protégé par une clé pendant la maintenance`
+  },
   {
     version: 'Beta 27.0',
     date:    '16/10/2026',

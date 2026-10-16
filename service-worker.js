@@ -9,7 +9,7 @@
    racine d'un domaine que dans un sous-dossier (GitHub Pages :
    https://drakodash.github.io/CyberQuiz/).
    ============================================================ */
-const CACHE_VERSION = 'v2.0';
+const CACHE_VERSION = 'v2.1';
 const CACHE_APP   = `cyberquiz-app-${CACHE_VERSION}`;   // pages + scripts + icônes
 const CACHE_CDN   = `cyberquiz-cdn-${CACHE_VERSION}`;   // polices et Font Awesome
 
@@ -47,6 +47,7 @@ const PRECACHE = [
   'pwa.js',
   'succes.js',
   'audio.js',
+  'maintenance.js',
   'app.js',
   'app.css',
   'style.css',
@@ -106,6 +107,10 @@ self.addEventListener('fetch', event => {
   }
   // Les autres sites ne sont pas gérés par CyberQuiz.
   if (!request.url.startsWith(BASE)) return;
+
+  // maintenance.json doit TOUJOURS venir du réseau (jamais du cache),
+  // sinon l'application installée ne verrait pas une maintenance en cours.
+  if (u.pathname.endsWith('/maintenance.json')) return;
 
   // 2. Pages : réseau d'abord (contenu à jour), cache si hors-ligne
   if (request.mode === 'navigate' || request.headers.get('Accept')?.includes('text/html')) {
