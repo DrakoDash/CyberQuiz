@@ -1,8 +1,8 @@
 {
-  "mode": "off",
+  "mode": "maintenace",
   "titre": "CyberQuiz fait peau neuve",
   "message": "Nous installons une mise à jour avec de nouveaux quiz. Ta progression et tes succès sont conservés sur ton appareil.",
-  "debut": "22h",
-  "fin": "23h",
+  "debut": "2026-10-20T18:00:00+02:00",
+  "fin": "2026-10-20T18:00:00+03:00",
   "cle_dev_sha256": "e71a870e022492d267ddae62e1e6ef2f6f34ffb60a8387992cdac7d1dc8d5729"
 }
