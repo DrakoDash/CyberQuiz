@@ -1,218 +1,149 @@
 /* ============================================================
    CyberQuiz — Service Worker
-   ✏️  Incrémentez CACHE_VERSION à chaque déploiement majeur
-        pour forcer la mise à jour du cache chez les utilisateurs.
+   Rend le site installable et utilisable hors-ligne.
+
+   ✏️  À chaque mise en ligne d'une nouvelle version :
+       1. incrémente CACHE_VERSION ;
+       2. ajoute ici toute nouvelle page dans PRECACHE.
+   Les chemins sont RELATIFS : le site fonctionne aussi bien à la
+   racine d'un domaine que dans un sous-dossier (GitHub Pages :
+   https://drakodash.github.io/CyberQuiz/).
    ============================================================ */
-const CACHE_VERSION = 'v1.2';
-const CACHE_STATIC  = `cyberquiz-static-${CACHE_VERSION}`;
-const CACHE_PAGES   = `cyberquiz-pages-${CACHE_VERSION}`;
-const CACHE_FONTS   = `cyberquiz-fonts-${CACHE_VERSION}`;
+const CACHE_VERSION = 'v2.0';
+const CACHE_APP   = `cyberquiz-app-${CACHE_VERSION}`;   // pages + scripts + icônes
+const CACHE_CDN   = `cyberquiz-cdn-${CACHE_VERSION}`;   // polices et Font Awesome
 
-/* ── Pages et assets mis en cache immédiatement ── */
-const PRECACHE_PAGES = [
-  '/',
-  '/index.html',
-  '/accueil.html',
-  '/debutant.html',
-  '/pratiques.html',
-  '/menaces.html',
-  '/reseaux.html',
-  '/quiz-final.html',
-  '/changelog.html',
-  '/404.html',
-  '/offline.html',
-  /* Pages à venir — ajoutez-les ici quand elles seront créées */
-  /* '/mdp.html',            */
-  /* '/avance.html',         */
-  /* '/wifi.html',           */
-  /* '/vie-privee.html',     */
-  /* '/ingenierie-sociale.html', */
-];
+/* Dossier où vit le site (ex. https://drakodash.github.io/CyberQuiz/) */
+const BASE = self.registration.scope;
+const url  = path => new URL(path, BASE).href;
 
-const PRECACHE_STATIC = [
-  '/manifest.json',
-  '/pwa.js',
-  '/style.css',
-  '/assets/icons/icon-192.png',
-  '/assets/icons/icon-512.png',
-];
+/* ── Tout ce qui est mis en cache dès l'installation ── */
+const PRECACHE = [
+  './',
+  'index.html',
+  'accueil.html',
+  'about.html',
+  'changelog.html',
+  'succes.html',
+  'offline.html',
+  '404.html',
+  /* Quiz */
+  'debutant.html',
+  'pratiques.html',
+  'menaces.html',
+  'mdp.html',
+  'reseaux.html',
+  'wifi.html',
+  'vie-privee.html',
+  'ingenierie-sociale.html',
+  'avance.html',
+  'reseaux-securite.html',
+  'wifi-interactif.html',
+  'incident-response.html',
+  'simulation.html',
+  'quiz-final.html',
+  /* Fichiers communs */
+  'manifest.json',
+  'pwa.js',
+  'succes.js',
+  'audio.js',
+  'app.js',
+  'app.css',
+  'style.css',
+  'assets/icons/icon-192.png',
+  'assets/icons/icon-512.png',
+  'assets/icons/icon-512-maskable.png'
+].map(url);
 
-/* Domaines CDN mis en cache avec stratégie Stale-While-Revalidate */
-const CDN_ORIGINS = [
-  'fonts.googleapis.com',
-  'fonts.gstatic.com',
-  'cdnjs.cloudflare.com',
-];
+const CDN_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdnjs.cloudflare.com'];
 
 /* ============================================================
-   INSTALL — Pré-cache des ressources essentielles
+   INSTALLATION — on télécharge tout le site
+   Chaque fichier est ajouté séparément : un fichier manquant
+   n'empêche pas les autres d'être mis en cache.
    ============================================================ */
 self.addEventListener('install', event => {
-  event.waitUntil(
-    Promise.all([
-      caches.open(CACHE_PAGES).then(cache =>
-        cache.addAll(PRECACHE_PAGES.map(url => new Request(url, { cache: 'reload' })))
-          .catch(err => console.warn('[SW] Pré-cache pages partiel :', err))
-      ),
-      caches.open(CACHE_STATIC).then(cache =>
-        cache.addAll(PRECACHE_STATIC)
-          .catch(err => console.warn('[SW] Pré-cache static partiel :', err))
-      ),
-    ]).then(() => {
-      console.log(`[SW] Installé — Cache ${CACHE_VERSION}`);
-      /* Activation immédiate sans attendre la fermeture des onglets */
-      return self.skipWaiting();
-    })
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE_APP);
+    const results = await Promise.allSettled(
+      PRECACHE.map(u => cache.add(new Request(u, { cache: 'reload' })))
+    );
+    const failed = results.filter(r => r.status === 'rejected').length;
+    if (failed) console.warn(`[SW] ${failed} fichier(s) non mis en cache`);
+    // Pas de skipWaiting ici : la nouvelle version attend que
+    // l'utilisateur clique sur « Mettre à jour » (voir pwa.js),
+    // pour ne jamais recharger la page en plein quiz.
+  })());
 });
 
 /* ============================================================
-   ACTIVATE — Nettoyage des anciens caches
+   ACTIVATION — suppression des anciennes versions du cache
    ============================================================ */
 self.addEventListener('activate', event => {
-  const KEEP = [CACHE_STATIC, CACHE_PAGES, CACHE_FONTS];
-
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(key => key.startsWith('cyberquiz-') && !KEEP.includes(key))
-          .map(key => {
-            console.log(`[SW] Suppression ancien cache : ${key}`);
-            return caches.delete(key);
-          })
-      )
-    ).then(() => {
-      console.log(`[SW] Activé — Cache ${CACHE_VERSION}`);
-      return self.clients.claim();
-    })
-  );
+  event.waitUntil((async () => {
+    const keep = [CACHE_APP, CACHE_CDN];
+    const keys = await caches.keys();
+    await Promise.all(keys
+      .filter(k => k.startsWith('cyberquiz-') && !keep.includes(k))
+      .map(k => caches.delete(k)));
+    await self.clients.claim();
+  })());
 });
 
 /* ============================================================
-   FETCH — Stratégies de cache
+   REQUÊTES — choix de la stratégie selon le type de fichier
    ============================================================ */
 self.addEventListener('fetch', event => {
   const { request } = event;
-  const url = new URL(request.url);
-
-  /* Ignorer les requêtes non-GET et les extensions navigateur */
   if (request.method !== 'GET') return;
-  if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
+  const u = new URL(request.url);
+  if (u.protocol !== 'http:' && u.protocol !== 'https:') return;
 
-  /* ── 1. Polices & CDN → Stale While Revalidate ── */
-  if (CDN_ORIGINS.some(o => url.hostname.includes(o))) {
-    event.respondWith(staleWhileRevalidate(request, CACHE_FONTS));
+  // 1. Polices et icônes externes : cache d'abord, mise à jour en arrière-plan
+  if (CDN_HOSTS.includes(u.hostname)) {
+    event.respondWith(staleWhileRevalidate(request, CACHE_CDN));
     return;
   }
+  // Les autres sites ne sont pas gérés par CyberQuiz.
+  if (!request.url.startsWith(BASE)) return;
 
-  /* ── 2. Icônes & assets statiques → Cache First ── */
-  if (
-    url.pathname.match(/\.(png|jpg|jpeg|gif|svg|webp|ico|woff2?|ttf|eot)$/) ||
-    url.pathname.includes('/assets/')
-  ) {
-    event.respondWith(cacheFirst(request, CACHE_STATIC));
+  // 2. Pages : réseau d'abord (contenu à jour), cache si hors-ligne
+  if (request.mode === 'navigate' || request.headers.get('Accept')?.includes('text/html')) {
+    event.respondWith(networkFirstPage(request));
     return;
   }
-
-  /* ── 3. CSS & JS → Stale While Revalidate ── */
-  if (url.pathname.match(/\.(css|js)$/)) {
-    event.respondWith(staleWhileRevalidate(request, CACHE_STATIC));
-    return;
-  }
-
-  /* ── 4. Pages HTML → Network First + fallback offline ── */
-  if (
-    request.headers.get('Accept')?.includes('text/html') ||
-    url.pathname.endsWith('.html') ||
-    url.pathname === '/'
-  ) {
-    event.respondWith(networkFirstWithOffline(request));
-    return;
-  }
-
-  /* ── 5. Tout le reste → Network First simple ── */
-  event.respondWith(networkFirst(request, CACHE_PAGES));
+  // 3. Scripts, styles, images : réponse immédiate depuis le cache + mise à jour
+  event.respondWith(staleWhileRevalidate(request, CACHE_APP));
 });
 
-/* ============================================================
-   STRATÉGIES
-   ============================================================ */
-
-/** Cache First : retourne depuis le cache, sinon réseau + mise en cache */
-async function cacheFirst(request, cacheName) {
-  const cached = await caches.match(request);
-  if (cached) return cached;
-
+/* ── Stratégies ── */
+async function networkFirstPage(request) {
+  const cache = await caches.open(CACHE_APP);
   try {
     const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(cacheName);
-      cache.put(request, response.clone());
-    }
-    return response;
-  } catch {
-    return new Response('Ressource non disponible hors-ligne.', { status: 503 });
-  }
-}
-
-/** Network First : réseau d'abord, puis cache en fallback */
-async function networkFirst(request, cacheName) {
-  try {
-    const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(cacheName);
-      cache.put(request, response.clone());
-    }
-    return response;
-  } catch {
-    const cached = await caches.match(request);
-    return cached || new Response('Contenu non disponible hors-ligne.', { status: 503 });
-  }
-}
-
-/** Network First pour les pages HTML avec fallback vers offline.html */
-async function networkFirstWithOffline(request) {
-  try {
-    const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(CACHE_PAGES);
-      cache.put(request, response.clone());
-    }
-    return response;
-  } catch {
-    /* Cherche la page dans le cache */
-    const cached = await caches.match(request);
-    if (cached) return cached;
-
-    /* Fallback : page offline */
-    const offline = await caches.match('/offline.html');
-    return offline || new Response(
-      '<h1>Hors-ligne</h1><p>Connectez-vous pour accéder à cette page.</p>',
-      { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-    );
-  }
-}
-
-/** Stale While Revalidate : retourne le cache immédiatement + met à jour en arrière-plan */
-async function staleWhileRevalidate(request, cacheName) {
-  const cache  = await caches.open(cacheName);
-  const cached = await cache.match(request);
-
-  /* Mise à jour en arrière-plan */
-  const fetchPromise = fetch(request).then(response => {
     if (response.ok) cache.put(request, response.clone());
     return response;
-  }).catch(() => null);
+  } catch {
+    return (await cache.match(request, { ignoreSearch: true }))
+        || (await cache.match(url('offline.html')))
+        || new Response('<h1>Hors-ligne</h1><p>Reconnecte-toi pour accéder à cette page.</p>',
+             { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+  }
+}
 
-  return cached || fetchPromise;
+async function staleWhileRevalidate(request, cacheName) {
+  const cache = await caches.open(cacheName);
+  const cached = await cache.match(request, { ignoreSearch: true });
+  const network = fetch(request).then(response => {
+    if (response.ok || response.type === 'opaque') cache.put(request, response.clone());
+    return response;
+  }).catch(() => null);
+  return cached || (await network) || new Response('', { status: 504 });
 }
 
 /* ============================================================
-   MESSAGES depuis la page (ex: forcer mise à jour)
+   MESSAGES — la page demande d'activer la nouvelle version
    ============================================================ */
 self.addEventListener('message', event => {
-  if (event.data?.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });

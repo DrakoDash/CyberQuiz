@@ -1,272 +1,246 @@
 /* ============================================================
-   CyberQuiz — PWA Manager (pwa.js)
-   Inclure ce script dans toutes les pages HTML :
-   <script src="pwa.js" defer></script>
+   CyberQuiz — Web app (pwa.js)
+   À inclure dans le <head> de chaque page :
+     <script src="pwa.js" defer></script>
+
+   Ce script :
+   1. enregistre le service worker (mode hors-ligne) ;
+   2. affiche un bouton « Installer l'app » dans la barre de navigation
+      (Windows, Android, ChromeOS, macOS via Chrome/Edge) ;
+   3. sur iPhone / iPad, explique comment ajouter l'app à l'écran d'accueil ;
+   4. propose la mise à jour quand une nouvelle version est en ligne ;
+   5. signale quand l'appareil est hors-ligne.
    ============================================================ */
 (function () {
   'use strict';
 
-  /* ── Enregistrement du Service Worker ── */
-  if (!('serviceWorker' in navigator)) return;
+  const isStandalone = () =>
+    matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-  let swRegistration = null;
-  let deferredInstallPrompt = null;
+  let deferredPrompt = null;
+  let registration = null;
 
-  navigator.serviceWorker.register('/service-worker.js')
-    .then(reg => {
-      swRegistration = reg;
-      console.log('[PWA] Service Worker enregistré :', reg.scope);
-
-      /* ── Détection de mise à jour disponible ── */
-      reg.addEventListener('updatefound', () => {
-        const newWorker = reg.installing;
-        newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-            showUpdateBanner();
-          }
+  /* ── 1. Service worker ── */
+  if ('serviceWorker' in navigator) {
+    // Chemin relatif : fonctionne dans le sous-dossier GitHub Pages.
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => {
+        registration = reg;
+        // Une nouvelle version attend déjà (onglet resté ouvert pendant une mise à jour).
+        if (reg.waiting && navigator.serviceWorker.controller) showUpdateBanner();
+        reg.addEventListener('updatefound', () => {
+          const worker = reg.installing;
+          worker?.addEventListener('statechange', () => {
+            if (worker.state === 'installed' && navigator.serviceWorker.controller) showUpdateBanner();
+          });
         });
-      });
+        setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
+      })
+      .catch(err => console.warn('[PWA] Service worker non enregistré :', err));
 
-      /* Vérification périodique des mises à jour (toutes les 60 min) */
-      setInterval(() => reg.update(), 60 * 60 * 1000);
-    })
-    .catch(err => console.warn('[PWA] Échec d\'enregistrement :', err));
+    // Rechargement uniquement après un clic sur « Mettre à jour ».
+    let userAskedUpdate = false;
+    window.addEventListener('pwa-apply-update', () => { userAskedUpdate = true; });
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (userAskedUpdate) location.reload();
+    });
+  }
 
-  /* ── Rechargement automatique après mise à jour SW ── */
-  let refreshing = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (!refreshing) {
-      refreshing = true;
-      window.location.reload();
-    }
-  });
-
-  /* ── Prompt d'installation ── */
+  /* ── 2. Installation (Chrome, Edge, Android) ── */
   window.addEventListener('beforeinstallprompt', e => {
-    e.preventDefault();
-    deferredInstallPrompt = e;
+    e.preventDefault();            // on affiche notre propre bouton
+    deferredPrompt = e;
     showInstallButton();
   });
-
-  /* Masquer le bouton si déjà installé */
   window.addEventListener('appinstalled', () => {
-    hideInstallButton();
-    deferredInstallPrompt = null;
-    console.log('[PWA] Application installée');
+    deferredPrompt = null;
+    removeInstallButton();
+    toast('✅ CyberQuiz est installé ! Retrouve-le dans ton menu Démarrer ou sur ton écran d’accueil.');
   });
 
-  /* ── Détection réseau ── */
-  window.addEventListener('online',  () => hideOfflineBanner());
-  window.addEventListener('offline', () => showOfflineBanner());
-  if (!navigator.onLine) showOfflineBanner();
+  /* ── 3. iPhone / iPad : pas de bouton système, on explique la marche à suivre ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    if (isIOS && !isStandalone()) showInstallButton();
+  });
+
+  /* ── 5. Hors-ligne ── */
+  window.addEventListener('online', () => document.getElementById('pwa-offline')?.remove());
+  window.addEventListener('offline', showOfflineBadge);
+  document.addEventListener('DOMContentLoaded', () => { if (!navigator.onLine) showOfflineBadge(); });
 
   /* ==========================================================
-     INTERFACE — Bouton d'installation
+     INTERFACE
      ========================================================== */
-  function showInstallButton() {
-    if (document.getElementById('pwa-install-btn')) return;
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.textContent = text;
+    return e;
+  }
 
-    /* Cherche la navbar pour y insérer le bouton */
+  function showInstallButton() {
+    if (isStandalone() || document.getElementById('pwa-install-btn')) return;
     const navbar = document.querySelector('.navbar');
     if (!navbar) return;
+    injectStyles();
+    const btn = el('button', 'pwa-install-btn');
+    btn.id = 'pwa-install-btn';
+    btn.type = 'button';
+    btn.title = 'Installer CyberQuiz sur cet appareil';
+    btn.append(el('span', 'pwa-ico', '⬇'), el('span', 'pwa-label', 'Installer l’app'));
+    btn.addEventListener('click', install);
 
-    const btn = document.createElement('button');
-    btn.id        = 'pwa-install-btn';
-    btn.className = 'pwa-install-btn';
-    btn.innerHTML = '<i class="fa-solid fa-download"></i><span>Installer</span>';
-    btn.title     = 'Installer CyberQuiz sur cet appareil';
-    btn.onclick   = triggerInstall;
-
-    /* Insérer avant le bouton menu mobile (s'il existe) */
     const toggle = navbar.querySelector('.nav-toggle');
-    if (toggle) {
-      navbar.insertBefore(btn, toggle);
-    } else {
-      navbar.appendChild(btn);
+    const badge = navbar.querySelector('.nav-badge');
+    if (toggle) navbar.insertBefore(btn, toggle);
+    else if (badge) {
+      // Pages de quiz : on regroupe le bouton et le badge pour garder le logo centré.
+      const group = el('div', 'pwa-nav-group');
+      badge.replaceWith(group);
+      group.append(btn, badge);
+    } else navbar.append(btn);
+  }
+
+  function removeInstallButton() {
+    const btn = document.getElementById('pwa-install-btn');
+    if (!btn) return;
+    const group = btn.closest('.pwa-nav-group');
+    btn.remove();
+    if (group) group.replaceWith(...group.childNodes);
+  }
+
+  async function install() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      if (outcome === 'accepted') removeInstallButton();
+      return;
     }
+    if (isIOS) {
+      showDialog('Installer CyberQuiz sur iPhone / iPad', [
+        'Ouvre ce site dans Safari.',
+        'Touche le bouton Partager (le carré avec une flèche vers le haut).',
+        'Choisis « Sur l’écran d’accueil », puis « Ajouter ».'
+      ]);
+      return;
+    }
+    showDialog('Installer CyberQuiz', [
+      'Ouvre le site dans Microsoft Edge ou Google Chrome.',
+      'Clique sur l’icône d’installation à droite de la barre d’adresse (un écran avec une flèche).',
+      'Ou ouvre le menu ⋯ puis « Applications » → « Installer CyberQuiz ».'
+    ]);
   }
 
-  function hideInstallButton() {
-    document.getElementById('pwa-install-btn')?.remove();
+  function showDialog(title, steps) {
+    injectStyles();
+    document.getElementById('pwa-dialog')?.remove();
+    const overlay = el('div', 'pwa-overlay');
+    overlay.id = 'pwa-dialog';
+    const box = el('div', 'pwa-dialog');
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute('aria-labelledby', 'pwa-dialog-title');
+    const h = el('h2', null, title); h.id = 'pwa-dialog-title';
+    const ol = el('ol');
+    steps.forEach(s => ol.append(el('li', null, s)));
+    const close = el('button', 'pwa-btn', 'Compris');
+    close.type = 'button';
+    const done = () => { overlay.remove(); document.removeEventListener('keydown', onKey); };
+    const onKey = e => { if (e.key === 'Escape') done(); };
+    close.addEventListener('click', done);
+    overlay.addEventListener('click', e => { if (e.target === overlay) done(); });
+    document.addEventListener('keydown', onKey);
+    box.append(h, ol, close);
+    overlay.append(box);
+    document.body.append(overlay);
+    close.focus();
   }
 
-  async function triggerInstall() {
-    if (!deferredInstallPrompt) return;
-    deferredInstallPrompt.prompt();
-    const { outcome } = await deferredInstallPrompt.userChoice;
-    console.log('[PWA] Choix installation :', outcome);
-    deferredInstallPrompt = null;
-    hideInstallButton();
-  }
-
-  /* ==========================================================
-     INTERFACE — Bannière de mise à jour
-     ========================================================== */
   function showUpdateBanner() {
-    if (document.getElementById('pwa-update-banner')) return;
-
-    const banner = document.createElement('div');
-    banner.id        = 'pwa-update-banner';
-    banner.className = 'pwa-update-banner';
-    banner.innerHTML = `
-      <i class="fa-solid fa-rotate"></i>
-      <span>Une mise à jour de CyberQuiz est disponible !</span>
-      <button onclick="window._pwaApplyUpdate()" class="pwa-update-btn">
-        Mettre à jour
-      </button>
-      <button onclick="this.closest('#pwa-update-banner').remove()" class="pwa-dismiss-btn" aria-label="Fermer">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-    `;
-    document.body.prepend(banner);
+    if (document.getElementById('pwa-update')) return;
+    const show = () => {
+      injectStyles();
+      const bar = el('div', 'pwa-update');
+      bar.id = 'pwa-update';
+      bar.setAttribute('role', 'status');
+      const go = el('button', 'pwa-btn', 'Mettre à jour');
+      go.type = 'button';
+      go.addEventListener('click', () => {
+        window.dispatchEvent(new Event('pwa-apply-update'));
+        if (registration?.waiting) registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+        else location.reload();
+        bar.remove();
+      });
+      const later = el('button', 'pwa-close', '×');
+      later.type = 'button';
+      later.setAttribute('aria-label', 'Plus tard');
+      later.addEventListener('click', () => bar.remove());
+      bar.append(el('span', null, '🔄 Une nouvelle version de CyberQuiz est disponible.'), go, later);
+      document.body.append(bar);
+    };
+    document.body ? show() : document.addEventListener('DOMContentLoaded', show);
   }
 
-  window._pwaApplyUpdate = function () {
-    if (swRegistration?.waiting) {
-      swRegistration.waiting.postMessage({ type: 'SKIP_WAITING' });
-    }
-    document.getElementById('pwa-update-banner')?.remove();
-  };
-
-  /* ==========================================================
-     INTERFACE — Bannière hors-ligne
-     ========================================================== */
-  function showOfflineBanner() {
-    if (document.getElementById('pwa-offline-banner')) return;
-
-    const banner = document.createElement('div');
-    banner.id        = 'pwa-offline-banner';
-    banner.className = 'pwa-offline-banner';
-    banner.innerHTML = `
-      <i class="fa-solid fa-wifi" style="text-decoration:line-through"></i>
-      <span>Vous êtes hors-ligne — contenu mis en cache disponible.</span>
-    `;
-    document.body.prepend(banner);
+  function showOfflineBadge() {
+    if (document.getElementById('pwa-offline')) return;
+    injectStyles();
+    const badge = el('div', 'pwa-offline', '📴 Hors-ligne — les quiz restent disponibles');
+    badge.id = 'pwa-offline';
+    badge.setAttribute('role', 'status');
+    document.body.append(badge);
   }
 
-  function hideOfflineBanner() {
-    document.getElementById('pwa-offline-banner')?.remove();
+  function toast(text) {
+    injectStyles();
+    const t = el('div', 'pwa-update', text);
+    t.setAttribute('role', 'status');
+    document.body.append(t);
+    setTimeout(() => t.remove(), 6000);
   }
 
   /* ==========================================================
-     STYLES injectés dynamiquement
+     STYLES (injectés une seule fois)
      ========================================================== */
-  const style = document.createElement('style');
-  style.textContent = `
-    /* ── Bouton d'installation ── */
-    .pwa-install-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      background: transparent;
-      border: 1px solid rgba(0,191,255,0.4);
-      border-radius: 8px;
-      color: #00bfff;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-      margin-right: 8px;
-      white-space: nowrap;
-      animation: pwa-pulse-in 0.4s ease both;
-    }
-    .pwa-install-btn:hover {
-      background: rgba(0,191,255,0.12);
-      border-color: #00bfff;
-      box-shadow: 0 0 12px rgba(0,191,255,0.2);
-    }
-    .pwa-install-btn span { display: inline; }
-    @media (max-width: 480px) {
-      .pwa-install-btn span { display: none; }
-      .pwa-install-btn { padding: 6px 10px; }
-    }
+  function injectStyles() {
+    if (document.getElementById('pwa-styles')) return;
+    const css = el('style');
+    css.id = 'pwa-styles';
+    css.textContent = `
+      .pwa-nav-group { display:flex; align-items:center; gap:10px; }
+      .pwa-install-btn { display:inline-flex; align-items:center; gap:7px; padding:7px 13px; border-radius:8px;
+        background:rgba(0,191,255,.08); border:1px solid rgba(0,191,255,.45); color:#4cc9f0; cursor:pointer;
+        font:600 .8rem 'Poppins',system-ui,sans-serif; white-space:nowrap; transition:background .2s, box-shadow .2s; }
+      .pwa-install-btn:hover { background:rgba(0,191,255,.16); box-shadow:0 0 14px rgba(0,191,255,.25); }
+      .pwa-ico { font-size:.9rem; line-height:1; }
+      @media (max-width:520px) { .pwa-label { display:none; } .pwa-install-btn { padding:7px 10px; } .pwa-nav-group .nav-badge { display:none; } }
 
-    @keyframes pwa-pulse-in {
-      from { opacity: 0; transform: scale(0.85); }
-      to   { opacity: 1; transform: scale(1); }
-    }
+      .pwa-update { position:fixed; left:50%; bottom:18px; transform:translateX(-50%); z-index:10000;
+        display:flex; align-items:center; gap:12px; max-width:calc(100vw - 32px); padding:11px 14px 11px 18px;
+        background:#0d1430; border:1px solid rgba(76,201,240,.45); border-radius:12px; color:#e8eaf6;
+        font:.85rem 'Poppins',system-ui,sans-serif; box-shadow:0 10px 30px rgba(0,0,0,.5); }
+      .pwa-btn { padding:7px 15px; border:0; border-radius:8px; background:#00bfff; color:#001a2e;
+        font:700 .8rem 'Poppins',system-ui,sans-serif; cursor:pointer; white-space:nowrap; }
+      .pwa-btn:hover { background:#4cc9f0; }
+      .pwa-close { background:none; border:0; color:rgba(255,255,255,.55); font-size:1.2rem; cursor:pointer; padding:0 4px; }
+      .pwa-close:hover { color:#fff; }
 
-    /* ── Bannière de mise à jour ── */
-    .pwa-update-banner {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 9999;
-      background: linear-gradient(135deg, #111833, #0d1228);
-      border: 1px solid rgba(76,201,240,0.35);
-      border-radius: 12px;
-      padding: 12px 16px 12px 18px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,191,255,0.1);
-      color: rgba(255,255,255,0.9);
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.85rem;
-      max-width: calc(100vw - 40px);
-      animation: pwa-slide-up 0.4s cubic-bezier(.34,1.56,.64,1) both;
-    }
-    .pwa-update-banner i { color: #4cc9f0; flex-shrink: 0; }
-    .pwa-update-banner span { flex: 1; min-width: 0; }
+      .pwa-offline { position:fixed; left:16px; bottom:16px; z-index:9999; padding:8px 13px; border-radius:99px;
+        background:#24170a; border:1px solid rgba(247,168,27,.45); color:#f7c26b; font:.78rem 'Poppins',system-ui,sans-serif; }
 
-    .pwa-update-btn {
-      padding: 6px 16px;
-      background: #00bfff;
-      color: #001a2e;
-      border: none;
-      border-radius: 7px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      cursor: pointer;
-      flex-shrink: 0;
-      transition: 0.2s;
-    }
-    .pwa-update-btn:hover { background: #4cc9f0; }
-
-    .pwa-dismiss-btn {
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.4);
-      cursor: pointer;
-      font-size: 0.9rem;
-      padding: 2px 4px;
-      flex-shrink: 0;
-      transition: 0.2s;
-    }
-    .pwa-dismiss-btn:hover { color: rgba(255,255,255,0.8); }
-
-    /* ── Bannière hors-ligne ── */
-    .pwa-offline-banner {
-      position: fixed;
-      top: 62px;
-      left: 0; right: 0;
-      z-index: 990;
-      background: linear-gradient(90deg, #1a0f08, #281808, #1a0f08);
-      border-bottom: 1px solid rgba(247,168,27,0.3);
-      padding: 8px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-family: 'Poppins', sans-serif;
-      font-size: 0.8rem;
-      color: rgba(247,168,27,0.9);
-      animation: pwa-slide-down 0.3s ease both;
-    }
-
-    @keyframes pwa-slide-up {
-      from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-    }
-    @keyframes pwa-slide-down {
-      from { opacity: 0; transform: translateY(-100%); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-  `;
-  document.head.appendChild(style);
-
+      .pwa-overlay { position:fixed; inset:0; z-index:10001; display:grid; place-items:center; padding:16px;
+        background:rgba(3,6,15,.7); backdrop-filter:blur(3px); }
+      .pwa-dialog { width:min(420px,100%); padding:22px 24px; border-radius:16px; background:#0d1430;
+        border:1px solid rgba(0,191,255,.3); color:#e8eaf6; font-family:'Poppins',system-ui,sans-serif; box-shadow:0 20px 60px rgba(0,0,0,.6); }
+      .pwa-dialog h2 { margin:0 0 12px; font-size:1.1rem; }
+      .pwa-dialog ol { margin:0 0 18px; padding-left:20px; line-height:1.7; font-size:.88rem; color:#c9d3e3; }
+      @media (prefers-reduced-motion:no-preference) { .pwa-update, .pwa-dialog { animation:pwa-in .3s ease both; } }
+      @keyframes pwa-in { from { opacity:0; transform:translate(-50%,12px); } }
+      .pwa-dialog { animation-name:pwa-in-dialog !important; }
+      @keyframes pwa-in-dialog { from { opacity:0; transform:scale(.96); } }
+    `;
+    document.head.append(css);
+  }
 })();

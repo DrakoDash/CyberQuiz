@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1, viewport-fit=cover">
+<title>Premier jour au bureau — CyberQuiz</title>
+<meta name="description" content="Quiz interactif de cybersécurité : mises en situation sur la messagerie, les fichiers, le partage et les mots de passe.">
+<style>
+:root {
+  --bg: #070b1a;
+  --card: #0d1228;
+  --card2: #111833;
+  --accent: #00bfff;
+  --accent2: #4cc9f0;
+  --glow: rgba(0,191,255,0.18);
+  --border: rgba(0,191,255,0.18);
+  --muted: rgba(255,255,255,0.7);
+  --success: #4dff91;
+  --fail: #ff5555;
+  --text: #e8eaf6;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0; padding: 0; min-height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ── PARTICLES ─────────────────────── */
+#particles {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+}
+
+/* ── NAVBAR ─────────────────────────── */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(7,11,26,0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 900;
+}
+
+.nav-back {
+  background: none; border: none; cursor: pointer;
+  color: var(--accent); font-size: 0.9rem;
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: background 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+.nav-back:hover { background: var(--glow); }
+
+.nav-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem; color: var(--accent); letter-spacing: 2px;
+}
+
+.nav-badge {
+  font-size: 0.75rem; color: var(--muted);
+  background: rgba(0,191,255,0.08);
+  border: 1px solid var(--border);
+  padding: 4px 10px; border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ── MAIN ───────────────────────────── */
+main {
+  position: relative; z-index: 1;
+  padding: 82px 16px 60px;
+  max-width: 820px; margin: 0 auto;
+}
+
+/* ── QUIZ CARD ──────────────────────── */
+.quiz-card {
+  background: linear-gradient(160deg, rgba(15,20,48,0.98), rgba(10,13,33,0.98));
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0,191,255,0.07), 0 20px 40px rgba(0,0,0,0.5);
+}
+
+/* ── HERO BANNER ────────────────────── */
+.quiz-hero {
+  background: linear-gradient(120deg, rgba(0,191,255,0.1) 0%, rgba(76,201,240,0.06) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 28px 32px 22px;
+  display: flex; align-items: center; gap: 20px;
+}
+
+.hero-icon {
+  width: 58px; height: 58px; flex-shrink: 0;
+  background: linear-gradient(135deg, rgba(0,191,255,0.15), rgba(76,201,240,0.08));
+  border: 1px solid rgba(0,191,255,0.3);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem;
+}
+
+.hero-text h1 {
+  margin: 0 0 4px;
+  font-size: 1.35rem; font-weight: 700;
+  color: #fff;
+}
+
+.hero-text p {
+  margin: 0;
+  font-size: 0.82rem; color: var(--muted); line-height: 1.4;
+}
+
+.hero-label {
+  display: inline-block; margin-bottom: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent); background: rgba(0,191,255,0.08);
+  border: 1px solid rgba(0,191,255,0.25);
+  padding: 2px 8px; border-radius: 4px;
+}
+
+/* ── PROGRESS ───────────────────────── */
+.progress-zone {
+  padding: 16px 32px 0;
+  display: flex; align-items: center; gap: 14px;
+}
+
+.progress-bar {
+  flex: 1; height: 6px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 99px; overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  border-radius: 99px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px rgba(0,191,255,0.5);
+}
+
+.progress-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem; color: var(--muted); white-space: nowrap;
+}
+
+/* ── QUIZ BODY ──────────────────────── */
+.quiz-body { padding: 28px 32px 32px; }
+
+.question-meta {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+}
+
+.q-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--accent); background: rgba(0,191,255,0.08);
+  border: 1px solid rgba(0,191,255,0.2);
+  padding: 3px 10px; border-radius: 5px;
+}
+
+.question-text {
+  font-size: 1.1rem; font-weight: 500; line-height: 1.65;
+  color: #f0f2ff; margin: 0 0 24px;
+}
+
+/* ── ANSWERS ────────────────────────── */
+.answers { display: flex; flex-direction: column; gap: 10px; }
+
+.answer-btn {
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px; padding: 14px 16px;
+  cursor: pointer; text-align: left;
+  transition: all 0.18s ease;
+  color: var(--text); font-family: 'Poppins', sans-serif; font-size: 0.92rem;
+}
+
+.answer-btn:hover {
+  background: rgba(0,191,255,0.07);
+  border-color: rgba(0,191,255,0.3);
+  transform: translateX(4px);
+}
+
+.answer-badge {
+  min-width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem; font-weight: 600; color: var(--muted);
+  transition: all 0.18s ease; flex-shrink: 0;
+}
+
+.answer-btn.selected {
+  background: rgba(0,191,255,0.12);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(0,191,255,0.2);
+}
+
+.answer-btn.selected .answer-badge {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #001;
+}
+
+/* ── CONTROLS ───────────────────────── */
+.controls {
+  display: flex; gap: 12px; margin-top: 28px;
+}
+
+.btn {
+  padding: 12px 20px; border-radius: 10px; border: none;
+  cursor: pointer; font-weight: 600; font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.2s ease;
+}
+
+.btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #001; flex: 1;
+  box-shadow: 0 4px 15px rgba(0,191,255,0.25);
+}
+.btn-primary:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,191,255,0.35);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted);
+}
+.btn-ghost:not(:disabled):hover {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* ── RESULT SCREEN ──────────────────── */
+#resultStep { display: none; text-align: center; padding: 10px 0 6px; }
+
+.score-ring {
+  position: relative; width: 130px; height: 130px;
+  margin: 0 auto 20px;
+}
+
+.score-ring svg { transform: rotate(-90deg); }
+
+.score-ring-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+
+.score-ring-fill {
+  fill: none; stroke-width: 8; stroke-linecap: round;
+  stroke: var(--accent);
+  stroke-dasharray: 345;
+  stroke-dashoffset: 345;
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 0 6px rgba(0,191,255,0.5));
+}
+
+.score-ring-text {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+
+.score-number {
+  font-size: 2rem; font-weight: 700; color: #fff;
+  font-family: 'JetBrains Mono', monospace; line-height: 1;
+}
+
+.score-total { font-size: 0.75rem; color: var(--muted); }
+
+.score-msg {
+  font-size: 1.1rem; font-weight: 600; margin-bottom: 6px;
+}
+
+.score-sub {
+  font-size: 0.82rem; color: var(--muted); margin-bottom: 24px;
+}
+
+.result-actions {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+}
+
+/* ── CORRECTION SCREEN ──────────────── */
+#corrStep { display: none; }
+
+.corr-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+
+.corr-header h3 {
+  margin: 0; font-size: 1.1rem; color: #fff;
+}
+
+.corr-list {
+  max-height: 440px; overflow-y: auto;
+  padding-right: 6px; display: flex; flex-direction: column; gap: 10px;
+}
+
+.corr-list::-webkit-scrollbar { width: 4px; }
+.corr-list::-webkit-scrollbar-track { background: transparent; }
+.corr-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.corr-item {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px; padding: 16px;
+  border-left: 3px solid transparent;
+}
+
+.corr-item.ok { border-left-color: var(--success); }
+.corr-item.ko { border-left-color: var(--fail); }
+
+.corr-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 10px; margin-bottom: 10px;
+}
+
+.corr-q { font-size: 0.88rem; font-weight: 500; color: #f0f2ff; line-height: 1.4; }
+
+.corr-status {
+  font-size: 0.72rem; font-weight: 600; white-space: nowrap;
+  padding: 3px 8px; border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.corr-status.ok { background: rgba(77,255,145,0.1); color: var(--success); }
+.corr-status.ko { background: rgba(255,85,85,0.1); color: var(--fail); }
+
+.corr-answers { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+.corr-answers strong { color: #fff; }
+
+.corr-expl {
+  margin-top: 8px; font-size: 0.8rem;
+  color: rgba(76,201,240,0.9);
+  font-style: italic; line-height: 1.5;
+  padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.corr-footer {
+  display: flex; gap: 10px; margin-top: 18px;
+}
+
+/* ── MODAL ──────────────────────────── */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1200;
+}
+
+.modal {
+  background: #0d1228;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 24px; width: 320px; text-align: center;
+  box-shadow: 0 0 40px rgba(0,191,255,0.1);
+}
+
+.modal h4 {
+  margin: 0 0 10px; font-size: 1.05rem; color: #fff;
+}
+
+.modal p { margin: 0 0 22px; font-size: 0.88rem; color: var(--muted); }
+
+.modal-actions { display: flex; gap: 10px; }
+
+/* ── RESPONSIVE ─────────────────────── */
+@media (max-width: 600px) {
+  .quiz-hero { padding: 20px 20px 16px; gap: 14px; }
+  .quiz-body { padding: 20px 20px 24px; }
+  .progress-zone { padding: 14px 20px 0; }
+  .hero-text h1 { font-size: 1.1rem; }
+  .hero-icon { width: 48px; height: 48px; font-size: 1.4rem; border-radius: 10px; }
+  .question-text { font-size: 1rem; }
+}
+
+[hidden] { display: none !important; }
+:focus-visible { outline: 3px solid #ffd166; outline-offset: 4px; }
+a.nav-back { text-decoration: none; }
+.answer-btn:disabled { cursor: default; transform: none; opacity: 1; }
+.answer-btn.correct { border-color: var(--success); }
+.answer-btn.wrong { border-color: var(--fail); }
+.feedback { padding: 16px; margin-top: 20px; border: 1px solid var(--border); border-radius: 12px; line-height: 1.6; }
+.storage-note { padding: 0 32px; color: #ffd166; font-size: .85rem; }
+#qText { outline-offset: 6px; }
+@media(max-width: 420px) { .navbar { padding: 0 10px; } .nav-badge { display:none; } .controls,.corr-footer { flex-wrap:wrap; } .btn { padding:12px; } }
+@media(prefers-reduced-motion: reduce) { *,*::before,*::after { transition:none !important; animation:none !important; } }
+
+.btn { text-decoration: none; }
+.hero-icon { color: var(--accent); }
+#scenario { margin: 0 0 20px; font-size: .9rem; color: var(--muted); }
+
+:root { --theme-rgb: 110, 231, 150; --accent2: #4fd1c5; }
+
+/* Habillage thématique : couleurs, illustration et ambiance propres au module. */
+:root { --accent: rgb(var(--theme-rgb)); --glow: rgba(var(--theme-rgb),.13); --border: rgba(var(--theme-rgb),.23); --muted: #b2bed2; }
+body { background: #070b17; font-family: Inter, 'Segoe UI', Arial, sans-serif; }
+body::before { content:""; position:fixed; inset:0; pointer-events:none; background:radial-gradient(ellipse at 13% 13%,rgba(var(--theme-rgb),.10),transparent 48%),radial-gradient(ellipse at 90% 85%,rgba(var(--theme-rgb),.055),transparent 50%); }
+#ambient-particles { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:0; opacity:.65; }
+.ambient-grid { position:fixed; inset:0; pointer-events:none; background-image:linear-gradient(rgba(var(--theme-rgb),.025) 1px,transparent 1px),linear-gradient(90deg,rgba(var(--theme-rgb),.025) 1px,transparent 1px); background-size:64px 64px; mask-image:linear-gradient(to bottom,black,transparent 85%); }
+.navbar { height:68px; background:rgba(7,11,23,.88); padding:0 max(24px,calc((100vw - 1000px)/2)); border-color:rgba(var(--theme-rgb),.14); }
+.nav-logo { letter-spacing:3px; font-weight:700; font-size:.93rem; }
+.nav-back { color:var(--muted); border-color:rgba(255,255,255,.12); font-size:.8rem; }
+.nav-back:hover { color:var(--accent); border-color:var(--border); }
+.nav-badge { background:rgba(var(--theme-rgb),.06); color:var(--accent); border-color:var(--border); font-size:.65rem; }
+main { max-width:1012px; padding:98px 24px 48px; }
+.lesson-trail { display:flex; justify-content:space-between; gap:15px; margin:0 0 16px; color:#8c9bb3; font: .64rem/1.6 ui-monospace,monospace; letter-spacing:2px; text-transform:uppercase; }
+.lesson-trail strong { color:var(--accent); font-weight:500; }
+.quiz-card { position:relative; border:1px solid rgba(var(--theme-rgb),.20); background:linear-gradient(130deg,#10182b,#0c1324 70%); box-shadow:0 24px 80px #0006,0 0 70px rgba(var(--theme-rgb),.04); border-radius:24px; }
+.quiz-card::before { content:""; position:absolute; top:0; left:32px; width:110px; height:2px; background:linear-gradient(90deg,var(--accent),transparent); box-shadow:0 0 20px var(--glow); z-index:2; }
+.quiz-hero { position:relative; min-height:235px; padding:34px 40px; gap:26px; display:grid; grid-template-columns:1fr 205px; overflow:hidden; background:linear-gradient(105deg,rgba(var(--theme-rgb),.09),transparent 65%); border-color:rgba(var(--theme-rgb),.12); }
+.hero-copy { min-width:0; position:relative; z-index:1; }
+.hero-label { background:rgba(var(--theme-rgb),.07); border-color:var(--border); padding:5px 9px; font-size:.6rem; margin:0 0 13px; letter-spacing:1.8px; border-radius:5px; }
+.hero-text h1 { font-size:clamp(1.55rem,3vw,2.1rem); line-height:1.15; letter-spacing:-.8px; margin:0 0 13px; font-weight:750; }
+.hero-text p { max-width:440px; color:#b5c2d5; font-size:.9rem; line-height:1.7; }
+.topic-tags { display:flex; flex-wrap:wrap; gap:7px; margin-top:18px; }
+.topic-tags span { font-size:.66rem; color:var(--accent); padding:5px 9px; border:1px solid rgba(var(--theme-rgb),.15); border-radius:5px; background:rgba(var(--theme-rgb),.025); }
+.hero-art { width:200px; height:200px; color:var(--accent); position:relative; justify-self:end; }
+.hero-art::before { content:""; position:absolute; inset:25px; border-radius:50%; background:radial-gradient(circle,rgba(var(--theme-rgb),.17),transparent 70%); filter:blur(8px); }
+.hero-art svg { width:100%; height:100%; overflow:visible; position:relative; }
+.art-orbit { opacity:.30; stroke-width:1; stroke-dasharray:3 9; transform-origin:100px 100px; animation:orbit 90s linear infinite; }
+.art-inner { opacity:.09; stroke-width:1; }
+.art-guides { opacity:.4; stroke-width:1; }
+.art-symbol { filter:drop-shadow(0 0 10px rgba(var(--theme-rgb),.3)); animation:breathe 7s ease-in-out infinite; transform-origin:center; }
+.art-bright { stroke:#eaf5ff; }
+.art-dash { stroke-dasharray:4 6; opacity:.5; }
+.art-dot,.art-satellite { fill:var(--accent); stroke:none; }
+.art-satellite { opacity:.8; }
+.progress-zone { padding:24px 40px 0; gap:16px; }
+.progress-bar { height:5px; background:#ffffff0d; }
+.progress-fill { background:linear-gradient(90deg,var(--accent),var(--accent2)); box-shadow:0 0 12px rgba(var(--theme-rgb),.4); }
+.progress-label { color:var(--accent); font-size:.7rem; }
+.quiz-body { padding:26px 40px 36px; }
+.play-hint { margin:0 0 22px; color:#95a4ba; font-size:.75rem; line-height:1.5; }
+.question-meta { margin:0; }
+.q-number { display:inline-block; background:transparent; border:0; padding:0; margin:0 0 14px; color:var(--accent); font-size:.66rem; letter-spacing:1.7px; }
+.question-text { font-size:1.14rem; line-height:1.6; font-weight:600; margin:0 0 23px; max-width:780px; }
+.answers { gap:10px; }
+.answer-btn { width:100%; min-height:64px; padding:14px 18px; border:1px solid #ffffff12; background:linear-gradient(100deg,#ffffff03,#ffffff01); border-radius:12px; color:#dce5f2; font-family:inherit; font-size:.91rem; line-height:1.5; transition:background .18s,border-color .18s,box-shadow .18s; }
+.answer-btn:hover:not(:disabled) { transform:none; border-color:rgba(var(--theme-rgb),.45); background:rgba(var(--theme-rgb),.055); }
+.answer-badge { width:32px; height:32px; min-width:32px; border-radius:8px; color:#91a0b9; background:#ffffff03; border-color:#ffffff12; font-size:.72rem; }
+.answer-btn.selected { border-color:var(--accent); background:rgba(var(--theme-rgb),.09); box-shadow:inset 3px 0 0 var(--accent),0 0 18px rgba(var(--theme-rgb),.035); }
+.answer-btn.selected .answer-badge { color:#080c16; background:var(--accent); border-color:var(--accent); }
+.answer-btn.correct { border-color:var(--success); box-shadow:inset 3px 0 var(--success); }
+.answer-btn.wrong { border-color:#ff8686; box-shadow:inset 3px 0 #ff8686; }
+.controls { gap:12px; margin-top:26px; padding-top:22px; border-top:1px solid #ffffff0c; }
+.btn { min-height:46px; padding:13px 20px; font-size:.84rem; font-family:inherit; }
+.btn-primary { background:linear-gradient(115deg,var(--accent),var(--accent2)); color:#090d18; box-shadow:0 4px 18px rgba(var(--theme-rgb),.12); }
+.btn-primary:not(:disabled):hover { transform:translateY(-1px); box-shadow:0 5px 24px rgba(var(--theme-rgb),.2); }
+.btn:disabled { opacity:.4; }
+.btn-ghost { color:#b1bdd0; border-color:#ffffff18; }
+.feedback { background:rgba(var(--theme-rgb),.04); border-color:var(--border); color:#d0dcee; font-size:.9rem; }
+#scenario { padding:14px 17px; border-left:3px solid var(--accent); color:#b3c1d4; font-size:.85rem; }
+.score-ring { margin-top:20px; }
+.score-ring-fill { filter:drop-shadow(0 0 6px rgba(var(--theme-rgb),.3)); }
+.score-sub { line-height:1.7; }
+.corr-expl { color:var(--accent); font-style:normal; }
+.corr-status { display:inline-block; margin:4px 0; }
+.corr-list { max-height:530px; }
+.corr-header h2 { font-size:1.3rem; }
+.corr-item { padding:19px; }
+.lesson-footer { display:flex; align-items:center; justify-content:space-between; gap:15px; margin-top:20px; color:#91a0b7; font-size:.67rem; line-height:1.6; }
+.lesson-footer a { color:var(--accent); text-decoration:none; }
+.lesson-footer a:hover { text-decoration:underline; }
+:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+@keyframes orbit { to { transform:rotate(360deg); } }
+@keyframes breathe { 0%,100% {opacity:.8;transform:translateY(0)} 50% {opacity:1;transform:translateY(-3px)} }
+@media(max-width:700px) {
+ .navbar { padding:0 18px; height:62px; }
+ main { padding:85px 16px 32px; }
+ .quiz-hero { grid-template-columns:1fr 125px; padding:25px; gap:14px; min-height:200px; }
+ .hero-art { width:125px; height:125px; }
+ .hero-text h1 { font-size:1.5rem; }
+ .hero-text p { font-size:.8rem; }
+ .topic-tags { gap:5px; margin-top:13px; }
+ .topic-tags span { font-size:.59rem; padding:4px 7px; }
+ .progress-zone { padding:20px 25px 0; }
+ .quiz-body { padding:22px 25px 26px; }
+}
+@media(max-width:480px) {
+ .nav-logo { font-size:.8rem; letter-spacing:1.5px; }
+ .nav-badge { display:none; }
+ .quiz-card { border-radius:19px; }
+ .lesson-trail { font-size:.55rem; letter-spacing:1.2px; }
+ .quiz-hero { display:block; padding:25px 22px; min-height:0; }
+ .hero-art { position:absolute; right:-15px; top:-18px; width:126px; height:126px; opacity:.22; pointer-events:none; }
+ .hero-text h1 { font-size:1.48rem; max-width:260px; padding-right:20px; }
+ .hero-text p { max-width:300px; font-size:.79rem; line-height:1.6; }
+ .hero-label { margin-bottom:12px; }
+ .progress-zone { padding:19px 22px 0; }
+ .quiz-body { padding:21px 22px 25px; }
+ .play-hint { font-size:.67rem; margin-bottom:18px; }
+ .question-text { font-size:1rem; line-height:1.55; }
+ .answer-btn { font-size:.83rem; padding:13px 12px; gap:11px; min-height:62px; }
+ .answer-badge { width:29px; height:29px; min-width:29px; }
+ .btn { padding:12px 14px; font-size:.78rem; }
+ .controls { flex-wrap:nowrap; }
+ .lesson-footer { flex-wrap:wrap; font-size:.61rem; }
+ .storage-note { padding:0 22px; }
+ .corr-footer { flex-wrap:wrap; }
+}
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+.visually-hidden { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+/* ============================================================
+   MISES EN SITUATION — fenêtres simulées
+   ============================================================ */
+.sim-zone { display:block; }
+.step-kind { display:inline-flex; align-items:center; gap:6px; margin:0 0 10px; padding:4px 9px; border-radius:5px; font:600 .62rem/1.4 ui-monospace,monospace; letter-spacing:1.4px; text-transform:uppercase; }
+.step-kind.is-sim { color:#08110b; background:var(--accent); }
+.step-kind.is-qcm { color:var(--accent); border:1px solid var(--border); }
+
+.sim { border:1px solid rgba(255,255,255,.10); border-radius:14px; overflow:hidden; background:#0a1020; box-shadow:0 14px 40px #0005; }
+.sim-bar { display:flex; align-items:center; gap:12px; padding:9px 14px; background:#121a30; border-bottom:1px solid rgba(255,255,255,.07); font-size:.76rem; color:#aab6ca; }
+.sim-dots { display:flex; gap:6px; }
+.sim-dots i { width:10px; height:10px; border-radius:50%; background:#ff6b6b; display:block; }
+.sim-dots i:nth-child(2) { background:#f7c948; }
+.sim-dots i:nth-child(3) { background:#5ad17a; }
+.sim-title { font-weight:600; letter-spacing:.3px; }
+.sim-body { padding:0; }
+.sim-toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid rgba(255,255,255,.06); font-size:.78rem; color:#9fb0c7; }
+.sim-hint { font-size:.75rem; color:#8fa0b8; margin:10px 2px 0; }
+.sim button { font-family:inherit; }
+.sim .ok-mark { color:var(--success); font-weight:700; }
+.sim .ko-mark { color:#ff8686; font-weight:700; }
+
+/* Messagerie */
+.mail { display:grid; grid-template-columns:260px 1fr; min-height:330px; }
+.mail-list { border-right:1px solid rgba(255,255,255,.07); display:flex; flex-direction:column; }
+.mail-item { text-align:left; background:none; border:0; border-bottom:1px solid rgba(255,255,255,.05); color:#dce5f2; padding:11px 13px; cursor:pointer; display:grid; gap:2px; position:relative; }
+.mail-item:hover { background:rgba(var(--theme-rgb),.05); }
+.mail-item.active { background:rgba(var(--theme-rgb),.10); box-shadow:inset 3px 0 var(--accent); }
+.mail-item.correct { box-shadow:inset 3px 0 var(--success); }
+.mail-item.wrong { box-shadow:inset 3px 0 #ff8686; }
+.mail-from { font-weight:600; font-size:.82rem; display:flex; justify-content:space-between; gap:8px; }
+.mail-time { font-weight:400; color:#8292a8; font-size:.7rem; }
+.mail-subj { font-size:.76rem; color:#aebbd0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.mail-tag { justify-self:start; margin-top:4px; font-size:.64rem; padding:2px 7px; border-radius:99px; border:1px solid; }
+.mail-tag.phish { color:#ffb36b; border-color:#ffb36b66; }
+.mail-tag.legit { color:var(--success); border-color:rgba(77,255,145,.4); }
+.mail-view { padding:18px 20px; display:flex; flex-direction:column; gap:10px; min-width:0; }
+.mail-view h3 { margin:0; font-size:1rem; }
+.mail-meta { font-size:.76rem; color:#9fb0c7; word-break:break-all; }
+.mail-meta strong { color:#dce5f2; }
+.mail-text p { margin:0 0 8px; font-size:.86rem; line-height:1.6; color:#d3dceb; }
+.mail-link { align-self:flex-start; padding:9px 14px; border-radius:8px; border:0; background:#2d6cdf; color:#fff; font-weight:600; font-size:.82rem; cursor:pointer; }
+.statusbar { font:.72rem/1.4 ui-monospace,monospace; color:#9fb0c7; background:#060a14; border:1px solid rgba(255,255,255,.07); border-radius:6px; padding:6px 9px; min-height:28px; word-break:break-all; }
+.statusbar.warn { color:#ffd166; }
+.mail-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:auto; padding-top:8px; }
+.mail-why { font-size:.8rem; line-height:1.55; padding:10px 12px; border-radius:8px; background:rgba(var(--theme-rgb),.06); border:1px solid var(--border); }
+.mail-empty { margin:auto; color:#8292a8; font-size:.85rem; text-align:center; }
+
+/* Boutons génériques des simulations */
+.sbtn { padding:8px 13px; border-radius:8px; border:1px solid rgba(255,255,255,.14); background:#ffffff08; color:#dce5f2; font-size:.8rem; cursor:pointer; }
+.sbtn:hover:not(:disabled) { border-color:rgba(var(--theme-rgb),.6); }
+.sbtn[aria-pressed="true"] { border-color:var(--accent); background:rgba(var(--theme-rgb),.14); color:#fff; }
+.sbtn.danger[aria-pressed="true"] { border-color:#ffb36b; background:#ffb36b22; }
+.sbtn:disabled { cursor:default; opacity:.6; }
+
+/* Tableaux (explorateur, gestionnaire des tâches) */
+.sim-table { width:100%; border-collapse:collapse; font-size:.8rem; }
+.sim-table th { text-align:left; font-weight:500; color:#8fa0b8; font-size:.7rem; padding:8px 12px; border-bottom:1px solid rgba(255,255,255,.07); background:#0d1426; }
+.sim-table td { padding:9px 12px; border-bottom:1px solid rgba(255,255,255,.04); color:#d3dceb; }
+.sim-table tr.row { cursor:pointer; }
+.sim-table tr.row:hover td { background:rgba(var(--theme-rgb),.04); }
+.sim-table tr.row.active td { background:rgba(var(--theme-rgb),.10); }
+.sim-table tr.row.correct td:first-child { box-shadow:inset 3px 0 var(--success); }
+.sim-table tr.row.wrong td:first-child { box-shadow:inset 3px 0 #ff8686; }
+.sim-table input { accent-color:var(--accent); width:16px; height:16px; cursor:pointer; }
+.fname { display:flex; align-items:center; gap:8px; }
+.num { font-variant-numeric:tabular-nums; white-space:nowrap; }
+.cpu-hot { color:#ff8686; font-weight:700; }
+.props { padding:12px 14px; font-size:.78rem; display:grid; grid-template-columns:auto 1fr; gap:4px 14px; background:#0d1426; border-top:1px solid rgba(255,255,255,.07); }
+.props dt { color:#8fa0b8; }
+.props dd { margin:0; color:#dce5f2; word-break:break-all; }
+.table-wrap { overflow-x:auto; }
+.switch { display:inline-flex; align-items:center; gap:7px; cursor:pointer; }
+.switch input { accent-color:var(--accent); width:16px; height:16px; }
+
+/* Rédaction d'un mail */
+.compose { padding:14px; display:grid; gap:8px; }
+.c-row { display:grid; grid-template-columns:52px 1fr; align-items:center; gap:10px; min-height:44px; padding:6px 0; border-bottom:1px solid rgba(255,255,255,.06); }
+.c-row > span { color:#8fa0b8; font-size:.8rem; }
+.c-zone { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.chip { display:inline-flex; gap:6px; align-items:center; padding:6px 11px; border-radius:99px; background:rgba(var(--theme-rgb),.14); border:1px solid var(--accent); font-size:.78rem; color:#fff; }
+.c-body { font-size:.84rem; line-height:1.6; color:#c9d3e3; padding:8px 0; }
+.attach-pick { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:8px; }
+.attach-pick .sbtn { text-align:left; display:flex; gap:9px; align-items:center; padding:10px 12px; }
+.attach-pick small { display:block; color:#8fa0b8; font-size:.7rem; }
+
+/* Partage de fichier */
+.share { padding:14px; display:grid; gap:14px; }
+.share-file { display:flex; gap:12px; align-items:center; padding:10px 12px; border-radius:10px; background:#ffffff06; border:1px solid rgba(255,255,255,.08); font-size:.82rem; }
+.share-file .big { font-size:1.7rem; }
+.badge-conf { font-size:.62rem; padding:2px 7px; border-radius:4px; color:#ffb36b; border:1px solid #ffb36b66; margin-left:6px; }
+.opt-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:8px; }
+.opt-grid .sbtn { text-align:left; padding:11px 12px; line-height:1.45; }
+.opt-grid .sbtn strong { display:block; font-size:.82rem; }
+.opt-grid .sbtn small { color:#8fa0b8; font-size:.7rem; }
+.set-row { display:grid; gap:6px; }
+.set-row > span { font-size:.76rem; color:#9fb0c7; }
+.seg { display:flex; flex-wrap:wrap; gap:6px; }
+.settings { display:grid; gap:12px; padding:12px; border-radius:10px; border:1px dashed rgba(255,255,255,.12); }
+
+/* Navigateur */
+.browser-url { flex:1; min-width:0; display:flex; align-items:center; gap:8px; background:#060a14; border:1px solid rgba(255,255,255,.08); border-radius:99px; padding:6px 12px; font:.76rem ui-monospace,monospace; color:#c9d3e3; }
+.results { padding:8px 14px 14px; display:grid; gap:6px; }
+.result { text-align:left; background:none; border:1px solid transparent; border-radius:10px; padding:10px 12px; cursor:pointer; color:#dce5f2; display:grid; gap:3px; }
+.result:hover:not(:disabled) { background:#ffffff06; }
+.result[aria-pressed="true"] { border-color:var(--accent); background:rgba(var(--theme-rgb),.08); }
+.result.correct { border-color:var(--success); }
+.result.wrong { border-color:#ff8686; }
+.result:disabled { cursor:default; }
+.r-url { font:.72rem ui-monospace,monospace; color:#7ee08f; word-break:break-all; }
+.r-title { color:#8ab4ff; font-size:.92rem; font-weight:600; }
+.r-desc { color:#a9b5c8; font-size:.78rem; }
+.r-ad { font-size:.62rem; font-weight:700; color:#dce5f2; border:1px solid #ffffff44; border-radius:3px; padding:0 4px; margin-right:6px; }
+.r-why { font-size:.76rem; color:#c9d3e3; margin-top:4px; }
+
+/* Mot de passe */
+.pwd { padding:18px; display:grid; gap:14px; max-width:520px; }
+.pwd label { font-size:.8rem; color:#9fb0c7; }
+.pwd-input { width:100%; padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,.15); background:#060a14; color:#fff; font:1rem ui-monospace,monospace; }
+.pwd-input:focus { border-color:var(--accent); outline:none; box-shadow:0 0 0 3px rgba(var(--theme-rgb),.2); }
+.meter { height:8px; border-radius:99px; background:#ffffff10; overflow:hidden; }
+.meter i { display:block; height:100%; width:0; border-radius:99px; transition:width .25s, background .25s; }
+.crit { list-style:none; margin:0; padding:0; display:grid; gap:6px; font-size:.82rem; }
+.crit li { display:flex; gap:8px; align-items:flex-start; color:#aebbd0; }
+.crit li.ok { color:var(--success); }
+.pwd-note { font-size:.75rem; color:#8fa0b8; }
+
+@media(max-width:700px) {
+  .mail { grid-template-columns:1fr; }
+  .mail-list { border-right:0; border-bottom:1px solid rgba(255,255,255,.07); }
+  .hide-sm { display:none; }
+}
+</style><link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#070b17">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CyberQuiz">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="app.css">
+<script src="app.js"></script>
+</head><body>
+<div class="ambient-grid" aria-hidden="true"></div><canvas id="ambient-particles" aria-hidden="true"></canvas>
+<nav class="navbar" aria-label="Navigation principale"><a class="nav-back" href="accueil.html">← Accueil</a><div class="nav-logo">CYBERQUIZ</div><span class="nav-badge">Bac Pro CIEL</span></nav>
+<main><div class="lesson-trail"><span>Mises en situation</span><strong>Parcours / 14</strong></div><div class="quiz-card">
+<div class="quiz-hero"><div class="hero-copy"><div class="hero-text"><div class="hero-label">Interactif · MODULE 14</div><h1>Premier jour au bureau</h1><p>Ton premier jour d'alternance chez NovaTech : trie tes mails, inspecte tes fichiers, partage un document… sans tomber dans les pièges.</p></div><div class="topic-tags"><span>Messagerie</span><span>Fichiers</span><span>Partage</span><span>Mots de passe</span></div></div><div class="hero-art" aria-hidden="true"><svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle class="art-orbit" cx="100" cy="100" r="91"/><circle class="art-inner" cx="100" cy="100" r="75"/><path class="art-guides" d="M100 3v13m0 168v13M3 100h13m168 0h13"/><g class="art-symbol"><rect x="48" y="58" width="104" height="70" rx="7"/><path d="M84 146h32M100 128v18"/><path class="art-dash" d="M60 74h80"/><path class="art-bright" d="m106 92 26 10-11 4-4 11Z"/><circle class="art-dot" cx="63" cy="66" r="3"/></g><circle class="art-satellite" cx="100" cy="9" r="4"/></svg></div></div>
+<div class="progress-zone"><div class="progress-bar" id="progressBar" role="progressbar" aria-label="Étapes validées" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><div class="progress-fill" id="progressFill"></div></div><span id="progressLabel" class="progress-label"></span></div>
+<p id="storageNote" class="storage-note" role="status" hidden></p>
+<section class="quiz-body" id="quizStep" aria-labelledby="qText"><p class="play-hint">12 étapes · Questions et mises en situation interactives · Valide chaque étape pour voir l'explication.</p><p class="q-number" id="qNumber"></p><p id="scenario" class="feedback" hidden></p><h2 class="question-text" id="qText" tabindex="-1"></h2><div id="ansBox"></div>
+<p id="feedback" class="feedback" aria-live="polite" tabindex="-1" hidden></p>
+<div class="controls"><button class="btn btn-ghost" id="prevBtn" type="button">Précédent</button><button class="btn btn-primary" id="validateBtn" type="button">Valider</button><button class="btn btn-primary" id="nextBtn" type="button" hidden>Suivant</button></div></section>
+<section class="quiz-body" id="resultStep" hidden aria-labelledby="scoreMsg"><div class="score-ring"><svg width="130" height="130" viewBox="0 0 130 130" aria-hidden="true"><circle class="score-ring-track" cx="65" cy="65" r="55"/><circle class="score-ring-fill" id="ringFill" cx="65" cy="65" r="55"/></svg><div class="score-ring-text"><span class="score-number" id="scoreNum"></span><span class="score-total" id="scoreTotal"></span></div></div><h2 class="score-msg" id="scoreMsg" tabindex="-1"></h2><p class="score-sub" id="scoreSub"></p><div class="result-actions"><button class="btn btn-ghost" id="showCorrBtn">Voir la correction</button><button class="btn btn-primary" id="restartBtn">Recommencer</button><a class="btn btn-ghost" href="succes.html">🏆 Mes succès</a><a class="btn btn-ghost" href="accueil.html">Accueil</a></div></section>
+<section class="quiz-body" id="corrStep" hidden aria-labelledby="correctionTitle"><div class="corr-header"><h2 id="correctionTitle" tabindex="-1">Correction détaillée</h2></div><div class="corr-list" id="corrList"></div><div class="corr-footer"><button class="btn btn-ghost" id="backToResultBtn">Retour au score</button><a class="btn btn-primary" href="accueil.html">Accueil</a></div></section>
+</div><footer class="lesson-footer"><span>CyberQuiz · Les noms, adresses et sites de ce module sont fictifs.</span><a href="accueil.html">Explorer les modules →</a></footer></main>
+<noscript><p>Active JavaScript dans ton navigateur pour utiliser ce quiz.</p></noscript>
+<script src="succes.js"></script>
+<script>
+'use strict';
+/* ============================================================
+   CyberQuiz — Module 14 : Premier jour au bureau
+   Deux types d'étapes :
+   - type 'qcm' : question classique (q, a, c, e) comme les autres quiz
+   - type 'sim' : mise en situation interactive. Chaque simulation fournit :
+       init()      → réponse vide de départ (objet)
+       render(box, réponse, verrouillé, set, ui) → dessine la fenêtre
+       ready(rép)  → true si l'élève peut valider
+       check(rép)  → true si la réponse est juste
+       explain(rép)→ explication affichée après validation
+       summary(rép)→ résumé de la réponse dans la correction
+   ============================================================ */
+const quizId = 'simulation';
+const VERSION = 'simulation-v1';
+const $ = id => document.getElementById(id);
+
+/* Petit créateur d'éléments : h('div', {class:'x'}, enfant1, enfant2) */
+function h(tag, props = {}, ...kids) {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(props)) {
+    if (v === null || v === undefined || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'text') el.textContent = v;
+    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  el.append(...kids.flat().filter(x => x !== null && x !== undefined && x !== false));
+  return el;
+}
+/* Fenêtre façon système d'exploitation */
+function win(title, ...body) {
+  return h('div', {class:'sim'},
+    h('div', {class:'sim-bar'}, h('span', {class:'sim-dots', 'aria-hidden':'true'}, h('i'), h('i'), h('i')), h('span', {class:'sim-title', text:title})),
+    h('div', {class:'sim-body'}, ...body));
+}
+/* Redessine une simulation en gardant le focus clavier sur le même élément. */
+function redraw(box, build) {
+  const active = box.contains(document.activeElement) ? document.activeElement.dataset.k : null;
+  box.replaceChildren(build());
+  if (active) { const el = box.querySelector(`[data-k="${active}"]`); if (el) el.focus(); }
+}
+const mark = ok => h('span', {class: ok ? 'ok-mark' : 'ko-mark', text: ok ? '✓' : '✗', 'aria-label': ok ? 'correct' : 'incorrect'});
+
+/* ============================================================
+   SIMULATION 1 — Messagerie : repérer le phishing
+   ============================================================ */
+const MAILS = [
+  { id:'m1', from:'Support Informatique', addr:'support@novatech-securite.co', time:'08:52',
+    subject:'⚠ Votre mot de passe expire dans 2 heures',
+    body:['Bonjour,', 'Votre mot de passe NovaTech expire aujourd’hui. Sans action de votre part dans les 2 heures, votre compte sera bloqué.', 'Cliquez ci-dessous pour conserver votre mot de passe actuel.'],
+    link:{ text:'Conserver mon mot de passe', url:'http://novatech-securite.co/login.php' }, phishing:true,
+    why:'Le domaine imite l’entreprise (novatech-securite.co au lieu de novatech.fr), le ton est urgent avec une menace de blocage, et le lien mène vers une fausse page de connexion en HTTP.' },
+  { id:'m2', from:'Camille Martin', addr:'c.martin@novatech.fr', time:'08:30',
+    subject:'Planning de ta première semaine',
+    body:['Salut et bienvenue !', 'J’ai déposé ton planning dans le dossier partagé de l’équipe, tu le trouveras depuis l’intranet. On se voit à 10 h pour le café.', 'Camille'],
+    link:null, phishing:false,
+    why:'Adresse interne (novatech.fr), aucun lien ni pièce jointe, et une demande cohérente avec ton arrivée.' },
+  { id:'m3', from:'Ressources Humaines', addr:'rh@novatech.fr', time:'08:05',
+    subject:'Bienvenue chez NovaTech – réunion d’accueil',
+    body:['Bonjour,', 'Nous sommes ravis de t’accueillir ! La réunion d’accueil aura lieu à 14 h en salle B.', 'Tu peux consulter le livret d’accueil sur l’intranet.'],
+    link:{ text:'Livret d’accueil (intranet)', url:'https://intranet.novatech.fr/accueil/livret' }, phishing:false,
+    why:'L’adresse et le lien appartiennent bien au domaine novatech.fr, sans urgence ni demande d’identifiants.' },
+  { id:'m4', from:'Colis Express', addr:'suivi@colis-express-livraison.info', time:'07:14',
+    subject:'Votre colis est en attente : frais de 1,99 €',
+    body:['Votre colis n’a pas pu être livré car des frais de douane de 1,99 € restent à régler.', 'Réglez-les avant ce soir pour éviter le retour à l’expéditeur.'],
+    link:{ text:'Payer 1,99 €', url:'https://colis-express-livraison.info/paiement/carte' }, phishing:true,
+    why:'Tu n’attends aucun colis au bureau, le petit montant sert à récupérer ta carte bancaire, et le domaine en .info n’a rien d’officiel. Le cadenas HTTPS ne prouve pas qu’un site est honnête.' }
+];
+const simMail = {
+  type:'sim', kind:'Messagerie', action:'Valider le tri',
+  scenario:'9 h 05. Tu ouvres ta messagerie NovaTech (adresse officielle : @novatech.fr) pour la première fois.',
+  q:'Ouvre chaque mail, survole les liens pour voir leur vraie destination, puis signale ceux qui sont frauduleux.',
+  init: () => ({}),
+  ready: a => MAILS.every(m => a[m.id]),
+  check: a => MAILS.every(m => (a[m.id] === 'phish') === m.phishing),
+  explain: a => MAILS.map(m => `${(a[m.id] === 'phish') === m.phishing ? '✓' : '✗'} ${m.from} : ${m.phishing ? 'frauduleux' : 'légitime'}.`).join(' ') + ' Les indices clés : l’adresse réelle de l’expéditeur, la destination réelle du lien et le sentiment d’urgence.',
+  summary: a => MAILS.map(m => `${m.from} → ${a[m.id] === 'phish' ? 'signalé' : a[m.id] === 'ok' ? 'légitime' : 'non trié'}`).join(' · '),
+  render(box, a, locked, set, ui) {
+    if (!ui.open) ui.open = null;
+    const build = () => {
+      const list = h('div', {class:'mail-list', role:'list'}, MAILS.map(m => {
+        const st = a[m.id];
+        const cls = ['mail-item', ui.open === m.id ? 'active' : '', locked ? (((st === 'phish') === m.phishing) ? 'correct' : 'wrong') : ''].join(' ');
+        return h('button', {class:cls, type:'button', 'data-k':'mail-' + m.id, role:'listitem',
+          onclick: () => { ui.open = m.id; redraw(box, build); }},
+          h('span', {class:'mail-from'}, h('span', {text:m.from}), h('span', {class:'mail-time', text:m.time})),
+          h('span', {class:'mail-subj', text:m.subject}),
+          st ? h('span', {class:'mail-tag ' + (st === 'phish' ? 'phish' : 'legit'), text: st === 'phish' ? '🚩 Signalé' : '✓ Légitime'}) : null);
+      }));
+      const m = MAILS.find(x => x.id === ui.open);
+      let view;
+      if (!m) view = h('div', {class:'mail-view'}, h('p', {class:'mail-empty', text:'📬 Sélectionne un mail pour le lire.'}));
+      else {
+        const status = h('div', {class:'statusbar', 'aria-live':'polite', text:'Survole ou sélectionne le lien pour voir sa destination réelle.'});
+        const showUrl = () => { status.className = 'statusbar'; status.textContent = '🔗 Destination réelle : ' + m.link.url; };
+        const choose = v => () => { a[m.id] = v; set(a); redraw(box, build); };
+        view = h('div', {class:'mail-view'},
+          h('h3', {text:m.subject}),
+          h('div', {class:'mail-meta'}, 'De : ', h('strong', {text:m.from}), ' <' + m.addr + '>'),
+          h('div', {class:'mail-text'}, m.body.map(p => h('p', {text:p}))),
+          m.link ? [h('button', {class:'mail-link', type:'button', 'data-k':'link',
+              onmouseenter: showUrl, onfocus: showUrl,
+              onclick: () => { status.className = 'statusbar warn'; status.textContent = '✋ Exercice : ici on observe sans cliquer. Destination : ' + m.link.url; }},
+              m.link.text), status] : null,
+          locked ? h('div', {class:'mail-why'}, mark((a[m.id] === 'phish') === m.phishing), ' ', h('strong', {text: m.phishing ? 'Frauduleux. ' : 'Légitime. '}), m.why)
+                 : h('div', {class:'mail-actions'},
+                     h('button', {class:'sbtn danger', type:'button', 'data-k':'phish', 'aria-pressed': String(a[m.id] === 'phish'), onclick: choose('phish')}, '🚩 Signaler comme phishing'),
+                     h('button', {class:'sbtn', type:'button', 'data-k':'ok', 'aria-pressed': String(a[m.id] === 'ok'), onclick: choose('ok')}, '✓ Légitime')));
+      }
+      const done = MAILS.filter(x => a[x.id]).length;
+      return h('div', {},
+        win('Messagerie NovaTech — Boîte de réception', h('div', {class:'mail'}, list, view)),
+        locked ? null : h('p', {class:'sim-hint', text:`${done} / ${MAILS.length} mails triés.`}));
+    };
+    redraw(box, build);
+  }
+};
+
+/* ============================================================
+   SIMULATION 2 — Explorateur de fichiers : repérer les fichiers dangereux
+   ============================================================ */
+const FILES = [
+  { id:'f1', name:'Facture_Mars.pdf.exe', hidden:'Facture_Mars.pdf', icon:'📄', type:'Application (.exe)', size:'2,3 Mo', src:'Pièce jointe — expéditeur inconnu', sign:'Aucune', bad:true,
+    why:'Double extension : c’est un programme (.exe) déguisé en PDF.' },
+  { id:'f2', name:'CR_reunion_equipe.docx', hidden:'CR_reunion_equipe', icon:'📝', type:'Document Word', size:'48 Ko', src:'Serveur de fichiers NovaTech', sign:'—', bad:false,
+    why:'Document Word classique venant du serveur interne.' },
+  { id:'f3', name:'photo_equipe.jpg', hidden:'photo_equipe', icon:'🖼️', type:'Image JPEG', size:'2,1 Mo', src:'Teams — Camille Martin', sign:'—', bad:false,
+    why:'Simple image envoyée par une collègue connue.' },
+  { id:'f4', name:'Logiciel_PRO_2026_crack.zip', hidden:'Logiciel_PRO_2026_crack', icon:'🗜️', type:'Archive ZIP', size:'38 Mo', src:'free-soft-download.xyz', sign:'Aucune', bad:true,
+    why:'Logiciel piraté (« crack ») venant d’un site douteux : vecteur de malware très courant, et illégal.' },
+  { id:'f5', name:'Bon_de_commande.docm', hidden:'Bon_de_commande', icon:'📝', type:'Document Word avec macros', size:'96 Ko', src:'Pièce jointe — expéditeur inconnu', sign:'Aucune', bad:true,
+    why:'Un .docm contient des macros (du code). Venant d’un inconnu, il peut installer un malware dès qu’on active les macros.' },
+  { id:'f6', name:'vlc-3.0.21-win64.exe', hidden:'vlc-3.0.21-win64', icon:'⚙️', type:'Application (.exe)', size:'42 Mo', src:'videolan.org (site officiel)', sign:'VideoLAN — valide', bad:false,
+    why:'Un .exe n’est pas forcément dangereux : celui-ci vient du site officiel et sa signature numérique est valide.' }
+];
+const simFiles = {
+  type:'sim', kind:'Explorateur de fichiers', action:'Mettre en quarantaine',
+  scenario:'10 h 20. Ton dossier Téléchargements contient des fichiers récupérés ce matin. L’antivirus n’a rien signalé, mais certains sont louches.',
+  q:'Coche les fichiers dangereux puis mets-les en quarantaine. Astuce : clique sur un fichier pour voir ses propriétés.',
+  init: () => ({ sel: [] }),
+  ready: a => Array.isArray(a.sel) && a.sel.length > 0,
+  check: a => FILES.every(f => (a.sel || []).includes(f.id) === f.bad),
+  explain: a => FILES.filter(f => (a.sel || []).includes(f.id) !== f.bad).length === 0
+      ? 'Les trois fichiers dangereux sont : Facture_Mars.pdf.exe (double extension), le logiciel « crack » et le .docm à macros d’un inconnu. Le .exe de VLC est sûr : site officiel et signature valide.'
+      : 'Fichiers à revoir : ' + FILES.filter(f => (a.sel || []).includes(f.id) !== f.bad).map(f => `${f.name} (${f.why})`).join(' '),
+  summary: a => 'Quarantaine : ' + ((a.sel || []).map(id => FILES.find(f => f.id === id)?.name).filter(Boolean).join(', ') || 'aucun'),
+  render(box, a, locked, set, ui) {
+    if (!Array.isArray(a.sel)) a.sel = [];
+    if (ui.ext === undefined) ui.ext = false;
+    if (!ui.focus) ui.focus = null;
+    const build = () => {
+      const rows = FILES.map(f => {
+        const on = a.sel.includes(f.id);
+        const cls = ['row', ui.focus === f.id ? 'active' : '', locked ? (on === f.bad ? 'correct' : 'wrong') : ''].join(' ');
+        const shown = (ui.ext || locked) ? f.name : f.hidden;
+        return h('tr', {class:cls, onclick: e => { if (e.target.tagName !== 'INPUT') { ui.focus = f.id; redraw(box, build); } }},
+          h('td', {}, h('input', {type:'checkbox', checked: on, disabled: locked, 'data-k':'cb-' + f.id, 'aria-label':'Sélectionner ' + shown,
+            onchange: e => { a.sel = e.target.checked ? [...a.sel, f.id] : a.sel.filter(x => x !== f.id); ui.focus = f.id; set(a); redraw(box, build); }})),
+          h('td', {}, h('span', {class:'fname'}, h('span', {'aria-hidden':'true', text:f.icon}), shown, locked ? [' ', mark(on === f.bad)] : null)),
+          h('td', {class:'hide-sm', text:f.type}),
+          h('td', {class:'num', text:f.size}));
+      });
+      const f = FILES.find(x => x.id === ui.focus);
+      const props = f ? h('dl', {class:'props'},
+        h('dt', {text:'Nom complet'}), h('dd', {text:f.name}),
+        h('dt', {text:'Type'}), h('dd', {text:f.type}),
+        h('dt', {text:'Provenance'}), h('dd', {text:f.src}),
+        h('dt', {text:'Signature'}), h('dd', {text:f.sign}),
+        locked ? [h('dt', {text:'Verdict'}), h('dd', {text:(f.bad ? '⚠ Dangereux — ' : '✓ Sûr — ') + f.why})] : null)
+        : h('div', {class:'props'}, h('span', {text:'ℹ️'}), h('span', {text:'Clique sur une ligne pour afficher les propriétés du fichier.'}));
+      return win('Explorateur — C:\\Users\\alternant\\Téléchargements',
+        h('div', {class:'sim-toolbar'},
+          h('label', {class:'switch'}, h('input', {type:'checkbox', checked: ui.ext || locked, disabled: locked, 'data-k':'ext',
+            onchange: e => { ui.ext = e.target.checked; redraw(box, build); }}), 'Afficher les extensions de noms de fichiers'),
+          h('span', {text:`${a.sel.length} sélectionné(s)`})),
+        h('div', {class:'table-wrap'}, h('table', {class:'sim-table'},
+          h('thead', {}, h('tr', {}, h('th', {}, h('span', {class:'visually-hidden', text:'Choix'})), h('th', {text:'Nom'}), h('th', {class:'hide-sm', text:'Type'}), h('th', {text:'Taille'}))),
+          h('tbody', {}, rows))),
+        props);
+    };
+    redraw(box, build);
+  }
+};
+
+/* ============================================================
+   SIMULATION 3 — Gestionnaire des tâches : trouver le processus malveillant
+   ============================================================ */
+const PROCS = [
+  { id:'p1', name:'chrome.exe', pub:'Google LLC', cpu:'6 %', mem:'412 Mo', net:'0,2 Mo/s', path:'C:\\Program Files\\Google\\Chrome\\Application' },
+  { id:'p2', name:'explorer.exe', pub:'Microsoft Corporation', cpu:'1 %', mem:'88 Mo', net:'0 Mo/s', path:'C:\\Windows' },
+  { id:'p3', name:'svchost.exe', pub:'Microsoft Corporation', cpu:'0,4 %', mem:'24 Mo', net:'0 Mo/s', path:'C:\\Windows\\System32' },
+  { id:'p4', name:'svch0st.exe', pub:'Éditeur inconnu', cpu:'91 %', mem:'1 260 Mo', net:'4,8 Mo/s', path:'C:\\Users\\Public\\AppData\\Temp', bad:true },
+  { id:'p5', name:'Teams.exe', pub:'Microsoft Corporation', cpu:'3 %', mem:'520 Mo', net:'0,1 Mo/s', path:'C:\\Users\\alternant\\AppData\\Local\\Microsoft\\Teams' },
+  { id:'p6', name:'OneDrive.exe', pub:'Microsoft Corporation', cpu:'0,2 %', mem:'61 Mo', net:'0 Mo/s', path:'C:\\Program Files\\Microsoft OneDrive' }
+];
+const simTasks = {
+  type:'sim', kind:'Gestionnaire des tâches', action:'Terminer et isoler',
+  scenario:'11 h 40. Ton PC rame, le ventilateur souffle fort et la connexion réseau semble saturée alors que tu n’as presque rien d’ouvert.',
+  q:'Sélectionne le processus suspect dans le gestionnaire des tâches.',
+  init: () => ({ pid: null }),
+  ready: a => !!a.pid,
+  check: a => a.pid === 'p4',
+  explain: () => '« svch0st.exe » s’écrit avec un zéro : il imite le vrai processus Windows svchost.exe. Éditeur inconnu, dossier temporaire, processeur à 91 % et gros envoi réseau : typique d’un cryptomineur ou d’un programme qui exfiltre des données.',
+  summary: a => 'Processus choisi : ' + (PROCS.find(p => p.id === a.pid)?.name || 'aucun'),
+  render(box, a, locked, set) {
+    const build = () => {
+      const rows = PROCS.map(p => {
+        const on = a.pid === p.id;
+        const cls = ['row', on ? 'active' : '', locked && p.bad ? 'correct' : '', locked && on && !p.bad ? 'wrong' : ''].join(' ');
+        const pick = () => { if (locked) return; a.pid = p.id; set(a); redraw(box, build); };
+        return h('tr', {class:cls, onclick: pick},
+          h('td', {}, h('input', {type:'radio', name:'proc', checked:on, disabled:locked, 'data-k':'r-' + p.id, 'aria-label':p.name, onchange: pick})),
+          h('td', {}, h('span', {class:'fname', text:p.name}), locked && p.bad ? [' ', mark(true)] : null),
+          h('td', {class:'hide-sm', text:p.pub}),
+          h('td', {class:'num' + (parseFloat(p.cpu) > 50 ? ' cpu-hot' : ''), text:p.cpu}),
+          h('td', {class:'num', text:p.mem}),
+          h('td', {class:'num hide-sm', text:p.net}));
+      });
+      const p = PROCS.find(x => x.id === a.pid);
+      return win('Gestionnaire des tâches — Processus',
+        h('div', {class:'table-wrap'}, h('table', {class:'sim-table'},
+          h('thead', {}, h('tr', {}, h('th', {}, ''), h('th', {text:'Nom'}), h('th', {class:'hide-sm', text:'Éditeur'}), h('th', {text:'Processeur'}), h('th', {text:'Mémoire'}), h('th', {class:'hide-sm', text:'Réseau'}))),
+          h('tbody', {}, rows))),
+        p ? h('dl', {class:'props'}, h('dt', {text:'Processus'}), h('dd', {text:p.name}), h('dt', {text:'Éditeur'}), h('dd', {text:p.pub}), h('dt', {text:'Emplacement'}), h('dd', {text:p.path}))
+          : h('div', {class:'props'}, h('span', {text:'ℹ️'}), h('span', {text:'Sélectionne un processus pour voir son emplacement.'})));
+    };
+    redraw(box, build);
+  }
+};
+
+/* ============================================================
+   SIMULATION 4 — Envoyer un mail à de nombreux destinataires externes
+   ============================================================ */
+const ATTACH = {
+  ext: { name:'Compte-rendu_reunion_partenaires.pdf', info:'PDF · 320 Ko · version validée pour les partenaires' },
+  int: { name:'CR_interne_budget_et_salaires.xlsx', info:'Excel · 1,1 Mo · usage interne' }
+};
+const FIELDS = { a:'À', cc:'Cc', cci:'Cci' };
+const simCompose = {
+  type:'sim', kind:'Rédaction d’un mail', action:'Envoyer',
+  scenario:'14 h 50. Après la réunion avec les partenaires, ton tuteur te demande d’envoyer le compte-rendu aux 25 participants externes. Ils ne se connaissent pas tous entre eux.',
+  q:'Place la liste des participants dans le bon champ et joins le bon document.',
+  init: () => ({ field: null, file: null }),
+  ready: a => !!a.field && !!a.file,
+  check: a => a.field === 'cci' && a.file === 'ext',
+  explain: a => [
+    a.field === 'cci' ? '✓ Cci (copie cachée) : aucun destinataire ne voit les adresses des autres, ce qui respecte leur vie privée (RGPD) et évite les « répondre à tous ».'
+                      : `✗ En ${FIELDS[a.field] || '?'}, les 25 adresses sont visibles par tout le monde : c’est une fuite de données personnelles. Il fallait utiliser Cci.`,
+    a.file === 'ext' ? '✓ Bon document : la version prévue pour les partenaires.'
+                     : '✗ Le fichier interne contient budget et salaires : il ne doit jamais sortir de l’entreprise. Toujours vérifier la pièce jointe avant d’envoyer.'
+  ].join(' '),
+  summary: a => `Liste en ${FIELDS[a.field] || '—'}, pièce jointe : ${ATTACH[a.file]?.name || 'aucune'}`,
+  render(box, a, locked, set) {
+    const build = () => {
+      const row = key => h('div', {class:'c-row'}, h('span', {text:FIELDS[key] + ' :'}),
+        h('div', {class:'c-zone'},
+          a.field === key ? h('span', {class:'chip'}, '👥 Participants réunion (25)', locked ? [' ', mark(key === 'cci')] : null) : null,
+          !locked && a.field !== key ? h('button', {class:'sbtn', type:'button', 'data-k':'f-' + key,
+            onclick: () => { a.field = key; set(a); redraw(box, build); }}, a.field ? 'Déplacer la liste ici' : '+ Placer la liste ici') : null));
+      return win('Nouveau message',
+        h('div', {class:'compose'},
+          h('div', {class:'c-row'}, h('span', {text:'De :'}), h('div', {class:'c-zone', text:'alternant@novatech.fr'})),
+          row('a'), row('cc'), row('cci'),
+          h('div', {class:'c-row'}, h('span', {text:'Objet :'}), h('div', {class:'c-zone', text:'Compte-rendu de la réunion partenaires'})),
+          h('div', {class:'c-body', text:'Bonjour à toutes et à tous, vous trouverez ci-joint le compte-rendu de notre réunion. Bonne journée !'}),
+          h('div', {class:'set-row'}, h('span', {text:'📎 Pièce jointe (choisis le fichier) :'}),
+            h('div', {class:'attach-pick'}, Object.entries(ATTACH).map(([k, f]) =>
+              h('button', {class:'sbtn', type:'button', 'data-k':'att-' + k, 'aria-pressed': String(a.file === k), disabled: locked,
+                onclick: () => { a.file = k; set(a); redraw(box, build); }},
+                h('span', {'aria-hidden':'true', text: k === 'ext' ? '📕' : '📗'}),
+                h('span', {}, f.name, h('small', {text:f.info})),
+                locked && a.file === k ? mark(k === 'ext') : null))))));
+    };
+    redraw(box, build);
+  }
+};
+
+/* ============================================================
+   SIMULATION 5 — Partager un fichier confidentiel
+   ============================================================ */
+const METHODS = {
+  plateforme: { title:'☁️ Espace de partage NovaTech', sub:'Hébergé et géré par l’entreprise' },
+  gratuit:    { title:'🌐 Site de transfert gratuit', sub:'Trouvé en cherchant « envoyer gros fichier »' },
+  usb:        { title:'🔌 Clé USB', sub:'Trouvée sur le parking, déposée au cabinet' }
+};
+const simShare = {
+  type:'sim', kind:'Partage de fichier', action:'Partager',
+  scenario:'15 h 30. Léa Dupont, comptable du cabinet externe (lea.dupont@cabinet-compta.fr), a besoin du fichier des contrats clients. Il est confidentiel.',
+  q:'Choisis comment envoyer le fichier, puis règle le partage pour qu’il soit le plus sûr possible.',
+  init: () => ({ method:null, access:'public', expiry:'jamais', pwd:false, channel:'mail' }),
+  ready: a => !!a.method,
+  check: a => a.method === 'plateforme' && a.access === 'restreint' && a.expiry === '7j' && a.pwd === true && a.channel === 'sms',
+  explain: a => {
+    if (a.method === 'usb') return '✗ Une clé USB trouvée peut contenir un malware qui s’exécute au branchement, et elle peut être perdue. On ne branche jamais une clé inconnue.';
+    if (a.method === 'gratuit') return '✗ Un service gratuit inconnu stocke le fichier hors de l’entreprise, sans contrôle sur qui le lit ni combien de temps il reste en ligne.';
+    const errs = [];
+    if (a.access !== 'restreint') errs.push('le lien était accessible à toute personne qui le récupère (transfert, fuite…) : il faut le limiter à l’adresse de Léa');
+    if (a.expiry !== '7j') errs.push('un lien sans expiration reste valable pour toujours : il faut une date limite');
+    if (!a.pwd) errs.push('aucun mot de passe ne protégeait le fichier');
+    else if (a.channel !== 'sms') errs.push('le mot de passe envoyé dans le même mail que le lien ne sert à rien si le mail est intercepté : il faut un autre canal (SMS, appel)');
+    return errs.length ? '✓ Bonne plateforme, mais : ' + errs.join(' ; ') + '.'
+                       : '✓ Parfait : plateforme de l’entreprise, accès limité à Léa, expiration, mot de passe transmis par un autre canal. C’est le principe du « moindre accès ».';
+  },
+  summary: a => a.method !== 'plateforme' ? (METHODS[a.method]?.title || 'aucune méthode')
+    : `Plateforme NovaTech · accès ${a.access === 'restreint' ? 'restreint' : 'public'} · expiration ${a.expiry === '7j' ? '7 jours' : 'jamais'} · ${a.pwd ? 'mot de passe par ' + (a.channel === 'sms' ? 'SMS' : 'le même mail') : 'sans mot de passe'}`,
+  render(box, a, locked, set) {
+    const seg = (key, opts) => h('div', {class:'seg'}, opts.map(([v, label]) =>
+      h('button', {class:'sbtn', type:'button', 'data-k':key + '-' + v, 'aria-pressed': String(a[key] === v), disabled: locked,
+        onclick: () => { a[key] = v; set(a); redraw(box, build); }}, label)));
+    const build = () => win('Partager un fichier',
+      h('div', {class:'share'},
+        h('div', {class:'share-file'}, h('span', {class:'big', 'aria-hidden':'true', text:'🗂️'}),
+          h('div', {}, h('strong', {text:'Contrats_clients_2026.zip'}), h('span', {class:'badge-conf', text:'CONFIDENTIEL'}),
+            h('div', {class:'mail-meta', text:'Pour : Léa Dupont — lea.dupont@cabinet-compta.fr'}))),
+        h('div', {class:'set-row'}, h('span', {text:'1. Moyen d’envoi'}),
+          h('div', {class:'opt-grid'}, Object.entries(METHODS).map(([k, m]) =>
+            h('button', {class:'sbtn', type:'button', 'data-k':'m-' + k, 'aria-pressed': String(a.method === k), disabled: locked,
+              onclick: () => { a.method = k; set(a); redraw(box, build); }},
+              h('strong', {text:m.title}), h('small', {text:m.sub}))))),
+        a.method === 'plateforme' ? h('div', {class:'settings'},
+          h('div', {class:'set-row'}, h('span', {text:'2. Qui peut ouvrir le lien ?'}), seg('access', [['public', 'Toute personne disposant du lien'], ['restreint', 'Uniquement lea.dupont@cabinet-compta.fr']])),
+          h('div', {class:'set-row'}, h('span', {text:'3. Expiration du lien'}), seg('expiry', [['jamais', 'Jamais'], ['7j', 'Dans 7 jours']])),
+          h('div', {class:'set-row'}, h('span', {text:'4. Mot de passe'}), seg('pwd', [[false, 'Désactivé'], [true, 'Activé']])),
+          a.pwd ? h('div', {class:'set-row'}, h('span', {text:'5. Comment transmettre le mot de passe à Léa ?'}), seg('channel', [['mail', 'Dans le même mail que le lien'], ['sms', 'Par SMS sur son portable']])) : null
+        ) : a.method ? h('p', {class:'pwd-note', text:'Aucun réglage disponible pour ce moyen d’envoi.'}) : null));
+    redraw(box, build);
+  }
+};
+/* ============================================================
+   SIMULATION 6 — Trouver le vrai site parmi les résultats de recherche
+   ============================================================ */
+const RESULTS = [
+  { id:'r1', ad:true, url:'https://banquepyrene-connexion.com', title:'Banque Pyrène – Espace client sécurisé', desc:'Connectez-vous à votre espace client en 1 clic. Service rapide et sécurisé.',
+    why:'Annonce sponsorisée vers un domaine différent (banquepyrene-connexion.com) : les escrocs achètent souvent des publicités.' },
+  { id:'r2', url:'https://www.banquepyrene.fr/particuliers/connexion', title:'Connexion à mon espace – Banque Pyrène', desc:'Accédez à vos comptes, virements et documents en toute sécurité.', good:true,
+    why:'C’est le vrai domaine : banquepyrene.fr, juste avant le premier « / ».' },
+  { id:'r3', url:'https://www.banquepyrene.fr.acces-client.net/login', title:'Banque Pyrène | Accès client', desc:'Espace client officiel – identification.',
+    why:'Piège du sous-domaine : le vrai domaine est acces-client.net. « banquepyrene.fr » n’est ici qu’un préfixe.' },
+  { id:'r4', url:'https://www.banquepyrenne.fr/connexion', title:'Banque Pyrène – Mon compte', desc:'Retrouvez vos comptes et services en ligne.',
+    why:'Typosquatting : « pyrenne » avec deux n. Une seule lettre suffit à tromper.' }
+];
+const simBrowser = {
+  type:'sim', kind:'Navigateur web', action:'Ouvrir ce site',
+  scenario:'16 h 10. Pause. Tu veux vérifier un virement sur ta banque, la « Banque Pyrène ». Tu tapes son nom dans un moteur de recherche.',
+  q:'Quel résultat mène vraiment au site de la banque ? Lis attentivement chaque adresse.',
+  init: () => ({ pick:null }),
+  ready: a => !!a.pick,
+  check: a => a.pick === 'r2',
+  explain: a => a.pick === 'r2'
+    ? 'Bien vu ! Pour lire une adresse, repère le domaine juste avant le premier « / » après https:// : ici banquepyrene.fr. Le plus sûr reste de taper l’adresse soi-même ou d’utiliser un favori.'
+    : (RESULTS.find(r => r.id === a.pick)?.why || '') + ' Le bon résultat était www.banquepyrene.fr/particuliers/connexion.',
+  summary: a => 'Site choisi : ' + (RESULTS.find(r => r.id === a.pick)?.url || 'aucun'),
+  render(box, a, locked, set) {
+    const build = () => win('Navigateur',
+      h('div', {class:'sim-toolbar'}, h('span', {'aria-hidden':'true', text:'← →'}),
+        h('div', {class:'browser-url'}, h('span', {'aria-hidden':'true', text:'🔍'}), 'banque pyrène connexion')),
+      h('div', {class:'results'}, RESULTS.map(r => {
+        const cls = ['result', locked && r.good ? 'correct' : '', locked && a.pick === r.id && !r.good ? 'wrong' : ''].join(' ');
+        return h('button', {class:cls, type:'button', 'data-k':r.id, 'aria-pressed': String(a.pick === r.id), disabled: locked,
+          onclick: () => { a.pick = r.id; set(a); redraw(box, build); }},
+          h('span', {class:'r-url'}, r.ad ? h('span', {class:'r-ad', text:'Annonce'}) : null, r.url),
+          h('span', {class:'r-title', text:r.title}),
+          h('span', {class:'r-desc', text:r.desc}),
+          locked && (r.good || a.pick === r.id) ? h('span', {class:'r-why'}, mark(!!r.good), ' ', r.why) : null);
+      })));
+    redraw(box, build);
+  }
+};
+
+/* ============================================================
+   SIMULATION 7 — Créer un mot de passe solide
+   Le mot de passe tapé n'est JAMAIS sauvegardé : seuls les critères le sont.
+   ============================================================ */
+const BANNED = ['novatech', 'azerty', 'qwerty', 'password', 'motdepasse', '123456', 'admin', 'soleil', 'bonjour', 'alternant', '2026'];
+function analysePwd(p) {
+  const types = [/[a-z]/, /[A-Z]/, /[0-9]/, /[^A-Za-z0-9]/].filter(r => r.test(p)).length;
+  const low = p.toLowerCase();
+  return { len: p.length, types, clean: p.length > 0 && !BANNED.some(w => low.includes(w)) };
+}
+const simPwd = {
+  type:'sim', kind:'Création de compte', action:'Enregistrer le mot de passe',
+  scenario:'16 h 45. Tu crées ton compte sur l’outil de gestion de projets de l’entreprise.',
+  q:'Choisis un mot de passe qui respecte toutes les règles de sécurité affichées.',
+  init: () => ({ len:0, types:0, clean:false }),
+  ready: a => a.len > 0,
+  check: a => a.len >= 12 && a.types >= 3 && a.clean,
+  explain: a => {
+    const errs = [];
+    if (a.len < 12) errs.push(`il ne faisait que ${a.len} caractère(s), il en faut au moins 12`);
+    if (a.types < 3) errs.push('il mélangeait trop peu de types de caractères');
+    if (!a.clean) errs.push('il contenait un mot trop évident (nom de l’entreprise, azerty, année…)');
+    return (errs.length ? '✗ Ton mot de passe était trop faible : ' + errs.join(' ; ') + '. ' : '✓ Mot de passe solide ! ')
+      + 'Une phrase de passe (ex. quatre mots sans lien + chiffres et symboles) est longue et facile à retenir. Utilise un mot de passe différent pour chaque compte, rangé dans un gestionnaire de mots de passe.';
+  },
+  summary: a => `${a.len} caractères, ${a.types} type(s) de caractères, ${a.clean ? 'sans mot évident' : 'avec un mot évident ou vide'}`,
+  render(box, a, locked, set, ui) {
+    if (ui.pwd === undefined) ui.pwd = '';
+    // Après un rechargement, on ne connaît plus le mot de passe : on repart de zéro.
+    if (!locked && ui.pwd === '' && a.len > 0) { a = Object.assign(a, this.init()); set(a); }
+    const crit = h('ul', {class:'crit'});
+    const meter = h('i');
+    const strength = h('span', {class:'pwd-note'});
+    const refresh = () => {
+      const s = locked ? a : analysePwd(ui.pwd);
+      const items = [
+        [s.len >= 12, `Au moins 12 caractères (${s.len})`],
+        [s.types >= 3, `Au moins 3 types parmi : minuscules, MAJUSCULES, chiffres, symboles (${s.types}/4)`],
+        [s.clean, 'Aucun mot évident (nom de l’entreprise, azerty, 123456, année…)']
+      ];
+      crit.replaceChildren(...items.map(([ok, t]) => h('li', {class: ok ? 'ok' : ''}, h('span', {'aria-hidden':'true', text: ok ? '✓' : '○'}), t)));
+      const score = Math.min(100, (Math.min(s.len, 20) / 20) * 60 + s.types * 8 + (s.clean ? 8 : 0));
+      meter.style.width = (s.len ? score : 0) + '%';
+      meter.style.background = score >= 85 ? 'var(--success)' : score >= 55 ? '#f7c948' : '#ff6b6b';
+      strength.textContent = !s.len ? '' : score >= 85 ? 'Robustesse : élevée' : score >= 55 ? 'Robustesse : moyenne' : 'Robustesse : faible';
+      if (!locked) { Object.assign(a, s); set(a); }
+    };
+    const input = h('input', {class:'pwd-input', id:'pwdInput', type: ui.show ? 'text' : 'password', autocomplete:'off', spellcheck:'false', autocapitalize:'off',
+      value: ui.pwd, disabled: locked, placeholder: locked ? '••••••••••••' : 'Tape ton mot de passe…', 'data-k':'pwd',
+      oninput: e => { ui.pwd = e.target.value; refresh(); }});
+    box.replaceChildren(win('Projets NovaTech — Créer mon compte',
+      h('div', {class:'pwd'},
+        h('label', {for:'pwdInput', text:'Nouveau mot de passe'}),
+        input,
+        locked ? null : h('label', {class:'switch'}, h('input', {type:'checkbox', checked: !!ui.show,
+          onchange: e => { ui.show = e.target.checked; input.type = ui.show ? 'text' : 'password'; }}), 'Afficher le mot de passe'),
+        h('div', {class:'meter'}, meter), strength, crit,
+        h('p', {class:'pwd-note', text:'🔒 Exercice : n’utilise pas un vrai mot de passe. Rien de ce que tu tapes n’est enregistré.'}))));
+    refresh();
+  }
+};
+
+/* ============================================================
+   LES 12 ÉTAPES DU MODULE
+   ============================================================ */
+const steps = [
+  { type:'qcm', scenario:'8 h 45. Premier jour d’alternance chez NovaTech, une PME de 40 salariés.',
+    q:'Le technicien te remet un mot de passe provisoire pour ta session. Que fais-tu en premier ?',
+    a:['Je le garde, il a été choisi par un professionnel', 'Je le remplace dès la première connexion par un mot de passe que je suis seul(e) à connaître', 'Je le note sur un post-it sous le clavier pour ne pas l’oublier', 'Je l’envoie à mon tuteur pour qu’il le connaisse aussi'],
+    c:1, e:'Un mot de passe provisoire est connu d’au moins une autre personne. On le remplace dès la première connexion par un secret personnel, idéalement rangé dans un gestionnaire de mots de passe.' },
+  simMail,
+  { type:'qcm',
+    q:'Une pièce jointe s’appelle « Facture_Mars.pdf.exe ». De quoi s’agit-il réellement ?',
+    a:['D’un PDF compressé', 'D’un programme exécutable déguisé en PDF', 'D’une facture signée électroniquement', 'D’un PDF protégé par mot de passe'],
+    c:1, e:'C’est la dernière extension qui compte : .exe = programme. Windows masque souvent les extensions connues, on ne voit alors que « Facture_Mars.pdf ». Afficher les extensions aide à repérer ce piège.' },
+  simFiles,
+  simTasks,
+  { type:'qcm',
+    q:'Tu viens d’isoler le processus suspect. Quelle est la bonne suite ?',
+    a:['Je redémarre et je n’en parle à personne, c’est réglé', 'Je débranche le PC du réseau (câble et Wi-Fi) et je préviens immédiatement le service informatique', 'Je supprime moi-même tous les fichiers récents', 'J’installe un antivirus trouvé sur un forum'],
+    c:1, e:'Couper le réseau limite la propagation et l’envoi de données. Prévenir tout de suite le service informatique permet d’analyser, de conserver les traces et de vérifier les autres postes. Supprimer des fichiers soi-même efface des preuves.' },
+  simCompose,
+  simShare,
+  { type:'qcm', scenario:'Tu termines un envoi depuis un café, sur le Wi-Fi gratuit « Cafe_Free_WiFi », sans mot de passe.',
+    q:'Quelle est la meilleure option pour travailler en sécurité ?',
+    a:['Je me connecte directement : les sites sont en HTTPS, tout est protégé', 'J’utilise le partage de connexion de mon téléphone ou le VPN de l’entreprise', 'Je demande le mot de passe du Wi-Fi au serveur, ça le rend sûr', 'Je m’assois dos au mur pour que personne ne voie mon écran'],
+    c:1, e:'Un Wi-Fi ouvert peut être imité par un faux point d’accès. Le partage de connexion mobile ou le VPN de l’entreprise protègent tout le trafic. Le HTTPS protège le contenu des sites, mais pas les faux portails ni toutes les applications.' },
+  simBrowser,
+  simPwd,
+  { type:'qcm', scenario:'17 h 30. Ta journée se termine, mais tu dois d’abord passer 10 minutes en réunion.',
+    q:'Tu quittes ton poste quelques minutes. Que fais-tu ?',
+    a:['Rien, je reviens vite', 'Je verrouille ma session (touche Windows + L)', 'J’éteins seulement l’écran', 'Je ferme ma messagerie'],
+    c:1, e:'Une session ouverte permet à n’importe qui d’agir en ton nom en quelques secondes. Windows + L verrouille instantanément ; éteindre l’écran ne protège rien.' }
+];
+
+/* ============================================================
+   MOTEUR DU QUIZ (sauvegarde, navigation, score)
+   ============================================================ */
+const sessionKey = 'cyberquiz_session_' + quizId;
+const resultKey = 'cyberquiz_' + quizId;
+const ui = steps.map(() => ({}));   // état d'affichage non sauvegardé (mail ouvert, etc.)
+
+function freshState() {
+  return { version: VERSION, cur: 0, answers: steps.map(() => null), locked: steps.map(() => false), finished: false };
+}
+function readState() {
+  try {
+    const s = JSON.parse(localStorage.getItem(sessionKey));
+    const n = steps.length;
+    const okAnswer = (a, i) => a === null || (steps[i].type === 'qcm'
+      ? Number.isInteger(a) && a >= 0 && a < steps[i].a.length
+      : typeof a === 'object' && !Array.isArray(a));
+    if (!s || s.version !== VERSION || !Number.isInteger(s.cur) || s.cur < 0 || s.cur >= n ||
+        !Array.isArray(s.answers) || s.answers.length !== n || !s.answers.every(okAnswer) ||
+        !Array.isArray(s.locked) || s.locked.length !== n || !s.locked.every(v => typeof v === 'boolean') ||
+        s.locked.some((v, i) => v && s.answers[i] === null) || typeof s.finished !== 'boolean' ||
+        (s.finished && s.locked.includes(false))) return freshState();
+    // Une simulation verrouillée doit pouvoir être évaluée sans erreur.
+    s.answers.forEach((a, i) => { if (s.locked[i] && steps[i].type === 'sim') steps[i].check(a); });
+    return s;
+  } catch { return freshState(); }
+}
+let state = readState();
+function save() {
+  try { localStorage.setItem(sessionKey, JSON.stringify(state)); }
+  catch { $('storageNote').hidden = false; $('storageNote').textContent = 'La sauvegarde locale est indisponible. Tu peux continuer, mais la partie ne sera pas conservée.'; }
+}
+const isRight = i => state.answers[i] !== null && (steps[i].type === 'qcm' ? state.answers[i] === steps[i].c : !!steps[i].check(state.answers[i]));
+const isReady = i => state.answers[i] !== null && (steps[i].type === 'qcm' || !!steps[i].ready(state.answers[i]));
+function score() { return steps.reduce((sum, _, i) => sum + (state.locked[i] && isRight(i) ? 1 : 0), 0); }
+
+function progress() {
+  const done = state.locked.filter(Boolean).length;
+  $('progressFill').style.width = (done / steps.length * 100) + '%';
+  $('progressLabel').textContent = done + ' / ' + steps.length;
+  $('progressBar').setAttribute('aria-valuenow', done);
+}
+function showScreen(id) { ['quizStep', 'resultStep', 'corrStep'].forEach(x => { $(x).hidden = x !== id; }); $(id).style.display = 'block'; }
+
+function updateControls() {
+  const st = steps[state.cur], locked = state.locked[state.cur];
+  $('prevBtn').disabled = state.cur === 0;
+  $('validateBtn').hidden = locked;
+  $('validateBtn').disabled = !isReady(state.cur);
+  $('validateBtn').textContent = st.type === 'sim' ? st.action : 'Valider';
+  $('nextBtn').hidden = !locked;
+  $('nextBtn').textContent = state.cur === steps.length - 1 ? 'Voir mon score' : 'Suivant';
+}
+
+function renderStep(moveFocus = false) {
+  showScreen('quizStep');
+  const st = steps[state.cur], i = state.cur, locked = state.locked[i];
+  const kind = st.type === 'sim' ? '🖱️ Mise en situation · ' + st.kind : '❓ Question';
+  $('qNumber').replaceChildren(h('span', {class:'step-kind ' + (st.type === 'sim' ? 'is-sim' : 'is-qcm'), text:kind}), h('br'), `Étape ${i + 1} / ${steps.length}`);
+  $('scenario').hidden = !st.scenario;
+  $('scenario').textContent = st.scenario || '';
+  $('qText').textContent = st.q;
+  const box = $('ansBox');
+  box.replaceChildren();
+  if (st.type === 'qcm') {
+    box.className = 'answers';
+    st.a.forEach((answer, k) => {
+      const chosen = state.answers[i] === k;
+      const b = h('button', {type:'button', class:'answer-btn' + (chosen ? ' selected' : '') + (locked && k === st.c ? ' correct' : '') + (locked && chosen && k !== st.c ? ' wrong' : ''),
+        'aria-pressed': String(chosen), disabled: locked,
+        onclick: () => { state.answers[i] = k; save(); renderStep(); box.children[k].focus(); }},
+        h('span', {class:'answer-badge', 'aria-hidden':'true', text:String.fromCharCode(65 + k)}), h('span', {text:answer}));
+      box.append(b);
+    });
+  } else {
+    box.className = 'sim-zone';
+    const answer = state.answers[i] ?? st.init();
+    st.render(box, answer, locked, a => { state.answers[i] = a; save(); updateControls(); }, ui[i]);
+  }
+  $('feedback').hidden = !locked;
+  if (locked) {
+    const ok = isRight(i);
+    $('feedback').textContent = (ok ? '✅ Réussi ! ' : '❌ Pas tout à fait. ') + (st.type === 'qcm' ? (ok ? '' : 'Bonne réponse : ' + st.a[st.c] + '. ') + st.e : st.explain(state.answers[i]));
+  }
+  updateControls();
+  progress();
+  if (moveFocus) $('qText').focus();
+}
+
+$('validateBtn').onclick = () => {
+  const i = state.cur;
+  if (state.locked[i] || !isReady(i)) return;
+  state.locked[i] = true; save(); renderStep();
+  if (window.CyberSon) CyberSon.play(isRight(i) ? 'correct' : 'wrong');
+  $('feedback').focus();
+};
+$('nextBtn').onclick = () => {
+  if (!state.locked[state.cur]) return;
+  if (state.cur < steps.length - 1) { state.cur++; save(); renderStep(true); window.scrollTo({top: 0, behavior: 'smooth'}); }
+  else {
+    state.finished = true; save(); showResults(true);
+    if (window.CyberSucces) CyberSucces.enregistrerPartie(quizId, score(), steps.length);
+    if (window.CyberSon) CyberSon.play(score() / steps.length >= 0.7 ? 'finish-good' : 'finish-bad');
+  }
+};
+$('prevBtn').onclick = () => { if (!state.finished && state.cur > 0) { state.cur--; save(); renderStep(true); } };
+
+function showResults(moveFocus = false) {
+  if (!state.finished) return;
+  showScreen('resultStep'); progress();
+  const value = score(), total = steps.length, pct = Math.round(value / total * 100);
+  $('scoreNum').textContent = value;
+  $('scoreTotal').textContent = '/ ' + total;
+  const circumference = 2 * Math.PI * 55;
+  $('ringFill').style.strokeDasharray = circumference;
+  $('ringFill').style.strokeDashoffset = circumference * (1 - value / total);
+  $('scoreMsg').textContent = pct >= 90 ? 'Journée parfaite ! 🛡️' : pct >= 70 ? 'Bonne journée !' : 'Journée mouvementée… réessaie !';
+  const sims = steps.map((s, i) => s.type === 'sim' && isRight(i)).filter(Boolean).length;
+  const nbSims = steps.filter(s => s.type === 'sim').length;
+  $('scoreSub').textContent = `${pct} % de réussite, dont ${sims} / ${nbSims} mises en situation réussies. Consulte la correction pour revoir chaque étape.`;
+  try { localStorage.setItem(resultKey, JSON.stringify({score: value, total, percent: pct})); } catch { /* stockage indisponible */ }
+  if (moveFocus) $('scoreMsg').focus();
+}
+$('showCorrBtn').onclick = () => {
+  if (!state.finished) return;
+  showScreen('corrStep'); $('corrList').replaceChildren();
+  steps.forEach((st, i) => {
+    const ok = isRight(i), a = state.answers[i];
+    $('corrList').append(h('article', {class:'corr-item ' + (ok ? 'ok' : 'ko')},
+      h('h3', {class:'corr-q', text:`${i + 1}. ${st.type === 'sim' ? '[' + st.kind + '] ' : ''}${st.q}`}),
+      h('p', {class:'corr-status ' + (ok ? 'ok' : 'ko'), text: ok ? '✓ Réussi' : '✗ À revoir'}),
+      h('p', {class:'corr-answers', text: st.type === 'qcm' ? `Ta réponse : ${st.a[a] ?? 'aucune'}. Bonne réponse : ${st.a[st.c]}` : 'Ta réponse : ' + st.summary(a)}),
+      h('p', {class:'corr-expl', text: st.type === 'qcm' ? st.e : st.explain(a)})));
+  });
+  $('correctionTitle').focus();
+};
+$('backToResultBtn').onclick = () => showResults(true);
+$('restartBtn').onclick = () => { state = freshState(); ui.forEach(u => { for (const k in u) delete u[k]; }); save(); renderStep(true); };
+
+save();
+if (state.finished) showResults(); else renderStep();
+</script>
+<script>
+// Décor uniquement : pas de données collectées, aucune incidence sur le score.
+(() => {
+  const canvas = document.getElementById('ambient-particles');
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  const rgb = getComputedStyle(document.documentElement).getPropertyValue('--theme-rgb').trim();
+  let width = 0, height = 0, dots = [], frame = null, last = 0;
+  function size() {
+    width = innerWidth; height = innerHeight;
+    const ratio = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = width * ratio; canvas.height = height * ratio;
+    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+    dots = Array.from({length: Math.min(55, Math.max(18, Math.floor(width*height/25000)))}, () => ({x:Math.random()*width,y:Math.random()*height,r:Math.random()*1.2+.4,speed:Math.random()*5+3}));
+  }
+  function draw(dt) {
+    ctx.clearRect(0,0,width,height);
+    for (const p of dots) {
+      p.y -= p.speed*dt; if (p.y < -5) p.y = height+5;
+      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(${rgb},.45)`; ctx.fill();
+    }
+  }
+  function tick(time) { draw(last ? Math.min((time-last)/1000,.05) : 0); last=time; frame=requestAnimationFrame(tick); }
+  function sync() {
+    if (frame !== null) cancelAnimationFrame(frame);
+    frame = null; last = 0; draw(0);
+    if (!preference.matches && !document.hidden) frame = requestAnimationFrame(tick);
+  }
+  size(); sync();
+  window.addEventListener('resize', () => { size(); sync(); });
+  document.addEventListener('visibilitychange', sync);
+  preference.addEventListener('change', sync);
+})();
+</script>
+<script src="audio.js" defer></script>
+<script src="pwa.js" defer></script>
+</body></html>

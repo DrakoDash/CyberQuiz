@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover.0" />
 <title>CyberQuiz — Notes de version</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Share+Tech+Mono&display=swap">
@@ -432,6 +432,8 @@ footer a:hover { text-decoration: underline; }
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
   <meta name="apple-mobile-web-app-title" content="CyberQuiz"/>
   <link rel="apple-touch-icon" href="assets/icons/icon-192.png"/>
+<link rel="stylesheet" href="app.css">
+<script src="app.js"></script>
 </head>
 <body>
 
@@ -516,6 +518,38 @@ footer a:hover { text-decoration: underline; }
    3. Remplissez version, date, title et description
    ============================================================ */
 const VERSIONS = [
+  {
+    version: 'Beta 27.0',
+    date:    '16/10/2026',
+    title:   'CyberQuiz devient une application',
+    description:
+`- Application installable sur Windows, Android, iPhone et Mac (web app / PWA)
+- Fonctionne entièrement hors-ligne une fois installée
+- Mode application : barre d'onglets, transitions entre les pages, retour tactile
+- Musique d'ambiance et effets sonores générés en direct, réglables ou désactivables
+- Aperçu du mode application dans le navigateur avec ?mode=app`
+  },
+  {
+    version: 'Beta 26.6',
+    date:    '16/10/2026',
+    title:   'Premier module interactif',
+    description:
+`- Nouveau module « Premier jour au bureau » : 12 étapes mêlant questions et mises en situation
+- Simulations : messagerie (phishing), explorateur de fichiers, gestionnaire des tâches, envoi de mail en Cci, partage de fichier, recherche web, création de mot de passe
+- Nouveau succès « Agent de terrain »`
+  },
+  {
+    version: 'Beta 26.5',
+    date:    '16/10/2026',
+    title:   'Système de succès',
+    description:
+`- 16 succès à débloquer en 4 catégories : Progression, Excellence, Régularité, Spécialités
+- Notification « Succès débloqué » à la fin d'un quiz
+- Nouvelle page « Mes succès » avec statistiques et barres de progression
+- Résumé des succès sur la page d'accueil et lien dans le menu
+- Les scores déjà enregistrés comptent pour les succès
+- Le bouton Reset efface aussi les succès`
+  },
  {
     version: 'Beta 26.4',
     date:    '26/06/2026',
@@ -757,5 +791,6 @@ initCanvas(); initParticles(); animateParticles();
 </script>
 
   <script src="pwa.js" defer></script>
+<script src="audio.js" defer></script>
 </body>
 </html>

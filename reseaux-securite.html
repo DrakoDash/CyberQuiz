@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1, viewport-fit=cover">
 <title>Sécurité des Réseaux — CyberQuiz</title>
 <style>
 :root {
@@ -507,7 +507,17 @@ main { max-width:1012px; padding:98px 24px 48px; }
  .corr-footer { flex-wrap:wrap; }
 }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
-</style></head><body>
+</style><link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#070b17">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CyberQuiz">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="app.css">
+<script src="app.js"></script>
+</head><body>
 <div class="ambient-grid" aria-hidden="true"></div><canvas id="ambient-particles" aria-hidden="true"></canvas>
 <nav class="navbar" aria-label="Navigation principale"><a class="nav-back" href="accueil.html">← Accueil</a><div class="nav-logo">CYBERQUIZ</div><span class="nav-badge">Bac Pro CIEL</span></nav>
 <main><div class="lesson-trail"><span>Apprendre à se protéger</span><strong>Parcours / 10</strong></div><div class="quiz-card">
@@ -517,10 +527,11 @@ main { max-width:1012px; padding:98px 24px 48px; }
 <section class="quiz-body" id="quizStep" aria-labelledby="qText"><p class="play-hint">15 questions · Choisis tes réponses, puis consulte la correction à la fin.</p><p class="q-number" id="qNumber"></p><p id="scenario" class="feedback" hidden></p><h2 class="question-text" id="qText" tabindex="-1"></h2><div class="answers" id="ansBox"></div>
 <p id="feedback" class="feedback" aria-live="polite" tabindex="-1" hidden></p>
 <div class="controls"><button class="btn btn-ghost" id="prevBtn" type="button">Précédent</button><button class="btn btn-primary" id="validateBtn" type="button" hidden>Valider</button><button class="btn btn-primary" id="nextBtn" type="button">Suivant</button></div></section>
-<section class="quiz-body" id="resultStep" hidden aria-labelledby="scoreMsg"><div class="score-ring"><svg width="130" height="130" viewBox="0 0 130 130" aria-hidden="true"><circle class="score-ring-track" cx="65" cy="65" r="55"/><circle class="score-ring-fill" id="ringFill" cx="65" cy="65" r="55"/></svg><div class="score-ring-text"><span class="score-number" id="scoreNum"></span><span class="score-total" id="scoreTotal"></span></div></div><h2 class="score-msg" id="scoreMsg" tabindex="-1"></h2><p class="score-sub" id="scoreSub"></p><div class="result-actions"><button class="btn btn-ghost" id="showCorrBtn">Voir la correction</button><button class="btn btn-primary" id="restartBtn">Recommencer</button><a class="btn btn-ghost" href="accueil.html">Accueil</a></div></section>
+<section class="quiz-body" id="resultStep" hidden aria-labelledby="scoreMsg"><div class="score-ring"><svg width="130" height="130" viewBox="0 0 130 130" aria-hidden="true"><circle class="score-ring-track" cx="65" cy="65" r="55"/><circle class="score-ring-fill" id="ringFill" cx="65" cy="65" r="55"/></svg><div class="score-ring-text"><span class="score-number" id="scoreNum"></span><span class="score-total" id="scoreTotal"></span></div></div><h2 class="score-msg" id="scoreMsg" tabindex="-1"></h2><p class="score-sub" id="scoreSub"></p><div class="result-actions"><button class="btn btn-ghost" id="showCorrBtn">Voir la correction</button><button class="btn btn-primary" id="restartBtn">Recommencer</button><a class="btn btn-ghost" href="succes.html">🏆 Mes succès</a><a class="btn btn-ghost" href="accueil.html">Accueil</a></div></section>
 <section class="quiz-body" id="corrStep" hidden aria-labelledby="correctionTitle"><div class="corr-header"><h2 id="correctionTitle" tabindex="-1">Correction détaillée</h2></div><div class="corr-list" id="corrList"></div><div class="corr-footer"><button class="btn btn-ghost" id="backToResultBtn">Retour au score</button><a class="btn btn-primary" href="accueil.html">Accueil</a></div></section>
 </div><footer class="lesson-footer"><span>CyberQuiz · Apprendre, comprendre, progresser.</span><a href="accueil.html">Explorer les modules →</a></footer></main>
 <noscript><p>Active JavaScript dans ton navigateur pour utiliser ce quiz.</p></noscript>
+<script src="succes.js"></script>
 <script>
 // q = question, a = réponses proposées, c = indice correct (commence à 0), e = explication.
 const questions = [
@@ -797,6 +808,7 @@ function renderQuestion(moveFocus = false) {
 $('validateBtn').onclick = () => {
   if (!isFinal || state.finished || state.answers[state.cur] === null || state.locked[state.cur]) return;
   state.locked[state.cur] = true; save(); renderQuestion(); focusTitle('feedback');
+  if (window.CyberSon) CyberSon.play(state.answers[state.cur] === questions[state.order[state.cur]].c ? 'correct' : 'wrong');
 };
 $('nextBtn').onclick = () => {
   if (state.finished || state.answers[state.cur] === null || (isFinal && !state.locked[state.cur])) return;
@@ -804,6 +816,9 @@ $('nextBtn').onclick = () => {
   else {
     if (state.answers.includes(null) || (isFinal && state.locked.includes(false))) return;
     state.finished = true; save(); showResults(true);
+    // Succès : la partie vient d'être terminée (pas un simple rechargement de page).
+    if (window.CyberSucces) CyberSucces.enregistrerPartie(quizId, score(), questions.length);
+    if (window.CyberSon) CyberSon.play(score() / questions.length >= 0.7 ? 'finish-good' : 'finish-bad');
   }
 };
 $('prevBtn').onclick = () => {
@@ -889,4 +904,6 @@ if (state.finished) showResults(); else renderQuestion();
   preference.addEventListener('change',sync);
 })();
 </script>
+<script src="audio.js" defer></script>
+<script src="pwa.js" defer></script>
 </body></html>

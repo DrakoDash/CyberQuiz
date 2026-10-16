@@ -31,6 +31,7 @@ Le projet couvre plusieurs axes importants :
 - sécurité des réseaux et Wi‑Fi
 - bonnes pratiques de sécurité informatique
 - réponse aux incidents
+- mises en situation interactives (messagerie, fichiers, partage, mots de passe)
 - quiz de synthèse et progression
 
 ## 🛠️ Stack technique
@@ -42,6 +43,12 @@ Le site est principalement construit en :
 - JavaScript
 
 La structure actuelle privilégie une approche légère, rapide et compatible avec un usage web moderne, avec un style visuel inspiré d’une interface cyber / terminal / sécurité numérique.
+
+## 📲 Installer l'application
+
+CyberQuiz est une web app (PWA) : ouvre le site dans Edge ou Chrome puis clique sur **Installer l'app**.
+Sur iPhone : Safari → Partager → « Sur l'écran d'accueil ». L'application fonctionne hors-ligne.
+Pour voir le mode application sans l'installer : ajoute `?mode=app` à l'adresse d'une page.
 
 ## 🚀 Accès au site
 
@@ -65,10 +72,13 @@ CyberQuiz/
 ├── wifi-interactif.html
 ├── pratiques.html
 ├── incident-response.html
+├── simulation.html
 ├── quiz-final.html
 ├── changelog.html
 ├── style.css
-├── pwa.js
+├── pwa.js            # installation, mises à jour, hors-ligne
+├── app.js / app.css  # style « application » une fois installé
+├── audio.js          # musique et effets sonores (Web Audio)
 ├── service-worker.js
 ├── manifest.json
 ├── 404.html

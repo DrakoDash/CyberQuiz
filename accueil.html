@@ -329,6 +329,19 @@ body {
 .user-rank-info i { color: var(--warn); font-size: 1.2rem; }
 .user-rank-title { font-family: 'Share Tech Mono', monospace; color: var(--accent2); font-weight: 600; }
 
+.achv-strip {
+  max-width: 820px; margin: 12px auto 0; padding: 12px 20px;
+  background: rgba(126,252,106,0.05); border: 1px solid rgba(126,252,106,0.22);
+  border-radius: 12px; display: flex; align-items: center; gap: 16px;
+  color: inherit; text-decoration: none; font-size: 0.9rem; transition: border-color .2s, background .2s;
+}
+.achv-strip:hover { border-color: var(--success); background: rgba(126,252,106,0.09); }
+.achv-strip-count { font-family: 'Share Tech Mono', monospace; color: var(--success); font-size: 1.05rem; white-space: nowrap; }
+.achv-strip-icons { display: flex; gap: 4px; font-size: 1.15rem; flex: 1; min-width: 0; overflow: hidden; }
+.achv-strip-icons span.locked { filter: grayscale(1); opacity: .25; }
+.achv-strip-cta { color: var(--accent2); font-size: .8rem; white-space: nowrap; }
+@media (max-width: 600px) { .achv-strip { margin: 12px 16px 0; flex-wrap: wrap; } .achv-strip-icons { order: 3; flex-basis: 100%; } }
+
 .reset-btn {
   background: transparent;
   border: 1px solid rgba(255,107,107,0.3);
@@ -841,6 +854,16 @@ footer {
 
 body.has-alert .hero { padding-top: 168px; }
 </style>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#070b17">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CyberQuiz">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="app.css">
+<script src="app.js"></script>
 </head>
 <body class="has-alert">
 
@@ -856,7 +879,9 @@ body.has-alert .hero { padding-top: 168px; }
     <a href="menaces.html">Menaces</a>
     <a href="reseaux.html">Réseaux</a>
     <a href="avance.html">Avancé</a>
+    <a href="simulation.html">🖱️ Simulation</a>
     <a href="quiz-final.html" class="final">⚡ Contrôle Final</a>
+    <a href="succes.html">🏆 Succès</a>
     <a href="changelog.html">📋 Versions</a>
   </div>
   <button class="nav-toggle" onclick="toggleMenu()" aria-label="Menu">
@@ -901,11 +926,11 @@ body.has-alert .hero { padding-top: 168px; }
   <!-- Stats bar -->
   <div class="stats-bar">
     <div class="stat-item">
-      <span class="stat-num" data-target="13">0</span>
+      <span class="stat-num" data-target="14">0</span>
       <span class="stat-label">Quiz dispo</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num" data-target="184">0</span>
+      <span class="stat-num" data-target="196">0</span>
       <span class="stat-label">Questions</span>
     </div>
     <div class="stat-item">
@@ -930,6 +955,13 @@ body.has-alert .hero { padding-top: 168px; }
     <button class="reset-btn" onclick="resetProgress()" title="Réinitialiser votre progression"><i class="fa-solid fa-rotate-right"></i> Reset</button>
   </div>
 </div>
+
+<!-- ──── SUCCÈS ──── -->
+<a class="achv-strip" href="succes.html" id="achvStrip" aria-label="Voir mes succès">
+  <span class="achv-strip-count">🏆 <span id="achvCount">0</span> / <span id="achvTotal">0</span> succès</span>
+  <span class="achv-strip-icons" id="achvIcons" aria-hidden="true"></span>
+  <span class="achv-strip-cta">Voir tout <i class="fa-solid fa-arrow-right"></i></span>
+</a>
 
 <!-- ──── BARRE PROGRESSION GLOBALE ──── -->
 <div class="progress-section">
@@ -986,6 +1018,7 @@ body.has-alert .hero { padding-top: 168px; }
 <a href="reseaux-securite.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(103, 221, 205)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4M5 16v-4h14v4"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Sécurité des Réseaux</div><div class="card-desc">IP, DNS, ports, TLS, pare-feu et segmentation : les bases techniques du réseau.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">15 questions</span></div><span class="card-status status-new" id="status-reseaux-securite">Nouveau</span></div></a>
 <a href="wifi-interactif.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(107, 207, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M9 16a4 4 0 0 1 6 0"/><circle cx="12" cy="20" r="1"/></svg></div><span class="badge badge-hard">Difficile</span></div><div class="card-title">Wi-Fi : mises en situation</div><div class="card-desc">10 situations pratiques pour comprendre les réglages et les pièges du Wi-Fi.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">10 questions</span></div><span class="card-status status-new" id="status-wifi-interactif">Nouveau</span></div></a>
 <a href="incident-response.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(255, 162, 131)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 10 18H2Z M12 9v5M12 17v1"/></svg></div><span class="badge badge-hard">Difficile</span></div><div class="card-title">Réponse aux Incidents</div><div class="card-desc">15 situations pour apprendre à alerter, contenir, préserver les traces et rétablir le service.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">15 questions</span></div><span class="card-status status-new" id="status-incident-response">Nouveau</span></div></a>
+<a href="simulation.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(110, 231, 150)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="m12 8 5 2-2 1-1 2Z"/></svg></div><span class="badge badge-medium">Interactif</span></div><div class="card-title">Premier jour au bureau</div><div class="card-desc">Mises en situation interactives : trier ses mails, inspecter ses fichiers, partager un document en sécurité.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">12 étapes</span></div><span class="card-status status-new" id="status-simulation">Nouveau</span></div></a>
 <a href="quiz-final.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(249, 211, 123)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6Z"/><path d="m8 12 3 3 5-6"/></svg></div><span class="badge badge-hard">Défi</span></div><div class="card-title">Contrôle Final</div><div class="card-desc">10 questions mélangées avec validation, explications et score final.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">10 questions</span></div><span class="card-status status-new" id="status-quiz-final">Nouveau</span></div></a>
 </div>
 </section>
@@ -1014,6 +1047,7 @@ body.has-alert .hero { padding-top: 168px; }
   </div>
 </footer>
 
+<script src="succes.js"></script>
 <script>
 /* Canvas Particules */
 const canvas = document.getElementById('particles');
@@ -1140,6 +1174,12 @@ const ALL_QUIZZES = [
     "total": 15
   },
   {
+    "key": "simulation",
+    "title": "Premier jour au bureau",
+    "url": "simulation.html",
+    "total": 12
+  },
+  {
     "key": "quiz-final",
     "title": "Contrôle Final",
     "url": "quiz-final.html",
@@ -1173,13 +1213,32 @@ function loadProgress() {
 }
 loadProgress();
 
+/* Succès : résumé sur l'accueil */
+function loadAchievements() {
+  if (!window.CyberSucces) { document.getElementById('achvStrip').style.display = 'none'; return; }
+  const etat = CyberSucces.etat();
+  document.getElementById('achvCount').textContent = etat.debloques;
+  document.getElementById('achvTotal').textContent = etat.total;
+  const icons = document.getElementById('achvIcons');
+  icons.replaceChildren();
+  etat.liste.forEach(a => {
+    const span = document.createElement('span');
+    span.textContent = a.icon;
+    span.title = a.title + (a.date ? '' : ' (à débloquer)');
+    if (!a.date) span.className = 'locked';
+    icons.append(span);
+  });
+}
+loadAchievements();
+
 function resetProgress() {
-  if (!confirm('Effacer les scores et toutes les parties en cours ?')) return;
+  if (!confirm('Effacer les scores, les succès et toutes les parties en cours ?')) return;
   try {
     ALL_QUIZZES.forEach(q => {
       localStorage.removeItem(`cyberquiz_${q.key}`);
       localStorage.removeItem(`cyberquiz_session_${q.key}`);
     });
+    if (window.CyberSucces) CyberSucces.reinitialiser();
     location.reload();
   } catch { alert('Le navigateur ne permet pas de modifier le stockage local. Vérifie ses paramètres.'); }
 }
@@ -1223,5 +1282,7 @@ function closeBanner() {
   document.body.classList.remove('has-alert');
 }
 </script>
+<script src="audio.js" defer></script>
+<script src="pwa.js" defer></script>
 </body>
 </html>

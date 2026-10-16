@@ -1,0 +1,79 @@
+/* ============================================================
+   CyberQuiz — Style « application » (app.css)
+   S'applique quand CyberQuiz est installé (PWA) : la classe
+   « app-mode » est ajoutée sur <html> par app.js.
+   Aperçu dans un navigateur : ajouter ?mode=app à l'adresse
+   (et ?mode=web pour revenir au site).
+   ============================================================ */
+
+/* ── Réglages communs (site et application) ── */
+.pwa-offline { left: 72px !important; }               /* laisse la place au bouton son */
+
+/* ── Mode application ── */
+html.app-mode { -webkit-tap-highlight-color: transparent; }
+html.app-mode body {
+  overscroll-behavior-y: none;
+  padding-bottom: calc(76px + env(safe-area-inset-bottom));
+}
+/* On ne sélectionne pas le texte des boutons et menus comme dans une vraie app */
+html.app-mode button, html.app-mode .btn, html.app-mode nav,
+html.app-mode .quiz-card, html.app-mode .app-tabbar { -webkit-user-select: none; user-select: none; }
+
+/* Barre du haut : respecte l'encoche des téléphones */
+html.app-mode .navbar { padding-top: env(safe-area-inset-top); box-sizing: content-box; }
+
+/* Éléments « site web » inutiles dans l'application */
+html.app-mode .nav-toggle,
+html.app-mode .nav-links,
+html.app-mode .alert-banner,
+html.app-mode .pwa-install-btn,
+html.app-mode body > footer,
+html.app-mode .footer-inner { display: none !important; }
+html.app-mode body.has-alert { padding-top: 0; }
+
+/* Retour tactile : les éléments s'enfoncent légèrement quand on appuie */
+html.app-mode .quiz-card, html.app-mode .btn, html.app-mode .answer-btn, html.app-mode .sbtn,
+html.app-mode .achv, html.app-mode .app-tab { transition: transform .12s ease, background .2s, border-color .2s, box-shadow .2s; }
+html.app-mode .quiz-card:active, html.app-mode .btn:active:not(:disabled), html.app-mode .answer-btn:active:not(:disabled),
+html.app-mode .sbtn:active:not(:disabled), html.app-mode .achv:active { transform: scale(.97); }
+
+/* Notifications au-dessus de la barre d'onglets */
+html.app-mode .cs-toasts { bottom: calc(88px + env(safe-area-inset-bottom)) !important; }
+html.app-mode .pwa-update { bottom: calc(88px + env(safe-area-inset-bottom)) !important; }
+html.app-mode .pwa-offline { left: 50% !important; transform: translateX(-50%); bottom: calc(88px + env(safe-area-inset-bottom)) !important; }
+
+/* ── Barre d'onglets en bas ── */
+.app-tabbar { display: none; }
+html.app-mode .app-tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 9500;
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  max-width: 640px; margin: 0 auto;
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  background: rgba(8, 12, 28, .94);
+  backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-top: 1px solid rgba(0, 191, 255, .18);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, .35);
+  font-family: 'Poppins', system-ui, sans-serif;
+}
+@media (min-width: 641px) {
+  html.app-mode .app-tabbar { bottom: 14px; border: 1px solid rgba(0, 191, 255, .2); border-radius: 18px; padding-bottom: 6px; }
+}
+.app-tab {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  min-height: 54px; padding: 4px 2px; border: 0; border-radius: 12px; background: none;
+  color: rgba(232, 234, 246, .62); font-family: inherit; font-size: .66rem; font-weight: 500; line-height: 1.2;
+  text-decoration: none; cursor: pointer;
+}
+.app-tab-ico { font-size: 1.25rem; line-height: 1; filter: grayscale(.6); transition: filter .2s, transform .2s; }
+.app-tab:hover { color: #e8eaf6; }
+.app-tab[aria-current="page"] { color: #4cc9f0; background: rgba(0, 191, 255, .10); }
+.app-tab[aria-current="page"] .app-tab-ico { filter: none; transform: translateY(-1px); }
+.app-tab:focus-visible { outline: 2px solid #4cc9f0; outline-offset: 1px; }
+
+/* ── Transitions entre les pages ── */
+@media (prefers-reduced-motion: no-preference) {
+  html.app-mode body { animation: app-enter .32s cubic-bezier(.2, .8, .2, 1) backwards; }   /* « backwards » : aucun transform ne reste après l’animation (sinon les éléments fixes se décalent) */
+  html.app-mode.app-leaving body { animation: app-leave .16s ease-in both; }
+}
+@keyframes app-enter { from { opacity: 0; transform: translateY(10px); } }
+@keyframes app-leave { to { opacity: 0; transform: translateY(-6px); } }
