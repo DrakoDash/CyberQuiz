@@ -7,7 +7,7 @@
    d'auteur, rien à télécharger et tout marche hors-ligne.
 
    Utilisation depuis une autre page / un autre script :
-     CyberSon.play('correct');   // 'click', 'nav', 'correct', 'wrong',
+     CyberSon.play('correct');   // 'hover', 'click', 'nav', 'back', 'correct', 'wrong',
                                  // 'finish-good', 'finish-bad', 'achievement',
                                  // 'toggle-on', 'toggle-off'
      CyberSon.openPanel();       // ouvre le panneau de réglages
@@ -110,8 +110,31 @@
      EFFETS SONORES
      ============================================================ */
   const SFX = {
-    click() { tone({ freq: 1400, to: 900, type: 'sine', dur: 0.035, vol: 0.18, release: 0.03 }); },
-    nav() { noise({ dur: 0.28, vol: 0.10, from: 500, to: 4000 }); tone({ freq: 660, to: 990, type: 'sine', dur: 0.12, vol: 0.06 }); },
+    /* ── Sons d'interface inspirés de SteamOS : courts, ronds, feutrés ── */
+    // Le focus passe sur un élément (survol souris ou touche Tab) : petit « tic » doux
+    hover() {
+      tone({ freq: 1760, to: 1480, type: 'sine', dur: 0.022, vol: 0.045, attack: 0.002, release: 0.025, filter: 3500 });
+      tone({ freq: 880, type: 'triangle', dur: 0.018, vol: 0.02, attack: 0.002, release: 0.02 });
+    },
+    // Validation / clic : « bwip » arrondi en deux notes montantes
+    click() {
+      tone({ freq: midi(81), type: 'sine', dur: 0.04, vol: 0.13, attack: 0.004, release: 0.03, filter: 4000 });
+      tone({ freq: midi(88), type: 'sine', start: 0.035, dur: 0.06, vol: 0.12, attack: 0.004, release: 0.06, filter: 4000 });
+      tone({ freq: midi(76), type: 'triangle', dur: 0.05, vol: 0.04, release: 0.04 });
+    },
+    // Ouverture d'une page : souffle montant + petite cloche
+    nav() {
+      noise({ dur: 0.22, vol: 0.06, from: 350, to: 2800, q: 1.2 });
+      tone({ freq: midi(76), to: midi(83), type: 'sine', dur: 0.09, vol: 0.10, attack: 0.01, filter: 3000 });
+      tone({ freq: midi(88), type: 'sine', start: 0.08, dur: 0.12, vol: 0.07, release: 0.18 });
+      tone({ freq: midi(95), type: 'sine', start: 0.11, dur: 0.08, vol: 0.03, release: 0.2 });
+    },
+    // Retour (← Accueil, Précédent) : la même chose, mais qui redescend
+    back() {
+      noise({ dur: 0.2, vol: 0.05, from: 2600, to: 400, q: 1.2 });
+      tone({ freq: midi(86), type: 'sine', dur: 0.045, vol: 0.11, filter: 3500 });
+      tone({ freq: midi(79), type: 'sine', start: 0.045, dur: 0.08, vol: 0.10, release: 0.08, filter: 3000 });
+    },
     correct() {
       [72, 76, 79].forEach((n, i) => tone({ freq: midi(n), type: 'triangle', start: i * 0.07, dur: 0.12, vol: 0.22 }));
       tone({ freq: midi(84), type: 'sine', start: 0.21, dur: 0.35, vol: 0.12, release: 0.3 });
@@ -133,12 +156,13 @@
       [76, 79, 83, 88, 91].forEach((n, i) => tone({ freq: midi(n), type: 'sine', start: 0.05 + i * 0.06, dur: 0.18, vol: 0.16 }));
       [64, 71, 76].forEach(n => tone({ freq: midi(n), type: 'triangle', start: 0.35, dur: 0.7, vol: 0.07, release: 0.6 }));
     },
-    'toggle-on'() { tone({ freq: 700, to: 1100, dur: 0.07, vol: 0.14 }); },
-    'toggle-off'() { tone({ freq: 1100, to: 600, dur: 0.07, vol: 0.12 }); }
+    'toggle-on'() { tone({ freq: midi(79), type: 'sine', dur: 0.04, vol: 0.1 }); tone({ freq: midi(86), type: 'sine', start: 0.04, dur: 0.07, vol: 0.1, release: 0.06 }); },
+    'toggle-off'() { tone({ freq: midi(86), type: 'sine', dur: 0.04, vol: 0.1 }); tone({ freq: midi(79), type: 'sine', start: 0.04, dur: 0.07, vol: 0.09, release: 0.06 }); }
   };
 
   function play(name) {
     if (!settings.sfx || !SFX[name]) return;
+    if (Array.isArray(window.__cyberSonLog)) window.__cyberSonLog.push(name);   // journal de test (facultatif)
     if (!ensureContext()) return;
     if (ctx.state === 'suspended') ctx.resume().catch(() => {});
     try { SFX[name](); } catch { /* jamais bloquant */ }
@@ -263,13 +287,42 @@
     else if (unlocked && musicOn()) { ctx.resume().then(startMusic).catch(() => {}); }
   });
 
-  /* ── Son automatique sur les éléments cliquables ── */
+  /* ── Sons automatiques sur les éléments interactifs ── */
+  const INTERACTIVE = 'button, a[href], [role="button"], input[type="checkbox"], input[type="radio"], .quiz-card, tr.row';
+  const isBack = elt => elt.matches('.nav-back, #prevBtn, #backToResultBtn') ||
+    (elt.tagName === 'A' && /(^|\/)(accueil|index)\.html(#.*)?$/.test(elt.getAttribute('href') || '') && !elt.classList.contains('app-tab'));
+
   document.addEventListener('click', e => {
     const elt = e.target.closest('button, a, [role="button"], input[type="checkbox"], input[type="radio"]');
     if (!elt || elt.closest('[data-sound="none"]') || elt.disabled) return;
-    if (elt.tagName === 'A' && elt.href && !elt.target && new URL(elt.href, location.href).origin === location.origin &&
+    if (isBack(elt)) play('back');
+    else if (elt.tagName === 'A' && elt.href && !elt.target && new URL(elt.href, location.href).origin === location.origin &&
         !elt.getAttribute('href').startsWith('#')) play('nav');
     else play('click');
+  }, true);
+
+  // Comme sur SteamOS : un petit son à chaque fois que le focus change d'élément,
+  // à la souris (survol) comme au clavier (Tab, flèches). Pas sur écran tactile.
+  let lastHover = null, lastHoverAt = 0, keyboardNav = false;
+  window.addEventListener('keydown', e => { if (['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) keyboardNav = true; }, true);
+  window.addEventListener('pointerdown', () => { keyboardNav = false; }, true);
+  function hoverSound(elt) {
+    if (!elt || elt === lastHover || elt.disabled || elt.closest('[data-sound="none"]')) return;
+    lastHover = elt;
+    const now = performance.now();
+    if (now - lastHoverAt < 45) return;    // évite la « mitraillette » en passant vite sur une liste
+    lastHoverAt = now;
+    if (unlocked) play('hover');
+  }
+  document.addEventListener('pointerover', e => {
+    if (e.pointerType !== 'mouse') return;
+    const elt = e.target.closest(INTERACTIVE);
+    if (!elt) { lastHover = null; return; }
+    hoverSound(elt);
+  }, true);
+  document.addEventListener('focusin', e => {
+    if (!keyboardNav) return;
+    hoverSound(e.target.closest(INTERACTIVE));
   }, true);
 
   /* ============================================================

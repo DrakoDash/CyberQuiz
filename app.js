@@ -33,6 +33,9 @@
   const page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
   const QUIZ_PAGES = ['debutant', 'pratiques', 'menaces', 'mdp', 'reseaux', 'wifi', 'vie-privee', 'ingenierie-sociale',
     'avance', 'reseaux-securite', 'wifi-interactif', 'incident-response', 'quiz-final'].map(p => p + '.html');
+  // Pages de quiz (et simulation) : plein écran, sans barre d'onglets (voir app.css).
+  const isQuizPage = QUIZ_PAGES.includes(page) || page === 'simulation.html';
+  root.classList.toggle('page-quiz', isQuizPage);
   const TABS = [
     { id: 'home',  ico: '🏠', label: 'Accueil',    href: 'accueil.html',          match: p => p === 'accueil.html' || p === 'index.html' },
     { id: 'quiz',  ico: '📚', label: 'Quiz',       href: 'accueil.html#quizzes',  match: p => QUIZ_PAGES.includes(p) },
@@ -84,8 +87,28 @@
   // Retour arrière (cache du navigateur) : on réaffiche la page.
   window.addEventListener('pageshow', () => root.classList.remove('app-leaving'));
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', buildTabbar);
-  else buildTabbar();
+  /* ── 4. Quiz : animation des propositions quand la question change ── */
+  function watchQuestions() {
+    const q = document.getElementById('qText'), box = document.getElementById('ansBox');
+    if (!q || !box) return;
+    let last = null;
+    const animate = () => {
+      const text = q.textContent;
+      if (text === last) return;          // même question (clic sur une réponse) : pas d'animation
+      last = text;
+      box.classList.remove('q-enter');
+      void box.offsetWidth;                // relance l'animation
+      box.classList.add('q-enter');
+      clearTimeout(animate.t);
+      animate.t = setTimeout(() => box.classList.remove('q-enter'), 900);
+    };
+    new MutationObserver(animate).observe(q, { childList: true, characterData: true, subtree: true });
+    animate();
+  }
+
+  function ready() { buildTabbar(); watchQuestions(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready);
+  else ready();
 
   window.CyberApp = { isApp };
 })();

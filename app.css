@@ -17,7 +17,7 @@ html.app-mode body {
 }
 /* On ne sélectionne pas le texte des boutons et menus comme dans une vraie app */
 html.app-mode button, html.app-mode .btn, html.app-mode nav,
-html.app-mode .quiz-card, html.app-mode .app-tabbar { -webkit-user-select: none; user-select: none; }
+html.app-mode a.quiz-card, html.app-mode .app-tabbar { -webkit-user-select: none; user-select: none; }
 
 /* Barre du haut : respecte l'encoche des téléphones */
 html.app-mode .navbar { padding-top: env(safe-area-inset-top); box-sizing: content-box; }
@@ -32,10 +32,19 @@ html.app-mode .footer-inner { display: none !important; }
 html.app-mode body.has-alert { padding-top: 0; }
 
 /* Retour tactile : les éléments s'enfoncent légèrement quand on appuie */
-html.app-mode .quiz-card, html.app-mode .btn, html.app-mode .answer-btn, html.app-mode .sbtn,
+/* (a.quiz-card = cartes de l'accueil ; sur les pages de quiz, .quiz-card est la fenêtre du quiz et ne doit pas bouger) */
+html.app-mode a.quiz-card, html.app-mode .btn, html.app-mode .answer-btn, html.app-mode .sbtn,
 html.app-mode .achv, html.app-mode .app-tab { transition: transform .12s ease, background .2s, border-color .2s, box-shadow .2s; }
-html.app-mode .quiz-card:active, html.app-mode .btn:active:not(:disabled), html.app-mode .answer-btn:active:not(:disabled),
+html.app-mode a.quiz-card:active, html.app-mode .btn:active:not(:disabled), html.app-mode .answer-btn:active:not(:disabled),
 html.app-mode .sbtn:active:not(:disabled), html.app-mode .achv:active { transform: scale(.97); }
+
+/* ── Pages de quiz : plein écran, sans barre d'onglets ── */
+/* On garde seulement la barre du haut (bouton « ← Accueil ») pour pouvoir quitter le quiz. */
+html.app-mode.page-quiz .app-tabbar { display: none !important; }
+html.app-mode.page-quiz body { padding-bottom: env(safe-area-inset-bottom); }
+html.app-mode.page-quiz .cs-toasts,
+html.app-mode.page-quiz .pwa-update { bottom: calc(16px + env(safe-area-inset-bottom)) !important; }
+html.app-mode.page-quiz .pwa-offline { bottom: calc(16px + env(safe-area-inset-bottom)) !important; }
 
 /* Notifications au-dessus de la barre d'onglets */
 html.app-mode .cs-toasts { bottom: calc(88px + env(safe-area-inset-bottom)) !important; }
@@ -72,8 +81,23 @@ html.app-mode .app-tabbar {
 
 /* ── Transitions entre les pages ── */
 @media (prefers-reduced-motion: no-preference) {
-  html.app-mode body { animation: app-enter .32s cubic-bezier(.2, .8, .2, 1) backwards; }   /* « backwards » : aucun transform ne reste après l’animation (sinon les éléments fixes se décalent) */
-  html.app-mode.app-leaving body { animation: app-leave .16s ease-in both; }
+  /* « backwards » : aucun transform ne reste après l'animation (sinon les éléments fixes se décalent).
+     Pas d'animation de page sur les quiz : seules les propositions de réponse s'animent (voir plus bas). */
+  html.app-mode:not(.page-quiz) body { animation: app-enter .32s cubic-bezier(.2, .8, .2, 1) backwards; }
+  html.app-mode.app-leaving:not(.page-quiz) body { animation: app-leave .16s ease-in both; }
+
+  /* ── Quiz : apparition en cascade des propositions de réponse ──
+     La classe « q-enter » est ajoutée par app.js uniquement quand la question change
+     (pas quand on clique sur une réponse), sur le site comme dans l'application. */
+  .q-enter > .answer-btn,
+  .q-enter > .sim,
+  .q-enter > div > .sim { animation: ans-in .38s cubic-bezier(.2, .9, .3, 1.15) backwards; }
+  .q-enter > .answer-btn:nth-child(2) { animation-delay: .06s; }
+  .q-enter > .answer-btn:nth-child(3) { animation-delay: .12s; }
+  .q-enter > .answer-btn:nth-child(4) { animation-delay: .18s; }
+  .q-enter > .answer-btn:nth-child(5) { animation-delay: .24s; }
+  .q-enter > .answer-btn:nth-child(n+6) { animation-delay: .30s; }
 }
 @keyframes app-enter { from { opacity: 0; transform: translateY(10px); } }
 @keyframes app-leave { to { opacity: 0; transform: translateY(-6px); } }
+@keyframes ans-in { from { opacity: 0; transform: translateX(-14px) scale(.98); } }
