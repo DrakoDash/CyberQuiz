@@ -10,6 +10,9 @@
      "titre", "message"     → textes affichés
      "debut"                → (annonce) date prévue, ex. "2026-10-20T18:00:00+02:00"
      "fin"                  → (maintenance) retour prévu, même format
+     "pages"                → (annonce, facultatif) pages où l'afficher, ex. ["accueil.html"]
+                              (absent ou [] = toutes les pages)
+     "icone"                → (annonce, facultatif) émoji du bandeau, 🛠️ par défaut
      "cle_dev_sha256"       → empreinte SHA-256 de la clé d'accès développeur
 
    Accès développeur pendant une maintenance :
@@ -219,7 +222,10 @@
   function toggleBanner(cfg) {
     const old = document.getElementById('mt-banner');
     const key = cfg ? [cfg.titre, cfg.message, cfg.debut].join('|') : null;
-    if (!cfg || session.get(CLOSED) === key) { old?.remove(); return; }
+    const page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    const onThisPage = !cfg || !Array.isArray(cfg.pages) || cfg.pages.length === 0 ||
+      cfg.pages.some(p => String(p).toLowerCase() === page);
+    if (!cfg || !onThisPage || session.get(CLOSED) === key) { old?.remove(); return; }
     const start = parseDate(cfg.debut);
     const text = (start ? `Maintenance prévue ${formatDate(start)}. ` : '') + (cfg.message || '');
     if (old && old.dataset.key === key) return;
@@ -227,14 +233,16 @@
     const bar = el('div', 'mt-banner');
     bar.id = 'mt-banner'; bar.dataset.key = key;
     bar.setAttribute('role', 'status');
-    const ico = el('span', 'mt-banner-ico', '🛠️'); ico.setAttribute('aria-hidden', 'true');
+    const ico = el('span', 'mt-banner-ico', typeof cfg.icone === 'string' && cfg.icone ? cfg.icone.slice(0, 4) : '🛠️'); ico.setAttribute('aria-hidden', 'true');
     const body = el('div', 'mt-banner-body');
     body.append(el('strong', null, cfg.titre || 'Information'), el('span', null, text));
     const close = el('button', 'mt-banner-close', '×');
     close.type = 'button'; close.setAttribute('aria-label', 'Fermer l’annonce');
     close.addEventListener('click', () => { session.set(CLOSED, key); bar.remove(); });
     bar.append(ico, body, close);
-    document.body.append(bar);
+    // Si la page prévoit un emplacement (accueil), l'annonce s'y intègre ; sinon elle flotte en haut.
+    const slot = document.querySelector('[data-annonce-slot]');
+    (slot || document.body).append(bar);
   }
 
   /* ── Badge « mode développeur » ── */

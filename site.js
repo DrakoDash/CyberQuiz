@@ -115,18 +115,19 @@ function loadProgress() {
     }
   });
 
-  // Accueil
+  // Accueil : bloc « Ma progression »
   animateCounter($id('doneCount'), done);
   const pct = Math.round(done / ALL_QUIZZES.length * 100);
-  if ($id('progressFill')) $id('progressFill').style.width = pct + '%';
   if ($id('progressPct')) $id('progressPct').textContent = pct + '%';
+  if ($id('progressRing')) $id('progressRing').setAttribute('aria-label', `${pct} % du parcours terminé`);
+  if ($id('ringFill')) requestAnimationFrame(() => { $id('ringFill').style.strokeDashoffset = 326.7 * (1 - pct / 100); });
   const box = $id('recommendedBox');
   if (box) {
     if (nextQuiz) { const link = $id('nextQuizLink'); link.href = nextQuiz.url; link.textContent = nextQuiz.title; }
-    else box.textContent = 'Tous les modules sont terminés ! Tu peux les recommencer pour réviser.';
+    else { box.classList.add('all-done'); box.textContent = '🛡️ Tous les modules sont terminés ! Recommence-les pour réviser.'; }
   }
   if ($id('userRank')) $id('userRank').textContent = done === ALL_QUIZZES.length ? 'Parcours terminé 🛡️' : done >= 5 ? 'Explorateur cyber 🔍' : done >= 1 ? 'Apprenti veilleur 💻' : 'Initié(e)';
-  if ($id('userRankDesc')) $id('userRankDesc').textContent = `${done} / ${ALL_QUIZZES.length} modules terminés. Les scores indiquent les notions à réviser.`;
+  updateMainCta(done, nextQuiz);
 
   // Portails de l'accueil
   [['Quiz', 'quiz'], ['Sit', 'situations']].forEach(([id, cat]) => {
@@ -139,6 +140,34 @@ function loadProgress() {
   // Pages catalogue
   const section = document.querySelector('[data-category]');
   if (section && $id('catDone')) $id('catDone').textContent = perCat[section.dataset.category][0];
+}
+
+/* ── Bouton principal de l'accueil : « Continuer » si une partie est en cours ── */
+function findResume() {
+  let last = null;
+  try { last = localStorage.getItem('cyberquiz_last'); } catch { /* stockage indisponible */ }
+  const inProgress = [];
+  ALL_QUIZZES.forEach(q => {
+    let s = null;
+    try { s = JSON.parse(localStorage.getItem(`cyberquiz_session_${q.key}`)); } catch { /* ignoré */ }
+    if (!s || s.finished || !Array.isArray(s.answers) || !Number.isInteger(s.cur)) return;
+    if (!s.answers.some(a => a !== null)) return;               // page ouverte mais aucune réponse
+    inProgress.push({ q, cur: Math.min(s.cur, s.answers.length - 1), total: s.answers.length });
+  });
+  return inProgress.find(r => r.q.key === last) || inProgress[0] || null;
+}
+function updateMainCta(done, nextQuiz) {
+  const cta = $id('mainCta');
+  if (!cta) return;
+  const set = (href, label, sub) => { cta.href = href; $id('mainCtaLabel').textContent = label; $id('mainCtaSub').textContent = sub; };
+  const resume = findResume();
+  if (resume) {
+    const unit = resume.q.category === 'situations' && resume.q.key === 'simulation' ? 'Étape' : 'Question';
+    set(resume.q.url, 'Continuer', `${resume.q.title} · ${unit} ${resume.cur + 1}/${resume.total}`);
+    cta.classList.add('is-resume');
+  } else if (done === 0) set('debutant.html', 'Commencer', 'Les Fondamentaux');
+  else if (nextQuiz) set(nextQuiz.url, 'Continuer le parcours', nextQuiz.title);
+  else set('quiz.html', 'Réviser', 'Tous les modules sont terminés');
 }
 loadProgress();
 

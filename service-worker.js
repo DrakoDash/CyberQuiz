@@ -9,7 +9,7 @@
    racine d'un domaine que dans un sous-dossier (GitHub Pages :
    https://drakodash.github.io/CyberQuiz/).
    ============================================================ */
-const CACHE_VERSION = 'v2.2';
+const CACHE_VERSION = 'v2.3';
 const CACHE_APP   = `cyberquiz-app-${CACHE_VERSION}`;   // pages + scripts + icônes
 const CACHE_CDN   = `cyberquiz-cdn-${CACHE_VERSION}`;   // polices et Font Awesome
 

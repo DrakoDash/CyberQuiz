@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="app.css">
 <script src="app.js"></script>
 </head>
-<body class="has-alert">
+<body>
 
 <canvas id="particles"></canvas>
 
@@ -39,99 +39,78 @@
   </button>
 </nav>
 
-<!-- ──── BANNIÈRE D'ALERTE ──── -->
-<div class="alert-banner" id="alertBanner">
-  <div class="alert-banner-icon"><i class="fa-solid fa-exclamation"></i></div>
-  <div class="alert-banner-content">
-    <div class="alert-banner-title">⚠ Avis important</div>
-    <div class="alert-banner-msg">Le site est actuellement en développement.</div>
-  </div>
-  <button class="alert-banner-close" onclick="closeBanner()" aria-label="Fermer">
-    <i class="fa-solid fa-xmark"></i>
-  </button>
-</div>
-
-<!-- ──── HERO ──── -->
-<section class="hero">
-  <div class="hero-eyebrow">
-    <i class="fa-solid fa-circle"></i> Plateforme d'apprentissage 
-  </div>
-
+<!-- ──── HERO (compact) ──── -->
+<section class="hero hero-compact">
+  <!-- Les annonces de maintenance.json (mode "annonce") s'affichent ici. -->
+  <div data-annonce-slot></div>
+  <div class="hero-eyebrow"><i class="fa-solid fa-circle"></i> Plateforme d'apprentissage</div>
   <h1 class="hero-title">CyberQuiz</h1>
-
-  <p class="hero-sub">
-    Apprenez à vous protéger en testant<br>
-    <span id="typewriter"></span>
-  </p>
+  <p class="hero-sub">Apprends à te protéger en testant <span id="typewriter"></span></p>
+  <p class="hero-facts"><span><strong>14</strong> modules</span><span><strong>196</strong> questions</span><span>À ton rythme, même hors-ligne</span></p>
 
   <div class="hero-cta">
-    <a href="debutant.html" class="btn-primary">
-      <i class="fa-solid fa-play"></i> Commencer
+    <!-- Ce bouton devient « Continuer » si une partie est en cours (voir site.js). -->
+    <a href="debutant.html" class="btn-primary btn-continue" id="mainCta">
+      <i class="fa-solid fa-play" aria-hidden="true"></i>
+      <span class="cta-text"><span id="mainCtaLabel">Commencer</span><small id="mainCtaSub">Les Fondamentaux</small></span>
     </a>
-    <a href="quiz.html" class="btn-ghost">
-      <i class="fa-solid fa-list"></i> Voir tous les quiz
-    </a>
-  </div>
-
-  <!-- Stats bar -->
-  <div class="stats-bar">
-    <div class="stat-item">
-      <span class="stat-num" data-target="14">0</span>
-      <span class="stat-label">Modules</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num" data-target="196">0</span>
-      <span class="stat-label">Questions</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num">À ton rythme</span>
-      <span class="stat-label">Apprentissage</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num" id="doneCount">0</span>
-      <span class="stat-label">Complétés</span>
-    </div>
+    <a href="quiz.html" class="btn-ghost"><i class="fa-solid fa-list" aria-hidden="true"></i> Voir tous les quiz</a>
   </div>
 </section>
 
-<!-- ──── GRADE UTILISATEUR ──── -->
-<div class="user-rank-banner">
-  <div class="user-rank-info">
-    <i class="fa-solid fa-shield-cat"></i>
-    <span>Grade actuel : <strong class="user-rank-title" id="userRank">Initié(e)</strong></span>
-  </div>
-  <div style="display: flex; align-items: center; gap: 12px;">
-    <span style="font-size: 0.8rem; color: var(--muted);" id="userRankDesc">Complétez des quiz pour progresser !</span>
-    <button class="reset-btn" onclick="resetProgress()" title="Réinitialiser votre progression"><i class="fa-solid fa-rotate-right"></i> Reset</button>
-  </div>
-</div>
+<!-- ──── TABLEAU DE BORD : MA PROGRESSION + À LA UNE ──── -->
+<section class="dashboard" aria-label="Ma progression et nouveautés">
 
-<!-- ──── SUCCÈS ──── -->
-<a class="achv-strip" href="succes.html" id="achvStrip" aria-label="Voir mes succès">
-  <span class="achv-strip-count">🏆 <span id="achvCount">0</span> / <span id="achvTotal">0</span> succès</span>
-  <span class="achv-strip-icons" id="achvIcons" aria-hidden="true"></span>
-  <span class="achv-strip-cta">Voir tout <i class="fa-solid fa-arrow-right"></i></span>
-</a>
+  <!-- MA PROGRESSION -->
+  <article class="dash-card progress-card">
+    <header class="dash-head">
+      <h2>Ma progression</h2>
+      <button class="dash-reset" type="button" onclick="resetProgress()" title="Effacer scores, succès et parties en cours">
+        <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> Réinitialiser
+      </button>
+    </header>
+    <div class="progress-main">
+      <div class="ring" role="img" id="progressRing" aria-label="0 % du parcours terminé">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="ring-track" cx="60" cy="60" r="52"/>
+          <circle class="ring-fill" id="ringFill" cx="60" cy="60" r="52"/>
+        </svg>
+        <div class="ring-text"><span id="progressPct">0%</span><small>du parcours</small></div>
+      </div>
+      <div class="progress-info">
+        <p class="rank-label">Grade</p>
+        <p class="rank-title" id="userRank">Initié(e)</p>
+        <p class="rank-desc"><strong id="doneCount">0</strong> / 14 modules terminés</p>
+        <a class="achv-mini" href="succes.html" id="achvStrip" aria-label="Voir mes succès">
+          <span class="achv-mini-count">🏆 <span id="achvCount">0</span>/<span id="achvTotal">0</span></span>
+          <span class="achv-mini-icons" id="achvIcons" aria-hidden="true"></span>
+          <span class="achv-mini-cta">Succès →</span>
+        </a>
+      </div>
+    </div>
+    <div class="next-step" id="recommendedBox">
+      <span class="next-label"><i class="fa-solid fa-bullseye" aria-hidden="true"></i> Prochaine étape conseillée</span>
+      <a href="debutant.html" id="nextQuizLink" class="next-link">Les Fondamentaux</a>
+    </div>
+  </article>
 
-<!-- ──── BARRE PROGRESSION GLOBALE ──── -->
-<div class="progress-section">
-  <div class="progress-header">
-    <span class="progress-label">
-      <i class="fa-solid fa-chart-line" style="color:var(--accent);margin-right:6px;"></i>
-      Progression globale
-    </span>
-    <span class="progress-pct" id="progressPct">0%</span>
-  </div>
-  <div class="progress-track">
-    <div class="progress-fill" id="progressFill"></div>
-  </div>
-  
-  <!-- PROCHAINE ÉTAPE CONSEILLÉE (Proposition 2) -->
-  <div class="recommended-box" id="recommendedBox">
-    <span><i class="fa-solid fa-bullseye" style="color: var(--accent);"></i> Prochaine étape conseillée :</span>
-    <a href="debutant.html" id="nextQuizLink">Quiz Débutant <i class="fa-solid fa-arrow-right"></i></a>
-  </div>
-</div>
+  <!-- À LA UNE — pour changer la mise en avant, modifier ce bloc (lien, titre, texte, étiquette). -->
+  <a class="dash-card featured" href="simulation.html">
+    <span class="featured-tag">✨ À la une · Nouveau</span>
+    <div class="featured-art" aria-hidden="true">
+      <svg viewBox="0 0 200 120" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="30" y="14" width="140" height="84" rx="8"/>
+        <path d="M30 30h140"/><circle cx="42" cy="22" r="2.5"/><circle cx="52" cy="22" r="2.5"/><circle cx="62" cy="22" r="2.5"/>
+        <rect x="42" y="40" width="44" height="46" rx="4" opacity=".5"/>
+        <path d="M98 44h58M98 56h46M98 68h52" opacity=".6"/>
+        <path class="featured-cursor" d="m128 74 22 8-9 3-3 9Z"/>
+      </svg>
+    </div>
+    <h2>Premier jour au bureau</h2>
+    <p>Ta première mise en situation interactive : trie tes mails, inspecte tes fichiers et partage un document sans tomber dans les pièges.</p>
+    <span class="featured-cta">Essayer maintenant →</span>
+  </a>
+</section>
 
 <!-- ──── DEUX ESPACES : QUIZ ET MISES EN SITUATION ──── -->
 <section class="portals" id="quizzes" aria-label="Choisir une activité">

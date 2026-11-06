@@ -36,6 +36,8 @@
   const SITUATION_PAGES = ['simulation.html', 'wifi-interactif.html', 'incident-response.html'];
   // Pages de quiz et de mises en situation : plein écran, sans barre d'onglets (voir app.css).
   const isQuizPage = QUIZ_PAGES.includes(page) || SITUATION_PAGES.includes(page);
+  // Retient le dernier module ouvert (bouton « Continuer » de l'accueil).
+  if (isQuizPage) { try { localStorage.setItem('cyberquiz_last', page.replace('.html', '')); } catch { /* stockage bloqué */ } }
   root.classList.toggle('page-quiz', isQuizPage);
   const TABS = [
     { id: 'home',  ico: '🏠', label: 'Accueil',    href: 'accueil.html',          match: p => p === 'accueil.html' || p === 'index.html' },

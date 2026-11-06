@@ -61,7 +61,25 @@ Tout se règle dans **`maintenance.json`**, modifiable directement sur GitHub (i
 | `"maintenance"` | Écran de maintenance : le site et l'application installée sont bloqués |
 
 - `"titre"` et `"message"` : les textes affichés.
-- `"debut"` (annonce) et `"fin"` (maintenance) : dates au format `"2026-10-20T18:00:00+02:00"`, ou `""`.
+- `"debut"` (annonce) et `"fin"` (maintenance) : dates au format `"2026-10-20T18:00:00+01:00"`, ou `""`.
+  ⚠ Le décalage horaire change avec l'heure d'été : `+01:00` en hiver, `+02:00` en été.
+- `"pages"` (annonce, facultatif) : limiter le bandeau à certaines pages, ex. `["accueil.html"]`.
+- `"icone"` (annonce, facultatif) : l'émoji du bandeau (🛠️ par défaut).
+
+Exemple pour l'ancien bandeau « site en développement », affiché seulement sur l'accueil :
+
+```json
+{
+  "mode": "annonce",
+  "titre": "Avis important",
+  "message": "Le site est actuellement en développement.",
+  "icone": "⚠️",
+  "pages": ["accueil.html"],
+  "debut": "",
+  "fin": "",
+  "cle_dev_sha256": "…"
+}
+```
 - Le changement est visible une à deux minutes après le commit (temps de publication de GitHub Pages).
   Les visiteurs bloqués sont libérés automatiquement dès le retour à `"off"` (vérification toutes les 30 s).
 - **Accès développeur** pendant la maintenance : ouvrir une page avec `?dev=LA_CLÉ`. Pour changer la clé :
