@@ -24,12 +24,13 @@ const $id = id => document.getElementById(id);
   function loop() { draw(true); frame = requestAnimationFrame(loop); }
   function sync() {
     cancelAnimationFrame(frame); frame = null; draw(false);
-    if (!reduce.matches && !document.hidden) frame = requestAnimationFrame(loop);
+    if (!reduce.matches && !document.documentElement.classList.contains('reduce-motion') && !document.hidden) frame = requestAnimationFrame(loop);
   }
   size(); for (let i = 0; i < 40; i++) parts.push(new Particle());
   addEventListener('resize', () => { size(); draw(false); });
   document.addEventListener('visibilitychange', sync);
   reduce.addEventListener?.('change', sync);
+  document.addEventListener('cyberquiz:settings', sync);
   sync();
 })();
 
@@ -41,7 +42,7 @@ function toggleMenu() { $id('navLinks')?.classList.toggle('open'); }
   const tw = $id('typewriter');
   if (!tw) return;
   const phrases = ['vos connaissances en sécurité.', 'à détecter le phishing.', 'à créer des mots de passe forts.', 'à naviguer sans risque.'];
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { tw.textContent = phrases[0]; return; }
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('reduce-motion')) { tw.textContent = phrases[0]; return; }
   let pi = 0, ci = 0, deleting = false;
   (function typeLoop() {
     const phrase = phrases[pi];
@@ -233,3 +234,6 @@ function closeBanner() {
   $id('alertBanner')?.classList.add('hidden');
   document.body.classList.remove('has-alert');
 }
+
+/* ── Année du pied de page (toujours à jour) ── */
+document.querySelectorAll('[data-year]').forEach(el => { el.textContent = new Date().getFullYear(); });

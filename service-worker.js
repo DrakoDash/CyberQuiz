@@ -4,14 +4,15 @@
 
    ✏️  À chaque mise en ligne d'une nouvelle version :
        1. incrémente CACHE_VERSION ;
-       2. ajoute ici toute nouvelle page dans PRECACHE.
+       2. ajoute ici toute nouvelle page dans PRECACHE
+          (pour un nouveau quiz : sa page .html ET son fichier questions/xxx.json).
    Les chemins sont RELATIFS : le site fonctionne aussi bien à la
    racine d'un domaine que dans un sous-dossier (GitHub Pages :
    https://drakodash.github.io/CyberQuiz/).
    ============================================================ */
-const CACHE_VERSION = 'v2.3';
+const CACHE_VERSION = 'v3.0';
 const CACHE_APP   = `cyberquiz-app-${CACHE_VERSION}`;   // pages + scripts + icônes
-const CACHE_CDN   = `cyberquiz-cdn-${CACHE_VERSION}`;   // polices et Font Awesome
+const CACHE_CDN   = `cyberquiz-cdn-${CACHE_VERSION}`;   // ressources externes éventuelles (plus utilisées : tout est hébergé sur le site)
 
 /* Dossier où vit le site (ex. https://drakodash.github.io/CyberQuiz/) */
 const BASE = self.registration.scope;
@@ -24,40 +25,62 @@ const PRECACHE = [
   'accueil.html',
   'quiz.html',
   'situations.html',
-  'site.css',
-  'site.js',
-  'about.html',
   'changelog.html',
+  'parametres.html',
+  'about.html',
   'succes.html',
   'offline.html',
   '404.html',
-  /* Quiz */
-  'debutant.html',
-  'pratiques.html',
-  'menaces.html',
-  'mdp.html',
-  'reseaux.html',
-  'wifi.html',
-  'vie-privee.html',
-  'ingenierie-sociale.html',
-  'avance.html',
-  'reseaux-securite.html',
-  'wifi-interactif.html',
-  'incident-response.html',
   'simulation.html',
-  'quiz-final.html',
-  /* Fichiers communs */
-  'manifest.json',
-  'pwa.js',
-  'succes.js',
+  /* Quiz : la page (coquille) + son fichier de questions */
+  'debutant.html', 'questions/debutant.json',
+  'pratiques.html', 'questions/pratiques.json',
+  'menaces.html', 'questions/menaces.json',
+  'mdp.html', 'questions/mdp.json',
+  'reseaux.html', 'questions/reseaux.json',
+  'wifi.html', 'questions/wifi.json',
+  'vie-privee.html', 'questions/vie-privee.json',
+  'ingenierie-sociale.html', 'questions/ingenierie-sociale.json',
+  'avance.html', 'questions/avance.json',
+  'reseaux-securite.html', 'questions/reseaux-securite.json',
+  'wifi-interactif.html', 'questions/wifi-interactif.json',
+  'incident-response.html', 'questions/incident-response.json',
+  'quiz-final.html', 'questions/quiz-final.json',
+  /* Scripts et styles communs */
+  'site.css',
+  'site.js',
+  'quiz-engine.css',
+  'quiz-engine.js',
+  'theme-light.css',
+  'app.css',
+  'app.js',
   'audio.js',
   'maintenance.js',
-  'app.js',
-  'app.css',
-  'style.css',
+  'pwa.js',
+  'succes.js',
+  'whatsnew.js',
+  'changelog.js',
+  'changelog.json',
+  'parametres.js',
+  'progression.js',
+  'manifest.json',
+  /* Polices, icônes, bibliothèque QR, images */
+  'assets/changelog/beta-28-0.jpg',
+  'assets/fa/fa-brands-400.woff',
+  'assets/fa/fa-regular-400.woff',
+  'assets/fa/fa-solid-900.woff',
+  'assets/fa/icons.css',
+  'assets/fonts/fonts.css',
+  'assets/fonts/poppins-300.woff',
+  'assets/fonts/poppins-400.woff',
+  'assets/fonts/poppins-500.woff',
+  'assets/fonts/poppins-600.woff',
+  'assets/fonts/poppins-700.woff',
+  'assets/fonts/share-tech-mono-400.woff',
   'assets/icons/icon-192.png',
+  'assets/icons/icon-512-maskable.png',
   'assets/icons/icon-512.png',
-  'assets/icons/icon-512-maskable.png'
+  'assets/lib/qrcode.js'
 ].map(url);
 
 const CDN_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com', 'cdnjs.cloudflare.com'];

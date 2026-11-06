@@ -1,0 +1,188 @@
+{
+  "id": "reseaux-securite",
+  "titre": "Sécurité des Réseaux",
+  "titre_onglet": "Sécurité des Réseaux — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Moyen",
+  "module": "10",
+  "parcours": "Apprendre à se protéger",
+  "description": "Relie les notions réseau aux protections qui comptent.",
+  "themes": [
+    "Protocoles",
+    "Pare-feu",
+    "Segmentation"
+  ],
+  "couleur": "103, 221, 205",
+  "couleur2": "#75b9ff",
+  "mode": "entrainement",
+  "consigne": "15 questions · Choisis tes réponses, puis consulte la correction à la fin.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<rect x=\"76\" y=\"42\" width=\"48\" height=\"38\" rx=\"7\"/><rect x=\"37\" y=\"122\" width=\"48\" height=\"38\" rx=\"7\"/><rect x=\"115\" y=\"122\" width=\"48\" height=\"38\" rx=\"7\"/><path d=\"M100 80v21H61v21m39-21h39v21M86 56h28M47 138h28M125 138h28\"/>",
+  "questions": [
+    {
+      "q": "Quel protocole protège les échanges d’une navigation web ?",
+      "a": [
+        "HTTPS",
+        "HTTP",
+        "FTP sans TLS",
+        "Telnet"
+      ],
+      "c": 0,
+      "e": "HTTPS utilise TLS pour chiffrer les échanges et vérifier l'identité du serveur selon son certificat. Il ne prouve pas qu'un site est honnête."
+    },
+    {
+      "q": "Qu'est-ce qu'un firewall ?",
+      "a": [
+        "Un logiciel de nettoyage",
+        "Un système qui filtre le trafic réseau",
+        "Un type de virus",
+        "Un navigateur web"
+      ],
+      "c": 1,
+      "e": "Un firewall est un dispositif ou logiciel qui filtre et contrôle le trafic réseau entrant et sortant."
+    },
+    {
+      "q": "Quel type d'attaque intercepte les données entre deux points ?",
+      "a": [
+        "DDoS",
+        "Phishing",
+        "Man-in-the-Middle (MITM)",
+        "Brute Force"
+      ],
+      "c": 2,
+      "e": "Une attaque MITM intercepte la communication entre un client et un serveur pour voler les données."
+    },
+    {
+      "q": "À quoi sert une adresse IP ?",
+      "a": [
+        "À remplacer un mot de passe",
+        "À identifier pour toujours une personne",
+        "À chiffrer les fichiers",
+        "À adresser une interface et acheminer des paquets sur un réseau"
+      ],
+      "c": 3,
+      "e": "Une adresse IP peut être privée ou publique, fixe ou dynamique. Elle n'identifie pas à elle seule une personne ; plusieurs appareils peuvent partager une adresse publique via NAT."
+    },
+    {
+      "q": "Que protège SMTP utilisé avec TLS ?",
+      "a": [
+        "La connexion de transport sur laquelle TLS est établi",
+        "Le contenu du mail contre tout destinataire",
+        "Le disque dur du destinataire",
+        "Le mot de passe Wi-Fi"
+      ],
+      "c": 0,
+      "e": "TLS protège un transport, pas nécessairement tous les relais ni un chiffrement de bout en bout du message. SMTP peut utiliser TLS implicite ou STARTTLS selon la configuration."
+    },
+    {
+      "q": "Que signifie VPN ?",
+      "a": [
+        "Virtual Public Network",
+        "Virtual Private Network",
+        "Virus Protection Network",
+        "Visual Programming Network"
+      ],
+      "c": 1,
+      "e": "Un VPN (Virtual Private Network) crée un tunnel chiffré entre votre appareil et un serveur, protégeant votre connexion."
+    },
+    {
+      "q": "Qu'est-ce qu'un port réseau ?",
+      "a": [
+        "Une connexion physique",
+        "Un type de pare-feu",
+        "Un numéro qui identifie un service sur une machine",
+        "Un câble de réseau"
+      ],
+      "c": 2,
+      "e": "Un port est un numéro qui identifie un processus ou service spécifique sur une machine. Par exemple : 80 pour HTTP, 443 pour HTTPS."
+    },
+    {
+      "q": "Qu'est-ce qu'une attaque DDoS ?",
+      "a": [
+        "Vol de données",
+        "Un type de firewall",
+        "Un virus informatique",
+        "Envoi massif de requêtes pour surcharger un serveur"
+      ],
+      "c": 3,
+      "e": "Une attaque DDoS (Distributed Denial of Service) vise à rendre un service indisponible en le surchargeant de requêtes."
+    },
+    {
+      "q": "Quel est l'avantage principal du chiffrement ?",
+      "a": [
+        "Rend le contenu intercepté illisible sans la clé appropriée",
+        "Augmente la vitesse réseau",
+        "Réduit la bande passante",
+        "Améliore le signal WiFi"
+      ],
+      "c": 0,
+      "e": "Le chiffrement rend les données illisibles pour toute personne qui les intercepte, protégeant la confidentialité."
+    },
+    {
+      "q": "Qu'est-ce qu'un proxy ?",
+      "a": [
+        "Un antivirus",
+        "Un serveur intermédiaire qui relaye les requêtes réseau",
+        "Un type de malware",
+        "Un mot de passe"
+      ],
+      "c": 1,
+      "e": "Un proxy relaie des requêtes. Il peut appliquer des règles de filtrage ; sa présence ne garantit ni chiffrement ni anonymat."
+    },
+    {
+      "q": "Qu'est-ce que le DNS ?",
+      "a": [
+        "Un logiciel malveillant",
+        "Un type de virus",
+        "Un système qui traduit les noms de domaine en adresses IP",
+        "Un protocole FTP"
+      ],
+      "c": 2,
+      "e": "Le DNS (Domain Name System) traduit les noms de domaine (google.com) en adresses IP pour permettre l'accès aux sites."
+    },
+    {
+      "q": "Que décrit un masque de sous-réseau IPv4 ?",
+      "a": [
+        "Le nom du Wi-Fi",
+        "La vitesse du câble",
+        "Le chiffrement TLS",
+        "La séparation entre la partie réseau et la partie hôte d’une adresse"
+      ],
+      "c": 3,
+      "e": "Il aide à déterminer si une destination est dans le même sous-réseau. Les règles de routage et de filtrage restent nécessaires pour contrôler les communications."
+    },
+    {
+      "q": "Quelle pratique protège un équipement réseau ?",
+      "a": [
+        "Appliquer les correctifs et limiter l’accès d’administration avec des identifiants robustes",
+        "Conserver ses accès d’usine",
+        "Ne jamais le mettre à jour",
+        "Désactiver tous ses journaux"
+      ],
+      "c": 0,
+      "e": "Sécurise la gestion, retire les services inutiles et protège les secrets. Un changement de mot de passe ne remplace pas une correction de vulnérabilité."
+    },
+    {
+      "q": "Qu'est-ce qu'une DMZ (Demilitarized Zone) ?",
+      "a": [
+        "Une zone interdite",
+        "Un segment réseau isolé entre le réseau privé et l'Internet",
+        "Un logiciel antivirus",
+        "Un type de malware"
+      ],
+      "c": 1,
+      "e": "Une DMZ est une zone de sécurité intermédiaire qui isole les serveurs publics du réseau privé pour plus de sécurité."
+    },
+    {
+      "q": "Quel protocole est dépassé et non sécurisé ?",
+      "a": [
+        "HTTPS",
+        "SSH",
+        "Telnet",
+        "DNS-SEC"
+      ],
+      "c": 2,
+      "e": "Telnet transmet les données en clair sans chiffrement, le rendant vulnérable. SSH le remplace de façon sécurisée."
+    }
+  ]
+}

@@ -98,38 +98,79 @@ Le site est accessible ici :
 
 ```text
 CyberQuiz/
-├── index.html
-├── accueil.html
-├── about.html
-├── debutant.html
-├── menaces.html
-├── mdp.html
-├── reseaux.html
-├── reseaux-securite.html
-├── wifi.html
-├── wifi-interactif.html
-├── pratiques.html
-├── incident-response.html
-├── quiz.html         # liste des quiz
-├── situations.html   # liste des mises en situation
-├── site.css / site.js  # styles et script communs (accueil, quiz, situations)
-├── simulation.html
-├── quiz-final.html
-├── changelog.html
-├── style.css
-├── maintenance.json  # interrupteur du mode maintenance (voir plus bas)
-├── maintenance.js
-├── pwa.js            # installation, mises à jour, hors-ligne
-├── app.js / app.css  # style « application » une fois installé
-├── audio.js          # musique et effets sonores (Web Audio)
-├── service-worker.js
-├── manifest.json
-├── 404.html
-├── offline.html
-├── assets/
-├── README.md
-└── ...
+├── index.html              # écran d'introduction
+├── accueil.html            # accueil (Continuer, Ma progression, À la une)
+├── quiz.html               # liste des quiz
+├── situations.html         # liste des mises en situation
+├── changelog.html          # notes de version (contenu : changelog.json)
+├── parametres.html         # thème, taille du texte, son, transfert de progression
+├── about.html              # à propos et confidentialité
+├── succes.html             # salle des trophées
+├── 404.html / offline.html # page introuvable / hors-ligne
+│
+├── debutant.html, mdp.html…  # pages de quiz : coquilles vides (data-quiz="…")
+├── questions/              # ⭐ LE CONTENU DES QUIZ (un fichier .json par quiz)
+│   ├── LISEZMOI.md         #    mode d'emploi : corriger / ajouter un quiz
+│   ├── _modele.json        #    modèle de quiz
+│   └── _modele-page.html   #    modèle de page de quiz
+├── quiz-engine.js / .css   # moteur commun de tous les quiz
+├── simulation.html         # module interactif « Premier jour au bureau »
+│
+├── changelog.json          # ⭐ LES NOTES DE VERSION (voir plus bas)
+├── maintenance.json        # ⭐ interrupteur du mode maintenance (voir plus haut)
+│
+├── site.css / site.js      # styles et script des pages « site »
+├── theme-light.css         # thème clair
+├── app.js / app.css        # préférences d'affichage + style « application » installée
+├── audio.js                # musique et effets sonores (Web Audio)
+├── succes.js               # système de succès
+├── whatsnew.js             # fenêtre « Quoi de neuf ? » + point rouge du menu
+├── progression.js          # sauvegarde / transfert (fichier, QR code)
+├── changelog.js, parametres.js
+├── maintenance.js, pwa.js, service-worker.js, manifest.json
+└── assets/
+    ├── fonts/              # Poppins et Share Tech Mono (licence OFL)
+    ├── fa/                 # icônes Font Awesome utilisées (sous-ensemble)
+    ├── lib/qrcode.js       # générateur de QR codes (licence MIT)
+    ├── changelog/          # captures des notes de version
+    ├── icons/              # icônes de l'application
+    └── og-image.jpg        # image d'aperçu quand on partage le lien
 ```
+
+## 📋 Ajouter une note de version
+
+Tout se passe dans **`changelog.json`** (sur GitHub : icône crayon ✏️). La page des versions, la fenêtre « Quoi de neuf ? » et le point rouge du menu se mettent à jour tout seuls.
+
+1. Copie le bloc `"_modele"` qui est en haut du fichier.
+2. Colle-le **en premier** dans la liste `"versions"` (juste après `"versions": [`) et ajoute une virgule après le `}` de fin.
+3. Remplis-le :
+
+```json
+{
+  "version": "Beta 28.1",
+  "date": "2026-12-01",
+  "titre": "Titre court",
+  "resume": "Une ou deux phrases (affichées dans la fenêtre « Quoi de neuf ? »).",
+  "essayer": { "texte": "Essayer", "lien": "quiz.html" },
+  "image": "assets/changelog/beta-28-1.jpg",
+  "changements": [
+    { "type": "nouveau", "texte": "Une nouvelle fonctionnalité" },
+    { "type": "amelioration", "texte": "Quelque chose qui marche mieux" },
+    { "type": "correction", "texte": "Un bug corrigé" },
+    { "type": "securite", "texte": "Un point de sécurité ou de confidentialité" }
+  ]
+}
+```
+
+- `date` au format **AAAA-MM-JJ** (les versions sont triées automatiquement par date).
+- `type` : `nouveau`, `amelioration`, `correction` ou `securite` (sans accent).
+- `essayer` et `image` sont facultatifs : supprime-les si inutiles.
+- L'onglet **« À venir »** se remplit avec la liste `"a_venir"` (statut `en-cours`, `prevu` ou `idee`).
+- Pense aussi à augmenter `CACHE_VERSION` dans `service-worker.js` pour que l'application installée se mette à jour.
+
+## ✏️ Modifier les questions d'un quiz
+
+Les questions sont dans `questions/<quiz>.json`. Mode d'emploi détaillé (et création d'un nouveau quiz) : [`questions/LISEZMOI.md`](questions/LISEZMOI.md).
 
 ## 🧠 Idée générale du projet
 

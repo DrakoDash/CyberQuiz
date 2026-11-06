@@ -1,0 +1,188 @@
+{
+  "id": "avance",
+  "titre": "Quiz Avancé",
+  "titre_onglet": "Quiz Avancé — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Difficile",
+  "module": "09",
+  "parcours": "Apprendre à se protéger",
+  "description": "Explore les mécanismes techniques qui renforcent la sécurité.",
+  "themes": [
+    "Cryptographie",
+    "Code",
+    "Contrôle d’accès"
+  ],
+  "couleur": "144, 166, 255",
+  "couleur2": "#cf9bff",
+  "mode": "entrainement",
+  "consigne": "15 questions · Choisis tes réponses, puis consulte la correction à la fin.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<rect x=\"62\" y=\"62\" width=\"76\" height=\"76\" rx=\"10\"/><path d=\"M79 43v19m21-19v19m21-19v19M79 138v19m21-19v19m21-19v19M43 79h19m-19 21h19m-19 21h19M138 79h19m-19 21h19m-19 21h19\"/><path class=\"art-bright\" d=\"m87 87-13 13 13 13m26-26 13 13-13 13m-9-31-8 36\"/>",
+  "questions": [
+    {
+      "q": "Quel objectif vise la confidentialité ?",
+      "a": [
+        "Réserver l’accès aux informations aux personnes autorisées",
+        "Rendre tout service disponible en permanence",
+        "Supprimer les sauvegardes",
+        "Publier les journaux"
+      ],
+      "c": 0,
+      "e": "La confidentialité se distingue de l'intégrité, qui protège contre les modifications non autorisées, et de la disponibilité, qui concerne l'accès au service."
+    },
+    {
+      "q": "Quelle mesure limite une injection SQL ?",
+      "a": [
+        "Concaténer les champs reçus dans la requête",
+        "Utiliser des requêtes paramétrées",
+        "Masquer le formulaire avec du CSS",
+        "Renommer la base"
+      ],
+      "c": 1,
+      "e": "Les paramètres séparent les valeurs du code SQL. La validation des entrées et le moindre privilège complètent cette protection."
+    },
+    {
+      "q": "Pour afficher du texte non fiable dans une page, quelle propriété évite de l’interpréter comme du HTML ?",
+      "a": [
+        "innerHTML",
+        "outerHTML",
+        "textContent",
+        "document.write"
+      ],
+      "c": 2,
+      "e": "textContent traite la valeur comme du texte. Cela convient aux questions et réponses du quiz lorsqu'aucune mise en forme HTML n'est attendue."
+    },
+    {
+      "q": "Comment stocker les mots de passe côté serveur ?",
+      "a": [
+        "En clair",
+        "Avec Base64 seul",
+        "Avec un chiffrement dont la clé est publique",
+        "Avec une fonction de dérivation adaptée aux mots de passe et un sel propre à chaque secret"
+      ],
+      "c": 3,
+      "e": "Le serveur vérifie une empreinte calculée avec une fonction adaptée, par exemple Argon2id correctement configuré. Base64 n'est pas du chiffrement."
+    },
+    {
+      "q": "À quoi sert un sel dans le stockage des mots de passe ?",
+      "a": [
+        "À diversifier les empreintes et limiter l’usage de tables précalculées",
+        "À remplacer le mot de passe",
+        "À rendre les mots de passe publics",
+        "À supprimer l’authentification"
+      ],
+      "c": 0,
+      "e": "Un sel doit être distinct pour chaque secret ; il n'a pas besoin d'être confidentiel. Il complète une fonction de dérivation adaptée."
+    },
+    {
+      "q": "Que signifie le moindre privilège ?",
+      "a": [
+        "Donner les droits administrateur à tous",
+        "Accorder seulement les droits nécessaires à la tâche",
+        "Ne jamais créer de compte",
+        "Partager un compte unique"
+      ],
+      "c": 1,
+      "e": "Limiter les droits réduit les conséquences d'une erreur ou d'une compromission. Réévalue les accès lorsqu'un rôle change."
+    },
+    {
+      "q": "Pourquoi segmenter un réseau ?",
+      "a": [
+        "Pour remplacer TLS",
+        "Pour rendre tous les appareils publics",
+        "Pour limiter les communications et la propagation d’un incident",
+        "Pour supprimer les mises à jour"
+      ],
+      "c": 2,
+      "e": "La segmentation doit être accompagnée de règles de filtrage. Un VLAN seul n'est pas une politique complète de sécurité."
+    },
+    {
+      "q": "Quelle différence distingue généralement IDS et IPS ?",
+      "a": [
+        "Un IDS chiffre, un IPS compresse",
+        "Ils sont tous deux des antivirus uniquement",
+        "Un IDS supprime toujours les paquets",
+        "Un IDS détecte et alerte ; un IPS peut aussi bloquer du trafic"
+      ],
+      "c": 3,
+      "e": "La capacité de prévention dépend du positionnement et de la configuration. Les alertes doivent être surveillées et ajustées."
+    },
+    {
+      "q": "Quel est le rôle de DNSSEC ?",
+      "a": [
+        "Authentifier les données DNS signées et en vérifier l’intégrité",
+        "Chiffrer automatiquement toute la navigation",
+        "Cacher les noms de domaine à tous",
+        "Remplacer un pare-feu"
+      ],
+      "c": 0,
+      "e": "DNSSEC ajoute des signatures aux données DNS. Il ne chiffre pas les requêtes DNS ni le contenu des sites."
+    },
+    {
+      "q": "Que fait HSTS lorsqu’il est appliqué par le navigateur ?",
+      "a": [
+        "Désactive les certificats",
+        "Impose HTTPS pour le domaine concerné",
+        "Stocke tous les mots de passe",
+        "Transforme tout site en site honnête"
+      ],
+      "c": 1,
+      "e": "HSTS limite le retour à HTTP. Sa protection initiale dépend notamment d'une politique déjà connue ou d'un préchargement ; il ne remplace pas TLS."
+    },
+    {
+      "q": "Comment vérifier qu’une sauvegarde permet réellement une reprise ?",
+      "a": [
+        "En regardant seulement son nom",
+        "En supprimant les originaux",
+        "En réalisant un test de restauration dans un environnement adapté",
+        "En la laissant branchée en permanence"
+      ],
+      "c": 2,
+      "e": "Un test contrôle la lisibilité, la complétude et la procédure de récupération. Des sauvegardes séparées réduisent l'impact d'un incident."
+    },
+    {
+      "q": "Une clé d’API secrète a été publiée sur GitHub. Que faire ?",
+      "a": [
+        "Supprimer uniquement la ligne du dernier commit",
+        "La renommer",
+        "Passer le texte en Base64",
+        "La révoquer, en générer une nouvelle et rechercher une utilisation abusive"
+      ],
+      "c": 3,
+      "e": "Un secret publié peut avoir été copié ou rester dans l'historique. Le retrait du code ne remplace pas sa révocation."
+    },
+    {
+      "q": "Pourquoi garder des journaux de sécurité horodatés ?",
+      "a": [
+        "Pour reconstituer les événements et détecter des anomalies",
+        "Pour remplacer les correctifs",
+        "Pour enregistrer tous les mots de passe",
+        "Pour empêcher toute attaque"
+      ],
+      "c": 0,
+      "e": "Protège les journaux, synchronise les horloges et limite les données collectées. Des logs utiles facilitent l'analyse, sans garantir une détection automatique."
+    },
+    {
+      "q": "Quelle différence existe entre authentification et autorisation ?",
+      "a": [
+        "Aucune",
+        "L’authentification vérifie une identité ; l’autorisation contrôle ses droits",
+        "L’autorisation chiffre les fichiers",
+        "L’authentification sauvegarde les données"
+      ],
+      "c": 1,
+      "e": "Un utilisateur connecté n'a pas nécessairement le droit d'accéder à tous les objets. Les contrôles de droits doivent être appliqués côté serveur."
+    },
+    {
+      "q": "Une signature numérique valide sur un logiciel garantit-elle son innocuité ?",
+      "a": [
+        "Oui, dans tous les cas",
+        "Oui, s’il est récent",
+        "Non, elle aide à vérifier son origine et son intégrité, pas toute sa sécurité",
+        "Oui, sans vérifier le signataire"
+      ],
+      "c": 2,
+      "e": "Un logiciel signé peut contenir une faille ou provenir d'une chaîne de publication compromise. Vérifie la source et les informations de sécurité."
+    }
+  ]
+}

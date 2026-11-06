@@ -1,0 +1,143 @@
+{
+  "id": "wifi",
+  "titre": "Sécurité Wi-Fi",
+  "titre_onglet": "Sécurité Wi-Fi — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Moyen",
+  "module": "06",
+  "parcours": "Apprendre à se protéger",
+  "description": "Comprends ce qui protège vraiment tes connexions sans fil.",
+  "themes": [
+    "WPA",
+    "HTTPS",
+    "VPN"
+  ],
+  "couleur": "99, 216, 242",
+  "couleur2": "#74a9ff",
+  "mode": "entrainement",
+  "consigne": "12 questions · Choisis tes réponses, puis consulte la correction à la fin.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<path d=\"M43 79a81 81 0 0 1 114 0M59 98a58 58 0 0 1 82 0M77 117a33 33 0 0 1 46 0\"/><circle class=\"art-bright\" cx=\"100\" cy=\"139\" r=\"8\"/>",
+  "questions": [
+    {
+      "q": "Parmi ces choix, lequel protège un réseau Wi-Fi domestique ?",
+      "a": [
+        "WPA3 ou WPA2 avec AES selon la compatibilité",
+        "WEP",
+        "Un réseau ouvert sans protection"
+      ],
+      "c": 0,
+      "e": "WEP est obsolète. Utilise un mode moderne compatible avec tes appareils, un secret robuste et un équipement à jour."
+    },
+    {
+      "q": "Pourquoi se méfier d’un point d’accès public inconnu ?",
+      "a": [
+        "Il est forcément lent",
+        "Son identité et sa configuration peuvent être incertaines",
+        "Il bloque automatiquement HTTPS"
+      ],
+      "c": 1,
+      "e": "Un faux réseau peut imiter un réseau légitime. Vérifie son nom auprès du lieu et préfère une connexion de confiance pour les usages sensibles."
+    },
+    {
+      "q": "Que protège un VPN de confiance sur un réseau public ?",
+      "a": [
+        "Il rend tous les sites honnêtes",
+        "Il empêche toute infection",
+        "Il chiffre le trafic qu’il prend en charge jusqu’au serveur VPN"
+      ],
+      "c": 2,
+      "e": "La protection du VPN s'arrête à son serveur. HTTPS reste nécessaire au-delà, et le fournisseur VPN devient un intermédiaire auquel tu fais confiance."
+    },
+    {
+      "q": "Que signifie VPN ?",
+      "a": [
+        "Virtual Private Network",
+        "Virus Protection Network",
+        "Visual Public Name"
+      ],
+      "c": 0,
+      "e": "Un réseau privé virtuel crée un tunnel entre des points du réseau. Un VPN correctement configuré peut chiffrer ce tunnel."
+    },
+    {
+      "q": "Que cherche une attaque de type HTTPS stripping ?",
+      "a": [
+        "Accélérer le téléchargement",
+        "Maintenir ou détourner une connexion vers HTTP non chiffré",
+        "Mettre à jour TLS"
+      ],
+      "c": 1,
+      "e": "L'attaque vise les connexions pouvant être ramenées à HTTP. HTTPS utilisé directement et HSTS lorsqu'il est effectivement appliqué limitent ce risque."
+    },
+    {
+      "q": "Que permet de vérifier un certificat TLS valide pour un site ?",
+      "a": [
+        "Que tous ses produits sont authentiques",
+        "Qu’il n’affiche jamais de publicité",
+        "Le lien entre une clé publique et le domaine visité"
+      ],
+      "c": 2,
+      "e": "Le navigateur vérifie notamment le domaine, la chaîne de confiance et la validité du certificat. Le certificat ne prouve pas l'honnêteté commerciale du site."
+    },
+    {
+      "q": "Sur un Wi-Fi ouvert, les échanges HTTPS correctement établis sont-ils automatiquement lisibles par tous ?",
+      "a": [
+        "Non : HTTPS protège leur contenu en transit, mais le réseau reste à évaluer",
+        "Oui, tout est en clair",
+        "Oui, si la page contient une image"
+      ],
+      "c": 0,
+      "e": "L'absence de mot de passe Wi-Fi ne supprime pas le chiffrement HTTPS. Certaines métadonnées restent visibles et un réseau malveillant peut tenter d'autres attaques."
+    },
+    {
+      "q": "Qu’est-ce qu’un Evil Twin ?",
+      "a": [
+        "Un routeur avec deux antennes",
+        "Un faux point d’accès imitant un réseau légitime",
+        "Un compte invité"
+      ],
+      "c": 1,
+      "e": "Le nom du réseau ne suffit pas à prouver son identité. Évite la connexion automatique aux réseaux inconnus."
+    },
+    {
+      "q": "Changer le nom du Wi-Fi suffit-il à le sécuriser ?",
+      "a": [
+        "Oui, même sans chiffrement",
+        "Oui, si le nom est invisible",
+        "Non : il faut aussi protéger les accès et configurer le chiffrement"
+      ],
+      "c": 2,
+      "e": "Un SSID neutre évite d'exposer des informations inutiles. Il ne remplace ni l'authentification ni le chiffrement du réseau."
+    },
+    {
+      "q": "Quel réglage protège réellement une box ?",
+      "a": [
+        "Mettre à jour la box et utiliser des secrets robustes distincts pour l’administration et le Wi-Fi",
+        "Conserver admin/admin",
+        "Désactiver le pare-feu"
+      ],
+      "c": 0,
+      "e": "Protège aussi l'interface d'administration. Change les secrets par défaut ou compromis et réserve l'accès de gestion aux personnes autorisées."
+    },
+    {
+      "q": "Le signal Wi-Fi dépasse ton logement. Qu’est-ce que cela implique ?",
+      "a": [
+        "Tout le monde connaît automatiquement ton mot de passe",
+        "Des personnes plus éloignées peuvent capter le signal, donc l’authentification reste essentielle",
+        "Le chiffrement cesse de fonctionner"
+      ],
+      "c": 1,
+      "e": "Recevoir le signal ne signifie pas obtenir l'accès. La couverture ne remplace pas des paramètres de sécurité robustes."
+    },
+    {
+      "q": "Qu’est-ce que le packet sniffing ?",
+      "a": [
+        "Un antivirus",
+        "Un système de sauvegarde",
+        "La capture et l’analyse de paquets réseau"
+      ],
+      "c": 2,
+      "e": "La capture sert au diagnostic dans un cadre autorisé. Un contenu correctement chiffré ne devient pas lisible simplement parce que ses paquets sont capturés."
+    }
+  ]
+}

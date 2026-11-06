@@ -1,0 +1,133 @@
+{
+  "id": "wifi-interactif",
+  "titre": "Wi-Fi : mises en situation",
+  "titre_onglet": "Wi-Fi : mises en situation — CyberQuiz",
+  "categorie": "situations",
+  "niveau": "Difficile",
+  "module": "11",
+  "parcours": "Apprendre à se protéger",
+  "description": "Passe de la théorie aux bons choix de configuration.",
+  "themes": [
+    "Situations",
+    "Réglages",
+    "Diagnostic"
+  ],
+  "couleur": "107, 207, 255",
+  "couleur2": "#a7abff",
+  "mode": "validation",
+  "consigne": "10 questions · Valide chaque réponse pour afficher son explication.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<circle cx=\"100\" cy=\"100\" r=\"56\"/><circle cx=\"100\" cy=\"100\" r=\"35\"/><circle cx=\"100\" cy=\"100\" r=\"13\"/><path class=\"art-bright\" d=\"m100 100 40-40\"/><path class=\"art-dash\" d=\"M100 35v30m0 70v30M35 100h30m70 0h30\"/><circle class=\"art-dot\" cx=\"77\" cy=\"125\" r=\"5\"/>",
+  "questions": [
+    {
+      "q": "Quel réglage choisir parmi ces propositions ?",
+      "a": [
+        "WPA3 si compatible, ou WPA2-AES selon les contraintes",
+        "WEP",
+        "Désactiver le chiffrement"
+      ],
+      "c": 0,
+      "e": "Utilise un mode moderne et maintiens les appareils à jour. Les fonctions disponibles dépendent de l'équipement.",
+      "scenario": "Tu configures une nouvelle box pour plusieurs appareils."
+    },
+    {
+      "q": "Que désigne WPA2-Personal avec une clé prépartagée (PSK) ?",
+      "a": [
+        "Un certificat numérique pour chaque utilisateur",
+        "Un mot de passe partagé par tous les utilisateurs",
+        "Un système sans authentification"
+      ],
+      "c": 1,
+      "e": "En WPA2-Personal, les utilisateurs partagent un secret pour accéder au réseau. Un réseau invité séparé évite de communiquer l'accès au réseau principal.",
+      "scenario": "Vous devez sécuriser votre WiFi avec un mot de passe que vos visiteurs connaîtront."
+    },
+    {
+      "q": "Vous détectez un réseau WiFi sans nom visible. De quoi s'agit-il ?",
+      "a": [
+        "Un réseau piégé",
+        "Un réseau défaillant",
+        "Un réseau avec SSID masqué"
+      ],
+      "c": 2,
+      "e": "Masquer le SSID (Service Set Identifier) est une tentative de sécurité par obscurité, mais reste vulnérable car le SSID peut être découvert par analyse de trafic.",
+      "scenario": "Vous explorez les réseaux WiFi disponibles et voyez plusieurs noms, mais l'un d'eux est caché."
+    },
+    {
+      "q": "Quel chiffrement choisir pour WPA2 parmi ces options ?",
+      "a": [
+        "AES-CCMP",
+        "TKIP ancien",
+        "Aucun"
+      ],
+      "c": 0,
+      "e": "AES-CCMP protège les trames en WPA2. Évite les anciens modes WEP ou TKIP ; les mécanismes proposés en WPA3 varient selon le mode.",
+      "scenario": "Le menu de sécurité de la box propose plusieurs méthodes."
+    },
+    {
+      "q": "Qu'est-ce qu'une attaque Evil Twin en WiFi ?",
+      "a": [
+        "Un bug logiciel du routeur",
+        "Un faux réseau WiFi créé par un attaquant pour capturer vos données",
+        "Un réseau 5GHz"
+      ],
+      "c": 1,
+      "e": "Un Evil Twin est un réseau WiFi frauduleux avec le même SSID qu'un réseau légitime. Les utilisateurs qui s'y connectent peuvent être victime d'interception de données.",
+      "scenario": "En arrivant au café, vous voyez deux réseaux 'CafeFreeWiFi'. Comment identifier le vrai ?"
+    },
+    {
+      "q": "Quelle fonction le bouton WPS propose-t-il ?",
+      "a": [
+        "Accélérer la vitesse du WiFi",
+        "Augmenter la portée du signal",
+        "Simplifier la connexion en appuyant sur un bouton"
+      ],
+      "c": 2,
+      "e": "WPS simplifie l'association. Le mode WPS par code PIN présente notamment des risques ; le bouton fonctionne différemment. Désactive WPS si cette fonction est inutile.",
+      "scenario": "Vous trouvez un bouton 'WPS' sur votre routeur et vous vous demandez à quoi il sert."
+    },
+    {
+      "q": "Quel est le risque d’une clé Wi-Fi prévisible ?",
+      "a": [
+        "Elle peut être trouvée par des essais de mots de passe courants",
+        "Aucun risque, seuls les appareils autorisés peuvent se connecter",
+        "Cela augmente la vitesse"
+      ],
+      "c": 0,
+      "e": "Une clé longue et imprévisible résiste mieux aux essais. Le simple fait d'ajouter un chiffre à un mot connu ne suffit pas.",
+      "scenario": "Un collègue propose une clé Wi-Fi très prévisible comme '12345678'."
+    },
+    {
+      "q": "À quoi sert la fragmentation de trames ?",
+      "a": [
+        "Garantir la confidentialité sans chiffrement",
+        "Découper des données en fragments pour leur transmission",
+        "Créer un mot de passe"
+      ],
+      "c": 1,
+      "e": "La fragmentation est un mécanisme de transmission, pas une protection de confidentialité. Elle ne remplace pas le chiffrement.",
+      "scenario": "Pendant un TP réseau, tu observes que certaines données sont transmises en plusieurs fragments."
+    },
+    {
+      "q": "Comment protéger votre réseau WiFi contre les utilisateurs non autorisés ?",
+      "a": [
+        "Désactiver toute authentification",
+        "Laisser le WiFi ouvert mais surveiller",
+        "Utiliser un mot de passe fort avec WPA3/WPA2"
+      ],
+      "c": 2,
+      "e": "Vérifie les appareils connectés, la configuration et les mises à jour. Un filtrage MAC seul n'est pas une authentification forte : les adresses peuvent être copiées.",
+      "scenario": "Vous remarquez que votre WiFi ralentit soudainement. Quelqu'un d'autre s'est peut-être connecté."
+    },
+    {
+      "q": "Qu'est-ce qu'une attaque KRACK (Key Reinstallation Attack) en WiFi ?",
+      "a": [
+        "Une réinstallation malveillante de clés de chiffrement permettant de décrypter le trafic",
+        "Une attaque DDoS sur le routeur",
+        "Un virus téléchargé par erreur"
+      ],
+      "c": 0,
+      "e": "KRACK vise la gestion de réinstallation de clés dans certaines implémentations WPA2. Les mises à jour des appareils et points d'accès corrigent ces défauts ; changer seulement le mot de passe n'est pas un correctif.",
+      "scenario": "Une faille critique a été découverte dans WPA2. Vous devez comprendre le risque."
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+  "id": "incident-response",
+  "titre": "Réponse aux Incidents",
+  "titre_onglet": "Réponse aux Incidents — CyberQuiz",
+  "categorie": "situations",
+  "niveau": "Difficile",
+  "module": "12",
+  "parcours": "Apprendre à se protéger",
+  "description": "Entraîne-toi à réagir, préserver les traces et organiser la reprise.",
+  "themes": [
+    "Alerter",
+    "Contenir",
+    "Rétablir"
+  ],
+  "couleur": "255, 162, 131",
+  "couleur2": "#ffca76",
+  "mode": "validation",
+  "consigne": "15 questions · Valide chaque réponse pour afficher son explication.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<path d=\"M100 45 57 61v39c0 31 43 58 43 58s43-27 43-58V61Z\"/><path class=\"art-bright\" d=\"M73 105h14l8-20 11 38 9-18h13\"/>",
+  "questions": [
+    {
+      "q": "Une exfiltration active est confirmée. Le plan d’intervention autorise l’isolement. Quelle réponse est adaptée ?",
+      "a": [
+        "Contenir le transfert, alerter l’équipe et préserver les traces",
+        "Attendre la fin de l’envoi pour analyser",
+        "Redémarrer sans conserver de traces",
+        "Ignorer le trafic"
+      ],
+      "c": 0,
+      "e": "Coordonne l'endiguement et l'investigation selon la procédure. Isoler du réseau ne signifie pas effacer la machine ; préserve les preuves utiles.",
+      "scenario": "Trafic sortant malveillant confirmé sur un serveur."
+    },
+    {
+      "q": "Un poste chiffre des fichiers et affiche une demande de rançon. Quelle priorité ?",
+      "a": [
+        "Payer immédiatement",
+        "Isoler le poste du réseau et alerter le support sans effacer les preuves",
+        "Reconnecter les sauvegardes au poste",
+        "Diffuser le fichier suspect"
+      ],
+      "c": 1,
+      "e": "L'isolement limite la propagation. La restauration vient après l'analyse et la remise en état ; payer ne garantit pas la récupération.",
+      "scenario": "Suspicion de rançongiciel sur un poste utilisateur."
+    },
+    {
+      "q": "Une API expose des données sans vérifier les accès. Que faire ?",
+      "a": [
+        "Attendre une semaine",
+        "Masquer le bouton de l’interface",
+        "Restreindre l’accès exposé selon le plan, conserver les logs puis corriger et tester les contrôles",
+        "Supprimer tous les journaux"
+      ],
+      "c": 2,
+      "e": "Le contrôle doit être côté serveur. Vérifie ensuite l'étendue des accès non autorisés et le traitement des données exposées.",
+      "scenario": "Défaut de contrôle d’accès confirmé sur une API."
+    },
+    {
+      "q": "Plusieurs personnes ont saisi leur mot de passe sur un faux site. Quelle réponse est cohérente ?",
+      "a": [
+        "Attendre de voir si elles se plaignent",
+        "Effacer les mails uniquement",
+        "Changer seulement le fond d’écran",
+        "Bloquer la destination connue, sécuriser les comptes touchés et rechercher les connexions suspectes"
+      ],
+      "c": 3,
+      "e": "Révoque les sessions et secrets exposés selon la procédure. Le blocage et l'investigation peuvent être menés ensemble pour limiter l'attaque.",
+      "scenario": "Campagne de phishing ayant touché plusieurs comptes."
+    },
+    {
+      "q": "Une porte dérobée est confirmée dans une version candidate. Quelle action ?",
+      "a": [
+        "Bloquer cette publication, analyser son origine et préparer une version saine",
+        "Publier avant d’analyser",
+        "Masquer le fichier dans le dépôt",
+        "Faire confiance au nom du package"
+      ],
+      "c": 0,
+      "e": "Vérifie si des versions déjà diffusées sont touchées. Analyse la chaîne de développement et révoque les secrets qui ont pu être exposés.",
+      "scenario": "Porte dérobée détectée avant un déploiement."
+    },
+    {
+      "q": "Le certificat TLS du site est expiré et le navigateur bloque l’accès. Que faire ?",
+      "a": [
+        "Demander aux utilisateurs d’ignorer l’alerte",
+        "Renouveler et déployer un certificat valide puis tester le renouvellement automatique",
+        "Passer le site en HTTP",
+        "Désactiver l’horloge des utilisateurs"
+      ],
+      "c": 1,
+      "e": "Vérifie le domaine, la chaîne et la date du nouveau certificat. Une supervision de l'expiration limite le risque de récidive.",
+      "scenario": "Certificat TLS expiré en production."
+    },
+    {
+      "q": "Une violation de données personnelles est confirmée en France. Quelle démarche engager ?",
+      "a": [
+        "Notifier chaque incident à tous les clients sans évaluer le risque",
+        "Attendre la fin de l’année",
+        "Alerter les responsables compétents, documenter et évaluer les obligations de notification selon le risque",
+        "Supprimer les preuves"
+      ],
+      "c": 2,
+      "e": "Le responsable du traitement documente la violation. S'il existe un risque pour les droits et libertés, il notifie la CNIL dans les meilleurs délais et si possible sous 72 h après en avoir pris connaissance. Un risque élevé impose aussi d'informer les personnes dans les meilleurs délais, sauf exceptions prévues.",
+      "scenario": "Données clients divulguées : le référent protection des données doit être associé."
+    },
+    {
+      "q": "Un compte d’administration du domaine est compromis. Quel plan suivre ?",
+      "a": [
+        "Changer uniquement le nom du compte",
+        "Supposer qu’un seul mot de passe changé résout tout",
+        "Remettre une ancienne sauvegarde sans la vérifier",
+        "Activer la réponse à incident, contenir les accès et rechercher les mécanismes de persistance avant une reprise maîtrisée"
+      ],
+      "c": 3,
+      "e": "Une compromission privilégiée peut affecter plusieurs systèmes. La rotation des secrets et la récupération doivent être coordonnées par l'équipe spécialisée.",
+      "scenario": "Compromission confirmée d’un compte privilégié."
+    },
+    {
+      "q": "Un fournisseur annonce une version compromise. Quelle vérification mener ?",
+      "a": [
+        "Comparer les versions et indicateurs, rechercher l’exposition puis contenir les systèmes concernés",
+        "Supposer que ta version est touchée sans vérifier",
+        "Installer toute nouvelle version trouvée sur un forum",
+        "Ignorer car le fournisseur est connu"
+      ],
+      "c": 0,
+      "e": "Appuie-toi sur les informations officielles et l'inventaire. N'installe qu'une version dont la provenance et l'état sont vérifiés.",
+      "scenario": "Alerte sur un logiciel tiers utilisé par l’entreprise."
+    },
+    {
+      "q": "Un DDoS volumétrique sature la connexion. Quelle action est adaptée ?",
+      "a": [
+        "Changer le mot de passe d’un utilisateur",
+        "Contacter le fournisseur réseau ou de protection DDoS et appliquer le plan de mitigation",
+        "Bloquer chaque IP à la main comme seule mesure",
+        "Attendre sans surveiller"
+      ],
+      "c": 1,
+      "e": "Le filtrage en amont peut être nécessaire quand la liaison est saturée. Coordonne les mesures et surveille la disponibilité du service.",
+      "scenario": "Service indisponible lors d’une attaque distribuée."
+    },
+    {
+      "q": "Un stockage cloud sensible est accessible publiquement par erreur. Que faire en priorité ?",
+      "a": [
+        "Supprimer toutes les données",
+        "Attendre le bilan complet avant de bloquer l’accès",
+        "Retirer l’accès public, préserver les journaux et analyser les données exposées",
+        "Renommer le dossier"
+      ],
+      "c": 2,
+      "e": "Contiens l'exposition sans détruire les traces. L'équipe compétente évalue ensuite les accès, les conséquences et les notifications éventuelles.",
+      "scenario": "Mauvaise configuration de droits sur un stockage cloud."
+    },
+    {
+      "q": "Un script injecté est stocké dans des commentaires. Quelle réponse est complète ?",
+      "a": [
+        "Effacer seulement le cache de ton navigateur",
+        "Installer uniquement un antivirus sur le serveur",
+        "Attendre la déconnexion des utilisateurs",
+        "Neutraliser le contenu, corriger l’affichage, analyser l’impact et révoquer les sessions exposées si nécessaire"
+      ],
+      "c": 3,
+      "e": "Une protection en amont ne supprime pas un contenu déjà stocké. Le correctif doit empêcher sa réinterprétation comme code actif.",
+      "scenario": "XSS stocké confirmé dans une application."
+    },
+    {
+      "q": "Une injection SQL est confirmée sur un formulaire. Que faire ?",
+      "a": [
+        "Restreindre l’accès vulnérable, corriger avec des requêtes paramétrées et analyser les traces préservées",
+        "Considérer qu’une lecture de données ne pose aucun risque",
+        "Supprimer toute la base",
+        "Masquer le champ avec du CSS"
+      ],
+      "c": 0,
+      "e": "La lecture non autorisée peut constituer une fuite. Contenir et corriger ne dispense pas d'étudier ce qui a été consulté ou modifié.",
+      "scenario": "Accès non autorisé à la base de données."
+    },
+    {
+      "q": "Un transfert inhabituel de fichiers sensibles vers un cloud personnel est détecté. Comment agir ?",
+      "a": [
+        "Accuser publiquement la personne",
+        "Alerter les responsables habilités, préserver les traces et contenir selon la procédure",
+        "Publier les fichiers pour prouver le problème",
+        "Ignorer jusqu’au lendemain"
+      ],
+      "c": 1,
+      "e": "Une alerte ne prouve pas à elle seule une intention malveillante. L'enquête et les mesures d'accès doivent être encadrées et documentées.",
+      "scenario": "Possible transfert non autorisé de données internes."
+    },
+    {
+      "q": "Quand remettre en service après un incident majeur ?",
+      "a": [
+        "Dès que l’écran redémarre",
+        "Dès qu’une sauvegarde est trouvée",
+        "Après confinement, correction des causes, vérification de la restauration et mise sous surveillance",
+        "Sans vérifier les accès administrateur"
+      ],
+      "c": 2,
+      "e": "Prépare une reprise progressive avec l'équipe responsable. Le retour d'expérience doit améliorer la prévention et le plan de réponse.",
+      "scenario": "Préparation de la reprise après compromission."
+    }
+  ]
+}

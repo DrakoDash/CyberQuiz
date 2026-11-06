@@ -1,11 +1,33 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script>
+/* La page 404 peut s'afficher à n'importe quelle adresse (ex. /CyberQuiz/dossier/inconnu).
+   On indique au navigateur où se trouve la racine du site pour que les liens et styles fonctionnent. */
+(function () {
+  var p = location.pathname, i = p.toLowerCase().indexOf('/cyberquiz/');
+  var root = i >= 0 ? p.slice(0, i + 11)
+    : (/\.github\.io$/.test(location.hostname) && p.split('/').length > 2 ? '/' + p.split('/')[1] + '/' : '/');
+  document.write('<base href="' + root + '">');
+})();
+</script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover.0"/>
 <title>404 — Page introuvable · CyberQuiz</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<meta name="description" content="Cette page de CyberQuiz est introuvable.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CyberQuiz">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="404 — Page introuvable · CyberQuiz">
+<meta property="og:description" content="Cette page de CyberQuiz est introuvable.">
+<meta property="og:url" content="https://drakodash.github.io/CyberQuiz/404.html">
+<meta property="og:image" content="https://drakodash.github.io/CyberQuiz/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CyberQuiz — quiz et mises en situation pour apprendre la cybersécurité">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="assets/fa/icons.css">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
 <style>
 :root {
   --bg:      #0a0f24;
@@ -291,6 +313,10 @@ body {
   .error-code { -webkit-text-stroke-width: 1.5px; }
   .error-actions { flex-direction: column; align-items: center; }
 }
+.error-more { margin-top: 18px; font-size: .86rem; color: rgba(255,255,255,.6); }
+.error-more a { color: #4cc9f0; }
+html.theme-light .error-more { color: #55627a; }
+html.theme-light .error-more a { color: #0369a1; }
 </style>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#070b17">
@@ -302,6 +328,7 @@ body {
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
 <script src="maintenance.js"></script>
 <link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="theme-light.css">
 <script src="app.js"></script>
 </head>
 <body>
@@ -326,23 +353,24 @@ body {
   </div>
 
   <br>
-  <span class="error-tag">Erreur · Page introuvable</span>
-  <h1 class="error-title">Cette page n'existe pas</h1>
+  <span class="error-tag">Erreur 404 · Accès introuvable</span>
+  <h1 class="error-title">Cette page s’est fait pirater… 🕵️</h1>
   <div class="error-line"></div>
   <p class="error-desc">
-    La page que vous cherchez a peut-être été déplacée, supprimée,
-    ou l'adresse saisie est incorrecte.<br>
-    Vérifiez l'URL ou retournez à l'accueil pour continuer.
+    Rassure-toi, c’est une blague : cette page n’existe tout simplement pas.
+    Elle a peut-être été déplacée, ou l’adresse contient une faute de frappe.<br>
+    <strong>Réflexe cyber :</strong> vérifie toujours une adresse avant de cliquer — les escrocs adorent les fautes de frappe&nbsp;!
   </p>
 
   <div class="error-actions">
     <a href="accueil.html" class="btn-primary">
       <i class="fa-solid fa-house"></i> Retour à l'accueil
     </a>
-    <a href="accueil.html#quizzes" class="btn-ghost">
+    <a href="quiz.html" class="btn-ghost">
       <i class="fa-solid fa-list"></i> Voir les quiz
     </a>
   </div>
+  <p class="error-more">Ou essaie : <a href="situations.html">Mises en situation</a> · <a href="succes.html">Mes succès</a> · <a href="changelog.html">Nouveautés</a> · <a href="about.html">À propos</a></p>
 
   <div class="error-url" id="errorUrl"></div>
 </div>
@@ -403,6 +431,7 @@ function animate() {
 initCanvas(); initParticles(); animate();
 </script>
 
+<script src="whatsnew.js" defer></script>
 <script src="audio.js" defer></script>
 <script src="pwa.js" defer></script>
 </body>

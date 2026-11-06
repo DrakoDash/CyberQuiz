@@ -1,0 +1,54 @@
+{
+  "id": "MON-QUIZ",
+  "titre": "Titre du quiz",
+  "titre_onglet": "Titre du quiz — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Facile",
+  "module": "15",
+  "parcours": "Apprendre à se protéger",
+  "description": "Une phrase qui présente le quiz.",
+  "themes": [
+    "Thème 1",
+    "Thème 2",
+    "Thème 3"
+  ],
+  "couleur": "94, 213, 255",
+  "couleur2": "#7ea6ff",
+  "mode": "entrainement",
+  "consigne": "3 questions · Choisis tes réponses, puis consulte la correction à la fin.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<circle cx=\"100\" cy=\"100\" r=\"30\"/><path class=\"art-bright\" d=\"M88 100l8 8 16-16\"/>",
+  "questions": [
+    {
+      "q": "Première question ?",
+      "a": [
+        "Réponse A",
+        "Réponse B (la bonne)",
+        "Réponse C"
+      ],
+      "c": 1,
+      "e": "Pourquoi B est la bonne réponse."
+    },
+    {
+      "q": "Deuxième question avec une mise en contexte ?",
+      "scenario": "Tu reçois un SMS de ta banque…",
+      "a": [
+        "Réponse A (la bonne)",
+        "Réponse B"
+      ],
+      "c": 0,
+      "e": "Explication."
+    },
+    {
+      "q": "Troisième question ?",
+      "a": [
+        "A",
+        "B",
+        "C",
+        "D (la bonne)"
+      ],
+      "c": 3,
+      "e": "Explication."
+    }
+  ]
+}

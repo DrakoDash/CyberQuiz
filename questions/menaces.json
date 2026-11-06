@@ -1,0 +1,243 @@
+{
+  "id": "menaces",
+  "titre": "Identifier les Menaces",
+  "titre_onglet": "Identifier les Menaces — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Moyen",
+  "module": "03",
+  "parcours": "Apprendre à se protéger",
+  "description": "Apprends à reconnaître les attaques et leurs signaux d’alerte.",
+  "themes": [
+    "Phishing",
+    "Malwares",
+    "Rançongiciels"
+  ],
+  "couleur": "255, 120, 112",
+  "couleur2": "#ffab65",
+  "mode": "entrainement",
+  "consigne": "20 questions · Choisis tes réponses, puis consulte la correction à la fin.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<path d=\"m82 60-9-14m45 14 9-14M66 85 47 76M64 105H43M68 128l-18 13M134 85l19-9M136 105h21M132 128l18 13\"/><rect x=\"65\" y=\"68\" width=\"70\" height=\"78\" rx=\"30\"/><path d=\"M81 68v-3a19 19 0 0 1 38 0v3M100 90v26\"/><circle class=\"art-bright\" cx=\"100\" cy=\"128\" r=\"2\"/>",
+  "questions": [
+    {
+      "q": "Qu'est-ce qu'un ransomware ?",
+      "a": [
+        "Un malware qui chiffre vos données et exige une rançon",
+        "Un antivirus gratuit",
+        "Un logiciel qui accélère l'ordinateur",
+        "Une sauvegarde automatique"
+      ],
+      "c": 0,
+      "e": "Un rançongiciel peut chiffrer, bloquer ou voler des données pour exercer une pression. Payer ne garantit pas leur récupération."
+    },
+    {
+      "q": "Le phishing est une technique visant principalement à :",
+      "a": [
+        "Mettre à jour votre système",
+        "Voler vos informations via de faux sites ou emails",
+        "Accélérer votre connexion Internet",
+        "Nettoyer votre disque dur"
+      ],
+      "c": 1,
+      "e": "Le phishing simule des sites ou emails légitimes pour tromper les utilisateurs et voler leurs identifiants ou données sensibles."
+    },
+    {
+      "q": "Qu'est-ce qu'un cheval de Troie (trojan) ?",
+      "a": [
+        "Un protocole réseau sécurisé",
+        "Un système de chiffrement puissant",
+        "Un programme malveillant déguisé en logiciel légitime",
+        "Un outil d'administration réseau"
+      ],
+      "c": 2,
+      "e": "Les chevaux de Troie se déguisent en programmes inoffensifs pour s'installer, puis exécutent des actions malveillantes."
+    },
+    {
+      "q": "Une attaque DDoS (Distributed Denial of Service) consiste à :",
+      "a": [
+        "Interception de paquets réseau",
+        "Copier des données confidentielles",
+        "Déchiffrer des mots de passe par force brute",
+        "Saturer un serveur de requêtes pour le rendre inaccessible"
+      ],
+      "c": 3,
+      "e": "Une DDoS inonde un serveur de milliers de requêtes simultanées depuis plusieurs machines, le rendant indisponible aux utilisateurs légitimes."
+    },
+    {
+      "q": "Qu'est-ce qu'un keylogger ?",
+      "a": [
+        "Un programme qui enregistre silencieusement tout ce que vous tapez",
+        "Un outil de sauvegarde automatique de fichiers",
+        "Un système de sauvegarde de fichiers",
+        "Un antivirus commercial"
+      ],
+      "c": 0,
+      "e": "Un keylogger enregistre chaque frappe au clavier, permettant aux attaquants de voler des mots de passe et des données sensibles."
+    },
+    {
+      "q": "Un ver informatique (worm) se distingue d'un virus car il :",
+      "a": [
+        "Est toujours inoffensif",
+        "Se propage seul sans avoir besoin d'un fichier hôte",
+        "Nécessite une interaction humaine pour se diffuser",
+        "Requiert un système d'exploitation spécifique"
+      ],
+      "c": 1,
+      "e": "Un ver peut se répliquer et se propager de manière autonome. Un virus se greffe à un fichier ou programme hôte ; les mécanismes de propagation varient."
+    },
+    {
+      "q": "L'attaque Man-in-the-Middle (MitM) consiste à :",
+      "a": [
+        "Forcer un mot de passe",
+        "Inonder un réseau de paquets malveillants",
+        "S'interposer secrètement entre deux parties qui communiquent",
+        "Supprimer des fichiers système"
+      ],
+      "c": 2,
+      "e": "Un attaquant MitM intercepte les communications entre deux parties pour espionner, modifier ou voler des données."
+    },
+    {
+      "q": "Qu'est-ce qu'un botnet ?",
+      "a": [
+        "Un service cloud sécurisé",
+        "Une application mobile de sécurité",
+        "Un réseau de robots aspirateurs connectés",
+        "Un réseau d'ordinateurs infectés contrôlés à distance par un pirate"
+      ],
+      "c": 3,
+      "e": "Un botnet réunit des appareils compromis contrôlés à distance, dont parfois des objets connectés. Il peut servir à des attaques distribuées ou à l'envoi de messages frauduleux."
+    },
+    {
+      "q": "Le spear phishing se distingue du phishing classique car il :",
+      "a": [
+        "Cible une personne précise avec des informations personnalisées",
+        "Est plus facile à détecter",
+        "Utilise uniquement les SMS",
+        "Affiche des publicités malveillantes"
+      ],
+      "c": 0,
+      "e": "Le spear phishing personnalise l'attaque en utilisant des informations spécifiques sur la cible pour augmenter les chances de réussite."
+    },
+    {
+      "q": "Qu'est-ce que le social engineering ?",
+      "a": [
+        "Un outil de gestion réseau",
+        "Manipulation psychologique pour obtenir des informations confidentielles",
+        "Une méthode pour améliorer les réseaux sociaux",
+        "Un logiciel de communication"
+      ],
+      "c": 1,
+      "e": "Le social engineering exploite la psychologie humaine pour tromper les gens et les inciter à divulguer des informations sensibles."
+    },
+    {
+      "q": "Que désigne une vulnérabilité zero-day dans le contexte d'une attaque ?",
+      "a": [
+        "Un mot de passe expiré",
+        "Un virus qui disparaît à minuit",
+        "Une faille exploitée avant qu’un correctif soit disponible",
+        "Une sauvegarde quotidienne"
+      ],
+      "c": 2,
+      "e": "Le défenseur ne dispose pas encore d'un correctif pour cette faille au moment considéré. Des mesures de réduction d'exposition peuvent limiter le risque en attendant une correction."
+    },
+    {
+      "q": "Un rootkit est principalement conçu pour :",
+      "a": [
+        "Sauvegarder les fichiers automatiquement",
+        "Améliorer les performances système",
+        "Nettoyer les fichiers temporaires",
+        "Se dissimuler dans le système et masquer d'autres malwares"
+      ],
+      "c": 3,
+      "e": "Un rootkit se cache profondément dans le système (souvent au niveau de l'administrateur) pour camoufler d'autres logiciels malveillants."
+    },
+    {
+      "q": "Le smishing est une variante de phishing qui utilise :",
+      "a": [
+        "Des SMS frauduleux",
+        "Des vidéos piégées",
+        "Des emails professionnels usurpés",
+        "Les réseaux Wi-Fi publics"
+      ],
+      "c": 0,
+      "e": "Smishing = SMS + Phishing. C'est l'envoi de messages texte frauduleux pour inciter les victimes à cliquer ou divulguer des infos."
+    },
+    {
+      "q": "Une injection SQL exploite principalement :",
+      "a": [
+        "Une panne de disque",
+        "Une application qui intègre des données non fiables dans ses requêtes SQL",
+        "Un signal Wi-Fi faible",
+        "Un clavier débranché"
+      ],
+      "c": 1,
+      "e": "Une entrée est interprétée comme une partie de la commande SQL. Des requêtes paramétrées séparent le code SQL des valeurs reçues."
+    },
+    {
+      "q": "Qu'est-ce qu'une attaque par force brute ?",
+      "a": [
+        "Envoyer des milliers d'emails",
+        "Une attaque physique sur les serveurs",
+        "Tester automatiquement toutes les combinaisons pour craquer un mot de passe",
+        "Casser un câble réseau"
+      ],
+      "c": 2,
+      "e": "La force brute essaie tous les mots de passe possibles jusqu'à trouver le bon. C'est lent mais peut réussir avec des mots de passe faibles."
+    },
+    {
+      "q": "Le vishing est une variante de phishing qui passe par :",
+      "a": [
+        "Les clés USB abandonnées",
+        "Les messages instantanés",
+        "Les vidéos piégées",
+        "Les appels téléphoniques frauduleux"
+      ],
+      "c": 3,
+      "e": "Vishing = Voice + Phishing. C'est l'ingénierie sociale par téléphone pour tromper les victimes et voler leurs données."
+    },
+    {
+      "q": "Un logiciel espion (spyware) est conçu pour :",
+      "a": [
+        "Collecter et transmettre vos données à votre insu",
+        "Protéger votre vie privée",
+        "Optimiser votre connexion internet",
+        "Bloquer les pubs en ligne"
+      ],
+      "c": 0,
+      "e": "Un spyware s'installe discrètement pour surveiller votre activité et envoyer les données collectées à des tiers."
+    },
+    {
+      "q": "Qu'est-ce qu'un adware ?",
+      "a": [
+        "Un outil d'administration réseau",
+        "Un logiciel qui affiche des publicités indésirables pour générer des revenus",
+        "Un antivirus publicitaire performant",
+        "Une extension de navigateur sécurisée"
+      ],
+      "c": 1,
+      "e": "Un adware affiche des publicités intrusives et souvent redirige vers des sites malveillants pour générer des clics et des revenus."
+    },
+    {
+      "q": "L'APT (Advanced Persistent Threat) désigne :",
+      "a": [
+        "Un type de sauvegarde automatique",
+        "Un antivirus très performant",
+        "Une attaque ciblée et prolongée, souvent d'origine étatique",
+        "Un protocole de sécurité réseau"
+      ],
+      "c": 2,
+      "e": "Une APT est une attaque sophistiquée et durable menée par des acteurs compétents (hackers d'état, groupes organisés) visant des cibles précises."
+    },
+    {
+      "q": "Qu'est-ce que le 'drive-by download' ?",
+      "a": [
+        "Un service de streaming",
+        "Un téléchargement volontaire d'une application",
+        "Un logiciel de partage de fichiers",
+        "Un téléchargement automatique de malware lors de la visite d'un site piégé"
+      ],
+      "c": 3,
+      "e": "Un site compromis peut déclencher un téléchargement indésirable ou exploiter une faille du navigateur. Garder navigateur et système à jour réduit ce risque."
+    }
+  ]
+}

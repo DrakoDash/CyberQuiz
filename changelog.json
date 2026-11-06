@@ -1,0 +1,169 @@
+{
+  "_aide": "Notes de version de CyberQuiz. Pour en ajouter une : copier le bloc de « _modele » tout en haut de la liste « versions » (la plus récente en premier). Mode d'emploi complet dans le README, section « Notes de version ».",
+  "_modele": {
+    "version": "Beta 28.1",
+    "date": "2026-12-01",
+    "titre": "Titre court de la mise à jour",
+    "resume": "Une ou deux phrases qui résument la mise à jour (affichées dans la fenêtre « Quoi de neuf ? »).",
+    "essayer": { "texte": "Essayer", "lien": "quiz.html" },
+    "image": "",
+    "changements": [
+      { "type": "nouveau", "texte": "Une nouvelle fonctionnalité" },
+      { "type": "amelioration", "texte": "Quelque chose qui marche mieux qu'avant" },
+      { "type": "correction", "texte": "Un bug corrigé" },
+      { "type": "securite", "texte": "Un point de sécurité ou de confidentialité" }
+    ]
+  },
+  "versions": [
+    {
+      "version": "Beta 28.0",
+      "date": "2026-11-06",
+      "titre": "Plus confortable, plus solide",
+      "resume": "Un accueil qui reprend là où tu t'étais arrêté, une page Paramètres avec thème clair et taille du texte, et la possibilité d'emporter ta progression sur un autre appareil.",
+      "essayer": { "texte": "Ouvrir les paramètres", "lien": "parametres.html" },
+      "image": "assets/changelog/beta-28-0.jpg",
+      "changements": [
+        { "type": "nouveau", "texte": "Accueil : bouton « Continuer » qui reprend la partie en cours, à la bonne question" },
+        { "type": "nouveau", "texte": "Accueil : bloc « Ma progression » (anneau, grade, succès, prochaine étape) et tuile « À la une »" },
+        { "type": "nouveau", "texte": "Page Paramètres : son et musique, taille du texte, animations réduites, thème clair" },
+        { "type": "nouveau", "texte": "Transférer sa progression vers un autre appareil avec un fichier ou un QR code, sans compte" },
+        { "type": "nouveau", "texte": "Notes de version repensées : étiquettes, filtres, recherche, regroupement par mois et onglet « À venir »" },
+        { "type": "nouveau", "texte": "Fenêtre « Quoi de neuf ? » après une mise à jour et point de rappel dans le menu" },
+        { "type": "nouveau", "texte": "Page « À propos et confidentialité » qui explique comment tes données restent sur ton appareil" },
+        { "type": "amelioration", "texte": "Un seul moteur pour tous les quiz : les questions sont rangées dans des fichiers séparés, faciles à corriger" },
+        { "type": "amelioration", "texte": "Polices et icônes intégrées au site : affichage correct hors-ligne et pages plus légères" },
+        { "type": "amelioration", "texte": "Les annonces (ex. « site en développement ») se règlent dans maintenance.json, sans toucher au code" },
+        { "type": "amelioration", "texte": "Page d'erreur 404 aux couleurs de CyberQuiz et aperçu soigné quand on partage le lien" },
+        { "type": "securite", "texte": "Plus aucune ressource chargée depuis Google ou cdnjs : aucune information envoyée à un site tiers" },
+        { "type": "correction", "texte": "Le quiz « Les Fondamentaux » affichait « Module 01 » à la place de son niveau" },
+        { "type": "correction", "texte": "Lien GitHub du pied de page, année du copyright et dates des notes de version" }
+      ]
+    },
+    {
+      "version": "Beta 27.2",
+      "date": "2026-11-06",
+      "titre": "Quiz et mises en situation séparés",
+      "resume": "Les quiz et les mises en situation ont chacun leur page, et les sons d'interface deviennent plus doux.",
+      "essayer": { "texte": "Voir les mises en situation", "lien": "situations.html" },
+      "changements": [
+        { "type": "nouveau", "texte": "Nouvelle page « Quiz » avec filtres par niveau et recherche" },
+        { "type": "nouveau", "texte": "Nouvelle page « Mises en situation » : simulations interactives et scénarios" },
+        { "type": "amelioration", "texte": "Accueil : deux grandes entrées avec la progression de chaque espace" },
+        { "type": "amelioration", "texte": "Menu, barre d'onglets et boutons retour adaptés aux deux espaces" },
+        { "type": "amelioration", "texte": "Nouveaux sons d'interface plus doux, inspirés de la PS5" }
+      ]
+    },
+    {
+      "version": "Beta 27.1",
+      "date": "2026-10-16",
+      "titre": "Mode maintenance",
+      "resume": "Le site peut être mis en maintenance ou afficher une annonce, depuis un simple fichier.",
+      "changements": [
+        { "type": "nouveau", "texte": "Écran de maintenance pilotable depuis maintenance.json (off / annonce / maintenance)" },
+        { "type": "nouveau", "texte": "Bandeau d'annonce pour prévenir d'une maintenance à venir" },
+        { "type": "amelioration", "texte": "Compte à rebours, vérification automatique et retour du site sans recharger à la main" },
+        { "type": "securite", "texte": "Accès développeur protégé par une clé pendant la maintenance" }
+      ]
+    },
+    {
+      "version": "Beta 27.0",
+      "date": "2026-10-16",
+      "titre": "CyberQuiz devient une application",
+      "resume": "CyberQuiz s'installe comme une vraie application, fonctionne hors-ligne et a maintenant du son.",
+      "changements": [
+        { "type": "nouveau", "texte": "Application installable sur Windows, Android, iPhone et Mac (web app / PWA)" },
+        { "type": "nouveau", "texte": "Fonctionne entièrement hors-ligne une fois installée" },
+        { "type": "nouveau", "texte": "Musique d'ambiance et effets sonores générés en direct, réglables ou désactivables" },
+        { "type": "amelioration", "texte": "Mode application : barre d'onglets, transitions entre les pages, retour tactile" },
+        { "type": "amelioration", "texte": "Quiz en plein écran dans l'application (sans barre d'onglets)" },
+        { "type": "amelioration", "texte": "Animation en cascade des propositions de réponse à chaque nouvelle question" },
+        { "type": "amelioration", "texte": "Aperçu du mode application dans le navigateur avec ?mode=app" }
+      ]
+    },
+    {
+      "version": "Beta 26.6",
+      "date": "2026-10-16",
+      "titre": "Premier module interactif",
+      "resume": "Première mise en situation interactive : on manipule de vraies fausses fenêtres, comme sur Pix.",
+      "essayer": { "texte": "Essayer « Premier jour au bureau »", "lien": "simulation.html" },
+      "changements": [
+        { "type": "nouveau", "texte": "Module « Premier jour au bureau » : 12 étapes mêlant questions et mises en situation" },
+        { "type": "nouveau", "texte": "Simulations : messagerie (phishing), explorateur de fichiers, gestionnaire des tâches, envoi de mail en Cci, partage de fichier, recherche web, création de mot de passe" },
+        { "type": "nouveau", "texte": "Nouveau succès « Agent de terrain »" }
+      ]
+    },
+    {
+      "version": "Beta 26.5",
+      "date": "2026-10-16",
+      "titre": "Système de succès",
+      "resume": "Des badges à débloquer pour donner envie de faire un quiz de plus.",
+      "essayer": { "texte": "Voir mes succès", "lien": "succes.html" },
+      "changements": [
+        { "type": "nouveau", "texte": "16 succès à débloquer en 4 catégories : Progression, Excellence, Régularité, Spécialités" },
+        { "type": "nouveau", "texte": "Notification « Succès débloqué » à la fin d'un quiz" },
+        { "type": "nouveau", "texte": "Nouvelle page « Mes succès » avec statistiques et barres de progression" },
+        { "type": "amelioration", "texte": "Résumé des succès sur la page d'accueil et lien dans le menu" },
+        { "type": "amelioration", "texte": "Les scores déjà enregistrés comptent pour les succès" },
+        { "type": "amelioration", "texte": "Le bouton Reset efface aussi les succès" }
+      ]
+    },
+    {
+      "version": "Beta 26.4",
+      "date": "2026-06-26",
+      "titre": "Quiz de mises en situation et correctifs",
+      "resume": "Deux nouveaux quiz basés sur des situations concrètes, et plusieurs correctifs.",
+      "changements": [
+        { "type": "nouveau", "texte": "Quiz « Réponse aux incidents » : 15 situations pour apprendre à alerter, contenir et rétablir" },
+        { "type": "nouveau", "texte": "Quiz « Wi-Fi : mises en situation » : 10 situations sur les réglages et les pièges du Wi-Fi" },
+        { "type": "correction", "texte": "Plusieurs correctifs pour améliorer l'expérience" }
+      ]
+    },
+    {
+      "version": "Beta 26.3",
+      "date": "2026-06-12",
+      "titre": "Nouveaux quiz et première version de l'application",
+      "resume": "CyberQuiz peut être installé comme une application, et de nouveaux quiz arrivent.",
+      "changements": [
+        { "type": "nouveau", "texte": "Première version de l'application installable (PWA), testée sur Windows 10/11 (Chrome, Edge), macOS (Chrome, Edge) et iOS/iPadOS (Safari)" },
+        { "type": "nouveau", "texte": "Nouveaux quiz « Sécurité Wi-Fi » et « Sécurité des Réseaux », quiz Débutant amélioré" },
+        { "type": "amelioration", "texte": "Design revu pour la page d'introduction, la page d'erreur 404 et plusieurs quiz" },
+        { "type": "amelioration", "texte": "Optimisation de l'expérience sur iOS et iPadOS, code nettoyé pour plus de fluidité" },
+        { "type": "correction", "texte": "Correction de plusieurs liens internes" }
+      ]
+    },
+    {
+      "version": "Beta 26.2",
+      "date": "2026-06-11",
+      "titre": "Refonte complète de la page d'accueil",
+      "resume": "Une page d'accueil entièrement redessinée, avec la progression et les niveaux de difficulté.",
+      "changements": [
+        { "type": "nouveau", "texte": "Nouveau hero avec titre effet glitch et sous-titre animé façon machine à écrire" },
+        { "type": "nouveau", "texte": "Barre de progression globale lisant les scores sauvegardés" },
+        { "type": "nouveau", "texte": "Statut sur chaque carte : « Nouveau » puis le score après avoir terminé un quiz" },
+        { "type": "amelioration", "texte": "Compteurs animés (quiz, questions, thèmes) déclenchés au défilement" },
+        { "type": "amelioration", "texte": "Badges de difficulté colorés (Facile / Moyen / Difficile) et sections numérotées" },
+        { "type": "amelioration", "texte": "Pied de page enrichi et menu amélioré avec lien actif et animation mobile" }
+      ]
+    },
+    {
+      "version": "Beta 26.1",
+      "date": "2025-06-01",
+      "titre": "Lancement initial du site",
+      "resume": "La toute première version de CyberQuiz.",
+      "changements": [
+        { "type": "nouveau", "texte": "Mise en ligne de la première version de CyberQuiz" },
+        { "type": "nouveau", "texte": "Page d'introduction animée avec particules et effet glitch" },
+        { "type": "nouveau", "texte": "Page d'accueil avec la grille des quiz" },
+        { "type": "nouveau", "texte": "Premiers quiz : Débutant (20 questions), Bonnes Pratiques, Identifier les Menaces, Réseaux Sociaux et Contrôle Final" }
+      ]
+    }
+  ],
+  "a_venir": [
+    { "titre": "Configurer sa box Wi-Fi", "description": "Simulation : changer le mot de passe administrateur, passer en WPA3, désactiver le WPS.", "statut": "prevu", "icone": "📶" },
+    { "titre": "Le pare-feu de l'entreprise", "description": "Simulation : autoriser ou bloquer des connexions selon des règles de ports et d'adresses.", "statut": "prevu", "icone": "🧱" },
+    { "titre": "Mon smartphone en sécurité", "description": "Simulation : autorisations des applis, faux SMS et QR codes piégés.", "statut": "prevu", "icone": "📱" },
+    { "titre": "Mode révision", "description": "Les questions ratées reviennent les jours suivants, jusqu'à être réussies.", "statut": "idee", "icone": "🔁" },
+    { "titre": "Défi du jour", "description": "5 questions tirées au hasard chaque jour, les mêmes pour tout le monde.", "statut": "idee", "icone": "📅" },
+    { "titre": "Escape game cyber", "description": "Une suite d'énigmes pour reprendre le contrôle d'un ordinateur piraté.", "statut": "idee", "icone": "🧩" }
+  ]
+}

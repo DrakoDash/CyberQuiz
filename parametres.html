@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>CyberQuiz — Paramètres</title>
+<meta name="description" content="Règle CyberQuiz à ta façon : thème clair ou sombre, taille du texte, son, et transfert de ta progression vers un autre appareil.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CyberQuiz">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="CyberQuiz — Paramètres">
+<meta property="og:description" content="Règle CyberQuiz à ta façon : thème clair ou sombre, taille du texte, son, et transfert de ta progression vers un autre appareil.">
+<meta property="og:url" content="https://drakodash.github.io/CyberQuiz/parametres.html">
+<meta property="og:image" content="https://drakodash.github.io/CyberQuiz/assets/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CyberQuiz — quiz et mises en situation pour apprendre la cybersécurité">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://drakodash.github.io/CyberQuiz/parametres.html">
+<link rel="stylesheet" href="assets/fa/icons.css">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="site.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#070b17">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CyberQuiz">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<script src="maintenance.js"></script>
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="theme-light.css">
+<script src="app.js"></script>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- ──── NAVBAR ──── -->
+<nav class="navbar">
+  <a href="accueil.html" class="nav-logo">Cyber<span>Quiz</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="accueil.html">Accueil</a>
+    <a href="quiz.html">📚 Quiz</a>
+    <a href="situations.html">🖱️ Mises en situation</a>
+    <a href="quiz-final.html" class="final">⚡ Contrôle Final</a>
+    <a href="succes.html">🏆 Succès</a>
+    <a href="changelog.html">📋 Versions</a>
+    <a href="parametres.html" class="active" aria-current="page">⚙️ Paramètres</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleMenu()" aria-label="Menu">
+    <i class="fa-solid fa-bars" id="menuIcon"></i>
+  </button>
+</nav>
+
+<!-- ──── EN-TÊTE ──── -->
+<header class="page-hero">
+  <div class="page-crumb"><a href="accueil.html">Accueil</a> / Paramètres</div>
+  <h1 class="page-title"><span class="ico" aria-hidden="true">⚙️</span>Paramètres</h1>
+  <p class="page-sub">Règle CyberQuiz à ta façon. Tout est enregistré sur cet appareil uniquement.</p>
+</header>
+
+<div class="set-wrap">
+
+  <!-- Import en attente (lien de QR code ou fichier) -->
+  <section class="set-card set-import" id="importBox" hidden aria-labelledby="importTitle">
+    <h2 id="importTitle">📥 Importer une progression</h2>
+    <p id="importText"></p>
+    <div class="set-actions">
+      <button class="set-btn primary" type="button" id="importConfirm">Remplacer ma progression</button>
+      <button class="set-btn" type="button" id="importCancel">Annuler</button>
+    </div>
+  </section>
+
+  <!-- AFFICHAGE -->
+  <section class="set-card" aria-labelledby="dispTitle">
+    <h2 id="dispTitle">🖥️ Affichage</h2>
+    <div class="set-row">
+      <div class="set-label"><strong id="lblTheme">Thème</strong><small>« Automatique » suit le réglage de ton appareil.</small></div>
+      <div class="seg" role="radiogroup" aria-labelledby="lblTheme" data-pref="theme">
+        <button type="button" role="radio" data-value="sombre">🌙 Sombre</button>
+        <button type="button" role="radio" data-value="clair">☀️ Clair</button>
+        <button type="button" role="radio" data-value="auto">🌓 Auto</button>
+      </div>
+    </div>
+    <div class="set-row">
+      <div class="set-label"><strong id="lblText">Taille du texte</strong><small>Agrandit tout le site, quiz compris.</small></div>
+      <div class="seg" role="radiogroup" aria-labelledby="lblText" data-pref="texte">
+        <button type="button" role="radio" data-value="100"><span style="font-size:.85em">A</span> Normal</button>
+        <button type="button" role="radio" data-value="112"><span style="font-size:1em">A</span> Grand</button>
+        <button type="button" role="radio" data-value="125"><span style="font-size:1.15em">A</span> Très grand</button>
+      </div>
+    </div>
+    <div class="set-row">
+      <div class="set-label"><strong id="lblAnim">Animations</strong><small>« Réduites » coupe les mouvements (particules, transitions…).</small></div>
+      <div class="seg" role="radiogroup" aria-labelledby="lblAnim" data-pref="animations">
+        <button type="button" role="radio" data-value="normales">✨ Normales</button>
+        <button type="button" role="radio" data-value="reduites">⏸️ Réduites</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SON -->
+  <section class="set-card" aria-labelledby="sndTitle">
+    <h2 id="sndTitle">🎧 Son</h2>
+    <div class="set-row">
+      <div class="set-label"><strong id="lblMusic">Musique d’ambiance</strong><small>Une boucle calme, générée en direct.</small></div>
+      <button class="switch-btn" type="button" role="switch" id="swMusic" aria-labelledby="lblMusic"></button>
+    </div>
+    <div class="set-row slim"><label for="volMusic" class="set-label"><small>Volume de la musique</small></label><input type="range" id="volMusic" min="0" max="100"></div>
+    <div class="set-row">
+      <div class="set-label"><strong id="lblSfx">Effets sonores</strong><small>Survol, validation, bonnes et mauvaises réponses, succès.</small></div>
+      <button class="switch-btn" type="button" role="switch" id="swSfx" aria-labelledby="lblSfx"></button>
+    </div>
+    <div class="set-row slim"><label for="volSfx" class="set-label"><small>Volume des effets</small></label><input type="range" id="volSfx" min="0" max="100"></div>
+    <div class="set-actions"><button class="set-btn" type="button" id="testSound">🔊 Tester le son</button></div>
+  </section>
+
+  <!-- PROGRESSION -->
+  <section class="set-card" aria-labelledby="progTitle">
+    <h2 id="progTitle">💾 Ma progression</h2>
+    <p class="set-note" id="progSummary">Chargement…</p>
+    <h3>Changer d’appareil (PC du lycée → téléphone…)</h3>
+    <div class="transfer">
+      <div class="transfer-col">
+        <h4>📄 Avec un fichier</h4>
+        <p>Télécharge ta sauvegarde, puis ouvre-la ici sur l’autre appareil. Tout est inclus, même les parties en cours.</p>
+        <div class="set-actions">
+          <button class="set-btn primary" type="button" id="exportBtn"><i class="fa-solid fa-download" aria-hidden="true"></i> Télécharger ma sauvegarde</button>
+          <label class="set-btn file-btn"><i class="fa-solid fa-upload" aria-hidden="true"></i> Ouvrir une sauvegarde<input type="file" id="importFile" accept=".json,application/json"></label>
+        </div>
+      </div>
+      <div class="transfer-col">
+        <h4>📱 Avec un QR code</h4>
+        <p>Scanne-le avec l’appareil photo de l’autre appareil : tes scores et tes succès s’y installent (sans les parties en cours).</p>
+        <div class="set-actions"><button class="set-btn" type="button" id="qrBtn"><i class="fa-solid fa-qrcode" aria-hidden="true"></i> Afficher le QR code</button></div>
+        <div class="qr-box" id="qrBox" hidden>
+          <div class="qr-img" id="qrImg" role="img" aria-label="QR code de transfert de ta progression"></div>
+          <p class="set-note">⚠️ Ce QR code contient ta progression : ne le partage pas en photo.</p>
+          <button class="set-btn" type="button" id="qrCopy">📋 Copier le lien</button>
+        </div>
+      </div>
+    </div>
+    <p class="set-msg" id="progMsg" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- ZONE SENSIBLE -->
+  <section class="set-card danger" aria-labelledby="dangerTitle">
+    <h2 id="dangerTitle">🧹 Réinitialiser</h2>
+    <div class="set-row">
+      <div class="set-label"><strong>Effacer ma progression</strong><small>Scores, succès et parties en cours. Pense à télécharger une sauvegarde avant.</small></div>
+      <button class="set-btn warn" type="button" id="resetProgress">Effacer</button>
+    </div>
+    <div class="set-row">
+      <div class="set-label"><strong>Remettre les réglages par défaut</strong><small>Thème, taille du texte, animations et son.</small></div>
+      <button class="set-btn" type="button" id="resetPrefs">Rétablir</button>
+    </div>
+  </section>
+
+  <p class="set-foot">🔒 Rien de tout cela ne quitte ton appareil. <a href="about.html#confidentialite">En savoir plus sur la confidentialité</a></p>
+</div>
+
+<!-- ──── FOOTER ──── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo">CyberQuiz</span>
+      <p>Plateforme pédagogique interactive pour apprendre les bases de la cybersécurité. Projet de Bac Pro CIEL.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Apprendre</h4>
+      <a href="quiz.html">Tous les quiz</a>
+      <a href="situations.html">Mises en situation</a>
+      <a href="quiz-final.html">Contrôle Final</a>
+    </div>
+    <div class="footer-col">
+      <h4>Mon espace</h4>
+      <a href="succes.html">Mes succès</a>
+      <a href="parametres.html">Paramètres</a>
+      <a href="changelog.html">Nouveautés</a>
+    </div>
+    <div class="footer-col">
+      <h4>Le projet</h4>
+      <a href="about.html">À propos et confidentialité</a>
+      <a href="https://github.com/DrakoDash/CyberQuiz" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i> Code source sur GitHub</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025–<span data-year>2026</span> CyberQuiz — Projet pédagogique</span>
+    <span class="footer-badge"><i class="fa-solid fa-lock" aria-hidden="true"></i> Aucune donnée collectée</span>
+  </div>
+</footer>
+
+<script src="succes.js"></script>
+<script src="site.js"></script>
+<script src="assets/lib/qrcode.js"></script>
+<script src="progression.js"></script>
+<script src="parametres.js"></script>
+<script src="whatsnew.js" defer></script>
+<script src="audio.js" defer></script>
+<script src="pwa.js" defer></script>
+</body>
+</html>

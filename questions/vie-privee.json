@@ -1,0 +1,133 @@
+{
+  "id": "vie-privee",
+  "titre": "Vie Privée Numérique",
+  "titre_onglet": "Vie Privée Numérique — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Moyen",
+  "module": "07",
+  "parcours": "Apprendre à se protéger",
+  "description": "Choisis les informations que tu partages et les traces que tu laisses.",
+  "themes": [
+    "Données",
+    "Permissions",
+    "Cookies"
+  ],
+  "couleur": "205, 166, 255",
+  "couleur2": "#a3b9ff",
+  "mode": "entrainement",
+  "consigne": "10 questions · Choisis tes réponses, puis consulte la correction à la fin.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<rect x=\"62\" y=\"89\" width=\"76\" height=\"66\" rx=\"13\"/><path d=\"M77 89V70a23 23 0 0 1 46 0v19\"/><circle class=\"art-bright\" cx=\"100\" cy=\"117\" r=\"6\"/><path class=\"art-bright\" d=\"M100 123v13\"/><path class=\"art-dash\" d=\"M46 96V55h17M154 108v47h-17\"/>",
+  "questions": [
+    {
+      "q": "Laquelle de ces informations peut être une donnée personnelle ?",
+      "a": [
+        "Une adresse mail permettant d’identifier quelqu’un",
+        "La couleur d’un câble vendu en série",
+        "Une formule mathématique générale",
+        "Un schéma sans donnée sur une personne"
+      ],
+      "c": 0,
+      "e": "Une donnée personnelle concerne une personne identifiée ou identifiable, directement ou en croisant plusieurs informations."
+    },
+    {
+      "q": "Une application lampe torche demande tes contacts. Que fais-tu ?",
+      "a": [
+        "Tu acceptes toutes les permissions",
+        "Tu refuses cet accès inutile et vérifies l’application",
+        "Tu lui envoies ta carte d’identité",
+        "Tu désactives le verrouillage"
+      ],
+      "c": 1,
+      "e": "Une autorisation doit correspondre à un besoin réel. Tu peux revoir et retirer les permissions dans les réglages de l'appareil."
+    },
+    {
+      "q": "Que fait principalement le mode navigation privée ?",
+      "a": [
+        "Il te rend anonyme pour tous les sites",
+        "Il cache forcément ton activité à l’employeur",
+        "Il limite les traces conservées par le navigateur après fermeture de la session",
+        "Il chiffre tous les fichiers"
+      ],
+      "c": 2,
+      "e": "Le mode privé limite notamment l'historique local de cette session. Les sites et le réseau peuvent encore observer des informations ; les téléchargements restent sur l'appareil."
+    },
+    {
+      "q": "Tu veux limiter le suivi publicitaire d’un site. Quel choix faire sur son bandeau ?",
+      "a": [
+        "Tout accepter systématiquement",
+        "Entrer ton numéro de téléphone",
+        "Ignorer toujours le bandeau en supposant avoir refusé",
+        "Refuser les traceurs publicitaires non nécessaires"
+      ],
+      "c": 3,
+      "e": "Les traceurs publicitaires nécessitent en principe ton accord. Certains traceurs strictement nécessaires au service n'en ont pas besoin. Tu dois pouvoir revenir sur ton choix."
+    },
+    {
+      "q": "Pourquoi limiter la géolocalisation d’une application à son utilisation ?",
+      "a": [
+        "Pour réduire l’accès à ta position lorsqu’elle n’en a pas besoin",
+        "Pour rendre le téléphone invisible",
+        "Pour doubler la mémoire",
+        "Pour désactiver HTTPS"
+      ],
+      "c": 0,
+      "e": "La position peut révéler des habitudes et des lieux sensibles. Accorde seulement la précision et la durée utiles au service."
+    },
+    {
+      "q": "Avant de publier une photo, que faut-il vérifier en plus de l’image ?",
+      "a": [
+        "La marque de ton chargeur",
+        "Les informations visibles et les éventuelles métadonnées de localisation",
+        "Le nombre de boutons du téléphone",
+        "Le niveau sonore"
+      ],
+      "c": 1,
+      "e": "Une photo peut montrer une adresse ou contenir des coordonnées de prise de vue. Les plateformes ne traitent pas toutes ces informations de la même manière."
+    },
+    {
+      "q": "Un profil privé empêche-t-il toute diffusion de tes publications ?",
+      "a": [
+        "Oui, aucune copie n’est possible",
+        "Oui, même si tu partages ton compte",
+        "Non, une personne autorisée peut faire une capture ou repartager",
+        "Oui, les photos disparaissent toujours"
+      ],
+      "c": 2,
+      "e": "Limiter l'audience réduit les risques sans garantir le contrôle de toutes les copies. Choisis les informations que tu publies avec prudence."
+    },
+    {
+      "q": "À quoi sert le droit d’accès aux données personnelles ?",
+      "a": [
+        "À obtenir le mot de passe d’un autre utilisateur",
+        "À pirater une base de données",
+        "À supprimer toutes les archives publiques",
+        "À demander à un organisme des informations sur les données qu’il traite à ton sujet"
+      ],
+      "c": 3,
+      "e": "Le RGPD prévoit notamment un droit d'accès. La demande s'adresse à l'organisme concerné, qui peut vérifier ton identité de façon adaptée."
+    },
+    {
+      "q": "Un service demande ta date de naissance complète sans raison claire. Quel réflexe adopter ?",
+      "a": [
+        "Vérifier pourquoi elle est demandée et limiter les données facultatives",
+        "Inventer les données de ton voisin",
+        "Envoyer aussi une pièce d’identité",
+        "Publier ces données pour demander conseil"
+      ],
+      "c": 0,
+      "e": "Ne communique pas plus d'informations que nécessaire. Consulte les explications du service et distingue les champs obligatoires des champs facultatifs."
+    },
+    {
+      "q": "Avant de revendre ton téléphone, que faire ?",
+      "a": [
+        "Supprimer seulement le fond d’écran",
+        "Sauvegarder, déconnecter les comptes et suivre la procédure officielle d’effacement",
+        "Retirer seulement la coque",
+        "Laisser les applications connectées"
+      ],
+      "c": 1,
+      "e": "Vérifie la récupération de tes comptes et du MFA avant l'effacement. Retire les cartes SIM et supports amovibles selon le matériel."
+    }
+  ]
+}

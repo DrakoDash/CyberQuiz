@@ -1,0 +1,133 @@
+{
+  "id": "reseaux",
+  "titre": "Réseaux Sociaux",
+  "titre_onglet": "Réseaux Sociaux — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Moyen",
+  "module": "05",
+  "parcours": "Apprendre à se protéger",
+  "description": "Garde la main sur tes publications, tes contacts et tes comptes.",
+  "themes": [
+    "Profils",
+    "Publications",
+    "Arnaques"
+  ],
+  "couleur": "182, 162, 255",
+  "couleur2": "#f3a1da",
+  "mode": "entrainement",
+  "consigne": "10 questions · Choisis tes réponses, puis consulte la correction à la fin.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<circle cx=\"100\" cy=\"83\" r=\"17\"/><path d=\"M69 136v-12c0-30 62-30 62 0v12Z\"/><circle cx=\"49\" cy=\"48\" r=\"12\"/><circle cx=\"155\" cy=\"53\" r=\"12\"/><circle cx=\"151\" cy=\"158\" r=\"12\"/><path class=\"art-dash\" d=\"m60 58 21 15m38 0 24-13m-22 71 21 19M55 61v79h30\"/>",
+  "questions": [
+    {
+      "q": "Quel est le risque principal lorsqu’on partage trop d’informations personnelles sur un profil public ?",
+      "a": [
+        "Usurpation d'identité",
+        "Perdre des abonnés",
+        "Recevoir plus de messages",
+        "Améliorer sa visibilité"
+      ],
+      "c": 0,
+      "e": "Les informations publiques peuvent être utilisées pour usurper votre identité ou faciliter des attaques ciblées."
+    },
+    {
+      "q": "Quelle pratique réduit le risque d'accès non autorisé à votre compte ?",
+      "a": [
+        "Utiliser le même mot de passe partout",
+        "Activer la double authentification",
+        "Partager le mot de passe avec un ami",
+        "Utiliser un mot de passe court"
+      ],
+      "c": 1,
+      "e": "La double authentification ajoute une seconde vérification, rendant l'accès plus difficile pour un attaquant."
+    },
+    {
+      "q": "Un ami t’envoie un lien inhabituel en message privé. Que fais-tu ?",
+      "a": [
+        "Tu cliques car tu connais son nom",
+        "Tu envoies ton code de connexion",
+        "Tu vérifies le domaine et le contactes par un autre canal connu",
+        "Tu transfères le lien à toute ta classe"
+      ],
+      "c": 2,
+      "e": "Un compte connu peut avoir été compromis. Vérifie la demande avant d'ouvrir le lien, surtout si elle réclame de l'argent ou des identifiants."
+    },
+    {
+      "q": "Un profil récent insiste pour obtenir de l’argent. Quelle conclusion est prudente ?",
+      "a": [
+        "Une photo suffit à prouver son identité",
+        "Un badge prouve que toutes ses demandes sont sûres",
+        "Tous les nouveaux comptes sont frauduleux",
+        "C’est un signal d’alerte : vérifier par un autre canal avant toute action"
+      ],
+      "c": 3,
+      "e": "Un seul indice ne prouve pas une fraude. Une demande d'argent inattendue et insistante justifie une vérification indépendante."
+    },
+    {
+      "q": "Pourquoi limiter la visibilité de vos publications à vos amis ?",
+      "a": [
+        "Pour protéger vos données personnelles",
+        "Pour augmenter les likes",
+        "Pour que tout le monde voie vos posts",
+        "Pour gagner des abonnés"
+      ],
+      "c": 0,
+      "e": "Restreindre l'audience réduit l'exposition, mais n'empêche pas une capture d'écran ou un repartage. Publie seulement ce que tu acceptes de voir circuler."
+    },
+    {
+      "q": "Tu veux publier une photo de classe. Quel réflexe adopter ?",
+      "a": [
+        "Publier sans prévenir",
+        "Demander l’accord des personnes visibles et respecter un refus",
+        "Identifier tout le monde avec son adresse",
+        "Rendre la photo publique par défaut"
+      ],
+      "c": 1,
+      "e": "Une photo peut exposer l'image, l'établissement et les habitudes des personnes. Demander leur accord est un bon réflexe avant de la partager."
+    },
+    {
+      "q": "Pourquoi éviter de publier sa localisation en direct à tout le monde ?",
+      "a": [
+        "Cela coupe le GPS",
+        "Cela efface le téléphone",
+        "Cela révèle tes déplacements et tes absences",
+        "Cela désactive le Wi-Fi"
+      ],
+      "c": 2,
+      "e": "Une localisation publique peut révéler ton domicile ou tes habitudes. Limite l'audience et évite de donner ta position précise en temps réel."
+    },
+    {
+      "q": "Face à des messages répétés de cyberharcèlement, que faire ?",
+      "a": [
+        "Tout garder pour soi",
+        "Répliquer par des menaces",
+        "Relayer les insultes",
+        "Conserver des preuves, signaler, bloquer et demander de l’aide à un adulte de confiance"
+      ],
+      "c": 3,
+      "e": "Garde les éléments utiles sans les rediffuser. Le signalement et l'aide d'une personne de confiance permettent d'agir sans rester seul."
+    },
+    {
+      "q": "Une application de quiz social demande l’accès à tous tes contacts. Quel réflexe adopter ?",
+      "a": [
+        "Vérifier la nécessité de cet accès et le refuser s’il est inutile",
+        "Donner aussi ton mot de passe",
+        "Publier ton carnet d’adresses",
+        "Accepter pour aller vite"
+      ],
+      "c": 0,
+      "e": "Accorde seulement les autorisations utiles. Vérifie aussi les applications déjà reliées à ton compte et retire celles dont tu ne te sers plus."
+    },
+    {
+      "q": "Tu repères une session inconnue sur ton compte social. Que faire ?",
+      "a": [
+        "L’ignorer",
+        "Depuis un appareil sain, la révoquer, changer le secret et vérifier la récupération",
+        "Supprimer seulement ta photo",
+        "Publier ton mot de passe pour demander de l’aide"
+      ],
+      "c": 1,
+      "e": "Utilise les réglages officiels du service. Vérifie le MFA et les coordonnées de récupération ; préviens tes contacts si des messages frauduleux ont été envoyés."
+    }
+  ]
+}

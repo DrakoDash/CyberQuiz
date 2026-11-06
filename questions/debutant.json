@@ -1,0 +1,223 @@
+{
+  "id": "debutant",
+  "titre": "Les Fondamentaux",
+  "titre_onglet": "Les Fondamentaux — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Facile",
+  "module": "01",
+  "parcours": "Apprendre à se protéger",
+  "description": "Les premiers réflexes pour naviguer avec confiance.",
+  "themes": [
+    "Protection",
+    "Navigation",
+    "Bons réflexes"
+  ],
+  "couleur": "94, 213, 255",
+  "couleur2": "#7ea6ff",
+  "mode": "entrainement",
+  "consigne": "20 questions · Choisis tes réponses, puis consulte la correction à la fin.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<path d=\"M100 46 57 62v38c0 30 43 56 43 56s43-26 43-56V62Z\"/><path class=\"art-bright\" d=\"m78 99 15 15 30-34\"/>",
+  "questions": [
+    {
+      "q": "Quel choix est préférable pour protéger un compte ?",
+      "a": [
+        "soleil123",
+        "Le même mot de passe sur tous les sites",
+        "Un mot de passe long, unique et généré aléatoirement"
+      ],
+      "c": 2,
+      "e": "La longueur et l'unicité sont essentielles. Un gestionnaire peut générer un mot de passe aléatoire différent pour chaque compte. Active aussi l'authentification multifacteur lorsqu'elle est disponible."
+    },
+    {
+      "q": "Que faire si tu reçois un mail demandant tes identifiants ?",
+      "a": [
+        "Cliquer sur son lien",
+        "Ne pas cliquer, le signaler puis le supprimer",
+        "Répondre avec ton mot de passe"
+      ],
+      "c": 1,
+      "e": "Ne clique pas et n'ouvre pas les pièces jointes. Vérifie la demande par un canal connu. En entreprise, signale le message au service informatique avant de le supprimer."
+    },
+    {
+      "q": "Quel outil protège un ordinateur ?",
+      "a": [
+        "Antivirus",
+        "Bloc-notes",
+        "Paint"
+      ],
+      "c": 0,
+      "e": "Un antivirus détecte et bloque les menaces informatiques."
+    },
+    {
+      "q": "À quoi sert HTTPS lors d'une navigation web ?",
+      "a": [
+        "À chiffrer les échanges entre le navigateur et le serveur",
+        "À rendre Internet plus rapide",
+        "À garantir que le site est honnête"
+      ],
+      "c": 0,
+      "e": "HTTPS protège les échanges en transit grâce à TLS. Un site frauduleux peut aussi utiliser HTTPS : vérifie toujours le nom de domaine."
+    },
+    {
+      "q": "Quel message ressemble à une tentative de phishing ?",
+      "a": [
+        "Un faux message bancaire te demandant tes codes via un lien",
+        "Une confirmation d'un rendez-vous que tu viens de prendre",
+        "Un rappel de cours sans lien ni demande de données"
+      ],
+      "c": 0,
+      "e": "Le phishing usurpe une identité pour te faire transmettre des informations ou ouvrir un contenu dangereux. Vérifie les demandes inattendues par un canal connu."
+    },
+    {
+      "q": "Une mise à jour sert à :",
+      "a": [
+        "Ajouter des virus",
+        "Corriger des failles",
+        "Supprimer des fichiers"
+      ],
+      "c": 1,
+      "e": "Les mises à jour corrigent des failles de sécurité importantes."
+    },
+    {
+      "q": "Une bonne pratique :",
+      "a": [
+        "Partager son mot de passe",
+        "Utiliser un mot de passe différent partout",
+        "Mettre 123456"
+      ],
+      "c": 1,
+      "e": "Utiliser plusieurs mots de passe uniques réduit les risques."
+    },
+    {
+      "q": "Quel téléchargement présente un risque évident ?",
+      "a": [
+        "Une application provenant du site officiel vérifié",
+        "Un fichier setup.exe reçu d'un inconnu",
+        "Une mise à jour depuis les paramètres du système"
+      ],
+      "c": 1,
+      "e": "Un exécutable provenant d'une source inconnue peut installer un logiciel malveillant. L'extension seule ne garantit jamais qu'un fichier est sûr."
+    },
+    {
+      "q": "Qu'est-ce qu'un malware ?",
+      "a": [
+        "Logiciel malveillant",
+        "Photo",
+        "Navigateur"
+      ],
+      "c": 0,
+      "e": "Malware = logiciel malveillant qui infecte votre système."
+    },
+    {
+      "q": "Pourquoi sauvegarder ?",
+      "a": [
+        "Pour perdre des données",
+        "Pour les récupérer en cas de problème",
+        "Pour décorer"
+      ],
+      "c": 1,
+      "e": "Une sauvegarde protège contre la perte de données."
+    },
+    {
+      "q": "Quel indice doit t'alerter sur un faux site bancaire ?",
+      "a": [
+        "Un nom de domaine imitant ta banque avec une lettre différente",
+        "La présence de HTTPS",
+        "Une mise en page soignée"
+      ],
+      "c": 0,
+      "e": "Les fraudeurs imitent les noms de domaine et peuvent copier les logos. HTTPS et une belle présentation ne suffisent pas à prouver l'identité du site."
+    },
+    {
+      "q": "Avant de télécharger une app :",
+      "a": [
+        "Vérifier l'éditeur",
+        "Télécharger au hasard",
+        "Ignorer les avis"
+      ],
+      "c": 0,
+      "e": "Vérifier l'éditeur réduit les risques de malware."
+    },
+    {
+      "q": "Avant d'utiliser un Wi-Fi public, quelle précaution prendre ?",
+      "a": [
+        "Supposer qu'il est toujours fiable",
+        "Vérifier le réseau et privilégier une connexion de confiance pour les opérations sensibles",
+        "Désactiver les mises à jour"
+      ],
+      "c": 1,
+      "e": "Un faux point d'accès peut imiter un réseau public. HTTPS protège les échanges chiffrés, mais ne rend pas tout réseau ou tout site fiable. Évite d'ignorer les alertes de certificat."
+    },
+    {
+      "q": "Un inconnu annonce un cadeau et exige ta carte bancaire. Que fais-tu ?",
+      "a": [
+        "Tu refuses et vérifies l'offre par un canal officiel",
+        "Tu paies immédiatement",
+        "Tu transmets aussi ton mot de passe"
+      ],
+      "c": 0,
+      "e": "Une promesse de cadeau utilisée pour obtenir un paiement ou des données est un signal d'alerte. Ne te laisse pas pousser par l'urgence."
+    },
+    {
+      "q": "Pourquoi éviter de réutiliser un mot de passe ?",
+      "a": [
+        "Pour ralentir la connexion",
+        "Parce que tous les sites refusent les doublons",
+        "Une fuite sur un site peut permettre l'accès à tes autres comptes"
+      ],
+      "c": 2,
+      "e": "Des attaquants testent les identifiants volés sur d'autres services : c'est le credential stuffing. Utilise un mot de passe unique par compte."
+    },
+    {
+      "q": "Un ransomware :",
+      "a": [
+        "Chiffre vos fichiers",
+        "Améliore le PC",
+        "Accélère Internet"
+      ],
+      "c": 0,
+      "e": "Le ransomware bloque vos données contre une rançon."
+    },
+    {
+      "q": "Sur un profil public, quelle pratique réduit les risques ?",
+      "a": [
+        "Limiter les informations personnelles et vérifier les paramètres de confidentialité",
+        "Publier son adresse et ses absences",
+        "Partager ses codes de connexion"
+      ],
+      "c": 0,
+      "e": "Limite les informations sensibles accessibles à tous. Elles peuvent servir à une usurpation d'identité ou à une arnaque ciblée."
+    },
+    {
+      "q": "Pourquoi faut-il être prudent avec un lien raccourci inattendu ?",
+      "a": [
+        "Il garantit que le site est sûr",
+        "Il masque le nom de domaine de destination",
+        "Il est toujours malveillant"
+      ],
+      "c": 1,
+      "e": "Un lien raccourci n'est pas forcément dangereux, mais cache sa destination. Vérifie la source et privilégie l'accès direct au service officiel."
+    },
+    {
+      "q": "Pourquoi un gestionnaire de mots de passe ?",
+      "a": [
+        "Créer des mots de passe forts",
+        "Diminuer la sécurité",
+        "Partager les codes"
+      ],
+      "c": 0,
+      "e": "Il crée et stocke des mots de passe forts et uniques."
+    },
+    {
+      "q": "Le phishing cherche à :",
+      "a": [
+        "Voler vos infos",
+        "Vous protéger",
+        "Effacer vos spams"
+      ],
+      "c": 0,
+      "e": "Le phishing vise à voler vos données personnelles."
+    }
+  ]
+}

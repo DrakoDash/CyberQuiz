@@ -1,0 +1,133 @@
+{
+  "id": "quiz-final",
+  "titre": "Contrôle Final",
+  "titre_onglet": "Contrôle Final — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Évaluation",
+  "module": "13",
+  "parcours": "Apprendre à se protéger",
+  "description": "Réunis tes connaissances et relève le dernier défi du parcours.",
+  "themes": [
+    "10 questions",
+    "Tous les thèmes",
+    "Bilan"
+  ],
+  "couleur": "249, 211, 123",
+  "couleur2": "#fda88d",
+  "mode": "validation",
+  "consigne": "10 questions mélangées · Valide chaque réponse pour afficher son explication.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<path d=\"M73 47h54v34c0 39-54 39-54 0ZM73 59H53v17c0 19 21 25 25 25M127 59h20v17c0 19-21 25-25 25M100 110v29M77 154v-7a8 8 0 0 1 8-8h30a8 8 0 0 1 8 8v7Z\"/><path class=\"art-bright\" d=\"m100 62 4 9 10 1-8 7 2 10-8-5-8 5 2-10-8-7 10-1Z\"/>",
+  "questions": [
+    {
+      "q": "Un mail prétend venir de ton établissement. Quelle vérification aide à repérer un phishing ?",
+      "a": [
+        "Se fier uniquement au logo",
+        "Vérifier le domaine réel du lien et confirmer la demande par un canal connu",
+        "Se fier à l'absence de fautes",
+        "Répondre au message pour demander s'il est authentique"
+      ],
+      "c": 1,
+      "e": "Un logo et un texte sans faute se copient facilement. Vérifie l'expéditeur et la destination réelle ; sur mobile, un appui long peut montrer le lien sans l'ouvrir. En cas de doute, contacte l'établissement via ses coordonnées habituelles."
+    },
+    {
+      "q": "Quelle attaque injecte un script qui s'exécute dans le navigateur d'un visiteur ?",
+      "a": [
+        "Force brute",
+        "XSS",
+        "DDoS",
+        "ARP spoofing"
+      ],
+      "c": 1,
+      "e": "Le XSS (Cross-Site Scripting) consiste à injecter du contenu actif dans une page. Pour afficher du texte non fiable, textContent évite de l'interpréter comme du HTML."
+    },
+    {
+      "q": "Quel protocole chiffre les échanges entre un navigateur et un serveur web ?",
+      "a": [
+        "HTTP",
+        "FTP sans TLS",
+        "HTTPS",
+        "DNS classique"
+      ],
+      "c": 2,
+      "e": "HTTPS utilise TLS pour protéger les échanges en transit. Il ne garantit pas que le contenu du site est honnête ni que l'appareil est exempt de malware."
+    },
+    {
+      "q": "Un collègue te demande ton mot de passe professionnel. Comment réagis-tu ?",
+      "a": [
+        "Tu lui envoies par mail",
+        "Tu refuses et l'orientes vers une procédure d'accès autorisée",
+        "Tu le donnes puis le changes demain",
+        "Tu le notes sur son bureau"
+      ],
+      "c": 1,
+      "e": "Les comptes doivent rester individuels. Un accès délégué ou un compte autorisé permet de travailler sans partager un secret et conserve la traçabilité."
+    },
+    {
+      "q": "Quel est le rôle principal d'un pare-feu ?",
+      "a": [
+        "Chiffrer tous les fichiers",
+        "Filtrer les communications réseau selon des règles",
+        "Supprimer tous les virus",
+        "Accélérer Internet"
+      ],
+      "c": 1,
+      "e": "Un pare-feu autorise ou bloque les communications selon sa configuration. Il complète les autres protections et ne remplace pas un antivirus ou les mises à jour."
+    },
+    {
+      "q": "Quel malware chiffre des fichiers et réclame une rançon ?",
+      "a": [
+        "Spyware",
+        "Adware",
+        "Ransomware",
+        "Keylogger"
+      ],
+      "c": 2,
+      "e": "Un ransomware peut bloquer les fichiers et parfois voler les données. Des sauvegardes séparées et testées facilitent la restauration ; préviens le service informatique en cas d'incident."
+    },
+    {
+      "q": "Quel usage d'un gestionnaire de mots de passe améliore la sécurité ?",
+      "a": [
+        "Y stocker un mot de passe commun à tous les comptes",
+        "Générer et conserver un mot de passe long et unique par compte",
+        "Partager publiquement son coffre",
+        "Désactiver le mot de passe du coffre"
+      ],
+      "c": 1,
+      "e": "Protège le coffre avec un secret principal robuste et, si possible, une authentification multifacteur. Le gestionnaire aide à éviter la réutilisation des mots de passe."
+    },
+    {
+      "q": "Quel outil permet d'examiner des paquets réseau dans un cadre autorisé ?",
+      "a": [
+        "Wireshark",
+        "Photoshop",
+        "Paint",
+        "Un lecteur audio"
+      ],
+      "c": 0,
+      "e": "Wireshark capture et analyse des paquets réseau. Le contenu chiffré reste généralement illisible sans les clés nécessaires. N'analyse que des réseaux pour lesquels tu as une autorisation."
+    },
+    {
+      "q": "Sur un Wi-Fi public, que peut permettre un échange HTTP non chiffré ?",
+      "a": [
+        "La perte automatique de batterie",
+        "La lecture ou la modification du trafic par un attaquant sur le chemin réseau",
+        "Le chiffrement automatique des fichiers",
+        "La suppression des applications"
+      ],
+      "c": 1,
+      "e": "HTTP ne chiffre pas les échanges. HTTPS réduit ce risque en protégeant le trafic en transit. Vérifie le réseau et n'ignore jamais une alerte de certificat."
+    },
+    {
+      "q": "Côté serveur, quelle mesure freine les essais massifs de mots de passe ?",
+      "a": [
+        "Imposer des mots de passe courts",
+        "Limiter la fréquence des tentatives avec une temporisation",
+        "Changer le navigateur des utilisateurs",
+        "Désactiver les journaux de connexion"
+      ],
+      "c": 1,
+      "e": "Une limitation de fréquence et une temporisation freinent la force brute. Elles se complètent avec des mots de passe robustes, le suivi des alertes et l'authentification multifacteur."
+    }
+  ]
+}

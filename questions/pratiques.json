@@ -1,0 +1,173 @@
+{
+  "id": "pratiques",
+  "titre": "Bonnes Pratiques",
+  "titre_onglet": "Bonnes Pratiques — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Facile",
+  "module": "02",
+  "parcours": "Apprendre à se protéger",
+  "description": "De petits gestes, une meilleure protection au quotidien.",
+  "themes": [
+    "Mises à jour",
+    "Sauvegardes",
+    "Vigilance"
+  ],
+  "couleur": "102, 229, 181",
+  "couleur2": "#56cedc",
+  "mode": "entrainement",
+  "consigne": "15 questions · Choisis tes réponses, puis consulte la correction à la fin.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<rect x=\"62\" y=\"49\" width=\"79\" height=\"108\" rx=\"12\"/><path d=\"M84 49v-7h35v7M80 78l5 5 9-12M104 78h22M80 105l5 5 9-12M104 105h22M80 132l5 5 9-12M104 132h22\"/>",
+  "questions": [
+    {
+      "q": "Comment gérer de nombreux comptes en limitant les risques ?",
+      "a": [
+        "Utiliser un gestionnaire et un mot de passe long et unique par compte",
+        "Réutiliser un seul mot de passe",
+        "Envoyer ses mots de passe par messagerie"
+      ],
+      "c": 0,
+      "e": "Un gestionnaire aide à créer et conserver des secrets différents. Protège son coffre avec un secret principal robuste et une authentification multifacteur si possible."
+    },
+    {
+      "q": "Avant de cliquer sur un lien reçu par message, quelle vérification est essentielle ?",
+      "a": [
+        "Cliquer pour voir si le site semble normal",
+        "Vérifier l'expéditeur et survoler le lien pour voir l'URL réelle",
+        "Le partager avec vos amis pour avoir leur avis"
+      ],
+      "c": 1,
+      "e": "Les fraudeurs imitent l'apparence de sites officiels. Toujours vérifier l'adresse URL complète avant de cliquer."
+    },
+    {
+      "q": "Pourquoi installer les mises à jour dès qu'elles sont disponibles ?",
+      "a": [
+        "C'est principalement pour changer le design du logiciel",
+        "Elles servent à supprimer les fichiers trop anciens",
+        "Elles corrigent des failles de sécurité exploitées par les pirates"
+      ],
+      "c": 2,
+      "e": "Les correctifs de sécurité sont votre première défense contre les nouvelles menaces. Un système non à jour est vulnérable."
+    },
+    {
+      "q": "Tu dois faire une opération sensible sur un Wi-Fi public inconnu. Quel réflexe adopter ?",
+      "a": [
+        "Privilégier une connexion de confiance et vérifier HTTPS",
+        "Ignorer les alertes de certificat",
+        "Désactiver le pare-feu"
+      ],
+      "c": 0,
+      "e": "Un point d'accès peut être malveillant. HTTPS protège les échanges chiffrés ; un VPN de confiance peut ajouter un tunnel jusqu'à son serveur, sans garantir que les sites visités sont honnêtes."
+    },
+    {
+      "q": "Que faire face à un email suspect d'une administration demandant une action urgente ?",
+      "a": [
+        "Répondre pour demander s'il s'agit d'une erreur",
+        "Signaler l'email comme tentative de phishing",
+        "Cliquer sur la pièce jointe pour vérifier les détails"
+      ],
+      "c": 1,
+      "e": "Ne te fie pas au nom affiché ni à l'urgence. Vérifie la demande via le site officiel ou un numéro déjà connu, puis signale le message suspect."
+    },
+    {
+      "q": "Pour protéger votre vie privée sur les réseaux sociaux, il est préférable de :",
+      "a": [
+        "Partager votre localisation en temps réel",
+        "Publier des photos de vos documents d'identité",
+        "Limiter la visibilité de vos infos aux personnes que vous connaissez"
+      ],
+      "c": 2,
+      "e": "Moins vous exposez de données personnelles, moins vous donnez d'indices aux pirates pour vous cibler ou vous usurper."
+    },
+    {
+      "q": "Pourquoi verrouiller son écran même pour une courte absence ?",
+      "a": [
+        "Pour empêcher un accès physique direct à vos données privées",
+        "C'est uniquement pour l'apparence de l'écran d'accueil",
+        "Cela sert principalement à économiser la batterie"
+      ],
+      "c": 0,
+      "e": "Verrouiller la session limite l'accès direct aux fichiers et aux comptes par une personne passant près de ton appareil."
+    },
+    {
+      "q": "Meilleur réflexe si vous avez un doute sur la sécurité d'une application ?",
+      "a": [
+        "L'ignorer et continuer à l'utiliser normalement",
+        "Demander conseil à un expert ou faire une recherche en ligne",
+        "La télécharger quand même pour tester ses fonctionnalités"
+      ],
+      "c": 1,
+      "e": "La prudence est la règle d'or en cybersécurité : en cas de doute, on ne télécharge pas et on vérifie d'abord."
+    },
+    {
+      "q": "À quoi servent principalement les sauvegardes régulières de vos données ?",
+      "a": [
+        "À encombrer inutilement vos disques durs",
+        "À supprimer automatiquement les fichiers les plus anciens",
+        "À récupérer vos fichiers en cas de panne, vol ou cyberattaque"
+      ],
+      "c": 2,
+      "e": "Des copies séparées, dont une hors ligne ou protégée contre la modification, limitent les pertes. Teste leur restauration : une sauvegarde inutilisable ne permet pas de récupérer tes fichiers."
+    },
+    {
+      "q": "Où chercher une application mobile en priorité ?",
+      "a": [
+        "Dans une boutique officielle, en vérifiant son éditeur et ses permissions",
+        "Sur un lien publicitaire inconnu",
+        "Dans une pièce jointe reçue au hasard"
+      ],
+      "c": 0,
+      "e": "Une source officielle réduit les risques sans les supprimer. Vérifie aussi l'éditeur, les autorisations demandées et les mises à jour."
+    },
+    {
+      "q": "Face à un pop-up indiquant que votre PC est infecté, que faire ?",
+      "a": [
+        "Cliquer sur le bouton proposé pour nettoyer le PC",
+        "Fermer immédiatement la fenêtre sans rien télécharger",
+        "Donner ses informations pour recevoir de l'aide à distance"
+      ],
+      "c": 1,
+      "e": "Ces fenêtres pop-up sont presque toujours des pièges conçus pour vous faire installer de vrais virus."
+    },
+    {
+      "q": "À quoi sert un gestionnaire de mots de passe ?",
+      "a": [
+        "À envoyer tes codes à tous tes contacts",
+        "À empêcher toute attaque à lui seul",
+        "À générer et conserver des secrets longs et uniques"
+      ],
+      "c": 2,
+      "e": "Il permet d'avoir un secret différent par service sans tous les mémoriser. Il complète les autres protections, notamment le MFA."
+    },
+    {
+      "q": "Quand faut-il changer le mot de passe d'un compte important ?",
+      "a": [
+        "Dès que vous soupçonnez une fuite de données ou un accès suspect",
+        "Seulement une fois par an",
+        "Il ne faut jamais le changer pour ne pas l'oublier"
+      ],
+      "c": 0,
+      "e": "Depuis un appareil sain, change le secret compromis et ceux réutilisés ailleurs. Révoque les sessions inconnues, vérifie les moyens de récupération et active le MFA."
+    },
+    {
+      "q": "Au travail, quel est le bon comportement vis-à-vis de votre session ?",
+      "a": [
+        "Laisser son poste ouvert pour que les collègues puissent aider",
+        "Verrouiller systématiquement sa session dès que l'on quitte son bureau",
+        "Partager ses identifiants avec son binôme pour plus d'efficacité"
+      ],
+      "c": 1,
+      "e": "Verrouiller la session empêche qu'une autre personne utilise facilement tes accès pendant ton absence. Ne partage pas tes identifiants."
+    },
+    {
+      "q": "Si vous trouvez une clé USB inconnue sur un parking, que faites-vous ?",
+      "a": [
+        "La brancher sur votre ordinateur par curiosité",
+        "La jeter directement à la poubelle sans réfléchir",
+        "La remettre au service informatique ou ne pas l'utiliser"
+      ],
+      "c": 2,
+      "e": "Une clé USB abandonnée est une technique classique (baiting) pour infiltrer un malware dans un réseau d'entreprise."
+    }
+  ]
+}

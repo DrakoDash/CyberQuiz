@@ -451,5 +451,13 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addFab); else addFab();
 
-  window.CyberSon = { play, openPanel, startMusic, stopMusic, get settings() { return { ...settings, music: musicOn() }; } };
+  /* Réglage depuis la page Paramètres : CyberSon.configure({ music, sfx, musicVol, sfxVol }) */
+  function configure(p = {}) {
+    if (typeof p.music === 'boolean') { settings.music = p.music; if (p.music) { unlock(); startMusic(); } else stopMusic(); }
+    if (typeof p.sfx === 'boolean') { settings.sfx = p.sfx; if (ctx) sfxBus.gain.setTargetAtTime(p.sfx ? settings.sfxVol : 0, ctx.currentTime, 0.02); }
+    if (typeof p.musicVol === 'number') { settings.musicVol = Math.min(1, Math.max(0, p.musicVol)); if (musicPlaying && ctx) musicBus.gain.setTargetAtTime(settings.musicVol, ctx.currentTime, 0.05); }
+    if (typeof p.sfxVol === 'number') { settings.sfxVol = Math.min(1, Math.max(0, p.sfxVol)); if (ctx && settings.sfx) sfxBus.gain.setTargetAtTime(settings.sfxVol, ctx.currentTime, 0.02); }
+    saveSettings(); updateFab();
+  }
+  window.CyberSon = { play, openPanel, startMusic, stopMusic, configure, get settings() { return { ...settings, music: musicOn() }; } };
 })();

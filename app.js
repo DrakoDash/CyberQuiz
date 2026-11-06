@@ -5,7 +5,7 @@
 
    Quand CyberQuiz est ouvert comme application installée :
    - ajoute la classe « app-mode » sur <html> (voir app.css) ;
-   - affiche une barre d'onglets en bas (Accueil, Quiz, Simulation, Succès, Son) ;
+   - affiche une barre d'onglets en bas (Accueil, Quiz, Situations, Succès, Réglages) ;
    - anime le passage d'une page à l'autre.
 
    Aperçu sans installer : ouvre n'importe quelle page avec ?mode=app
@@ -15,6 +15,38 @@
   'use strict';
   const PREVIEW = 'cyberquiz_preview_app';
   const root = document.documentElement;
+
+  /* ── 0. Préférences d'affichage (page Paramètres) ──
+     Appliquées tout de suite, avant l'affichage, pour éviter un clignotement.
+     cyberquiz_prefs = { theme: 'sombre'|'clair'|'auto', texte: 100|112|125, animations: 'normales'|'reduites' } */
+  const PREFS = 'cyberquiz_prefs';
+  const lightQuery = matchMedia('(prefers-color-scheme: light)');
+  function readPrefs() {
+    let p = {};
+    try { p = JSON.parse(localStorage.getItem(PREFS)) || {}; } catch { /* stockage bloqué ou corrompu */ }
+    return {
+      theme: ['sombre', 'clair', 'auto'].includes(p.theme) ? p.theme : 'sombre',
+      texte: [100, 112, 125].includes(p.texte) ? p.texte : 100,
+      animations: p.animations === 'reduites' ? 'reduites' : 'normales'
+    };
+  }
+  function applyPrefs() {
+    const p = readPrefs();
+    const light = p.theme === 'clair' || (p.theme === 'auto' && lightQuery.matches);
+    root.classList.toggle('theme-light', light);
+    root.style.fontSize = p.texte === 100 ? '' : p.texte + '%';
+    root.classList.toggle('reduce-motion', p.animations === 'reduites');
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = light ? '#f4f7fb' : '#070b17';
+    document.dispatchEvent(new CustomEvent('cyberquiz:settings', { detail: p }));
+    return p;
+  }
+  applyPrefs();
+  lightQuery.addEventListener?.('change', applyPrefs);
+  // Réglage modifié dans un autre onglet : on l'applique ici aussi.
+  addEventListener('storage', e => { if (e.key === PREFS) applyPrefs(); });
+  // Au cas où la balise theme-color n'était pas encore lue
+  document.addEventListener('DOMContentLoaded', applyPrefs, { once: true });
 
   /* ── 1. Détection du mode application ── */
   try {
@@ -44,7 +76,7 @@
     { id: 'quiz',  ico: '📚', label: 'Quiz',       href: 'quiz.html',             match: p => p === 'quiz.html' || QUIZ_PAGES.includes(p) },
     { id: 'sim',   ico: '🖱️', label: 'Situations', href: 'situations.html',       match: p => p === 'situations.html' || SITUATION_PAGES.includes(p) },
     { id: 'achv',  ico: '🏆', label: 'Succès',     href: 'succes.html',           match: p => p === 'succes.html' },
-    { id: 'sound', ico: '🎧', label: 'Son' }
+    { id: 'prefs', ico: '⚙️', label: 'Réglages',   href: 'parametres.html',       match: p => p === 'parametres.html' }
   ];
 
   function buildTabbar() {
@@ -113,5 +145,11 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready);
   else ready();
 
-  window.CyberApp = { isApp };
+  window.CyberApp = {
+    isApp, readPrefs, applyPrefs,
+    savePrefs(p) {
+      try { localStorage.setItem(PREFS, JSON.stringify({ ...readPrefs(), ...p })); } catch { /* stockage bloqué */ }
+      return applyPrefs();
+    }
+  };
 })();

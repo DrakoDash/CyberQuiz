@@ -1,0 +1,155 @@
+{
+  "id": "ingenierie-sociale",
+  "titre": "Ingénierie Sociale",
+  "titre_onglet": "Ingénierie Sociale — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Difficile",
+  "module": "08",
+  "parcours": "Apprendre à se protéger",
+  "description": "Repère les manipulations qui se cachent derrière une demande.",
+  "themes": [
+    "Prétextes",
+    "Urgence",
+    "Vérification"
+  ],
+  "couleur": "255, 172, 120",
+  "couleur2": "#ff819d",
+  "mode": "entrainement",
+  "consigne": "12 questions · Choisis tes réponses, puis consulte la correction à la fin.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<path d=\"M50 62c30 12 70 12 100 0v38c0 35-50 59-50 59s-50-24-50-59Z\"/><path class=\"art-bright\" d=\"M65 93q15-16 28 0-13 16-28 0Zm42 0q15-16 28 0-13 16-28 0Z\"/><path d=\"M86 128q14 8 28 0\"/>",
+  "questions": [
+    {
+      "q": "Quel est le principe de l’ingénierie sociale ?",
+      "a": [
+        "Manipuler une personne pour lui faire divulguer des informations ou agir",
+        "Améliorer le débit d’un réseau",
+        "Réparer un disque",
+        "Compresser un fichier"
+      ],
+      "c": 0,
+      "e": "L'attaque vise la confiance, l'urgence, l'autorité ou la curiosité. La technique peut accompagner une attaque informatique."
+    },
+    {
+      "q": "Ton prétendu directeur demande un virement urgent et secret. Que fais-tu ?",
+      "a": [
+        "Tu obéis immédiatement",
+        "Tu vérifies par un numéro connu et suis la procédure de validation",
+        "Tu réponds avec tes accès bancaires",
+        "Tu supprimes les traces"
+      ],
+      "c": 1,
+      "e": "Une demande inhabituelle doit être confirmée par un canal indépendant. Le nom affiché et le ton autoritaire ne prouvent pas l'identité."
+    },
+    {
+      "q": "Qu’est-ce que le pretexting ?",
+      "a": [
+        "Un chiffrement",
+        "Une sauvegarde",
+        "L’invention d’un scénario crédible pour obtenir une information ou une action",
+        "Un câble réseau"
+      ],
+      "c": 2,
+      "e": "Un attaquant peut se présenter comme technicien ou fournisseur pour justifier sa demande. Vérifie son identité et son autorisation."
+    },
+    {
+      "q": "Une clé USB « salaires » est abandonnée près du bureau. Quel piège cela peut-il illustrer ?",
+      "a": [
+        "Une mise à jour officielle",
+        "Une authentification",
+        "Une compression",
+        "Le baiting, qui exploite la curiosité"
+      ],
+      "c": 3,
+      "e": "Ne branche pas un support inconnu. Remets-le au service compétent selon la procédure de ton établissement ou entreprise."
+    },
+    {
+      "q": "Un appelant du « support » réclame ton code MFA. Que fais-tu ?",
+      "a": [
+        "Tu refuses et contactes le support par ses coordonnées habituelles",
+        "Tu le donnes car il expire vite",
+        "Tu lui envoies aussi les codes de secours",
+        "Tu désactives ton MFA"
+      ],
+      "c": 0,
+      "e": "Un code de connexion est un secret. Sa courte durée de validité n'empêche pas une utilisation immédiate par un attaquant."
+    },
+    {
+      "q": "Tu reçois des demandes MFA alors que tu ne te connectes pas. Que faire ?",
+      "a": [
+        "En accepter une pour arrêter les notifications",
+        "Les refuser et signaler l’activité, puis sécuriser ton compte",
+        "Les transférer à un ami",
+        "Éteindre seulement le son"
+      ],
+      "c": 1,
+      "e": "La fatigue MFA cherche à obtenir une validation par lassitude. Vérifie les connexions depuis le service officiel et un appareil sain."
+    },
+    {
+      "q": "Une personne inconnue tente de te suivre derrière une porte à badge. Quel réflexe adopter ?",
+      "a": [
+        "Lui prêter ton badge",
+        "Lui indiquer une entrée cachée",
+        "L’orienter vers l’accueil et appliquer la procédure visiteurs",
+        "La laisser passer si elle porte un colis"
+      ],
+      "c": 2,
+      "e": "Le tailgating contourne un contrôle physique en suivant une personne autorisée. Reste courtois et sollicite l'accueil ou la sécurité."
+    },
+    {
+      "q": "Un ami réclame de l’argent avec une nouvelle adresse. Comment vérifier ?",
+      "a": [
+        "Répondre seulement à cette nouvelle adresse",
+        "Faire confiance à sa photo",
+        "Payer une petite somme pour tester",
+        "Le contacter via ses coordonnées habituelles"
+      ],
+      "c": 3,
+      "e": "Le compte ou l'identité d'un proche peut être usurpé. Un canal indépendant réduit ce risque."
+    },
+    {
+      "q": "Pourquoi un QR code collé sur une affiche peut-il être suspect ?",
+      "a": [
+        "Il peut remplacer le lien prévu par une destination frauduleuse",
+        "Il contient toujours un virus",
+        "Il prouve l’identité de l’annonceur",
+        "Il désactive le réseau"
+      ],
+      "c": 0,
+      "e": "Un QR code encode une information, souvent une URL. Vérifie sa destination et le contexte avant d'ouvrir le site ou de payer."
+    },
+    {
+      "q": "Une voix familière au téléphone suffit-elle à autoriser un transfert sensible ?",
+      "a": [
+        "Oui, une voix ne se copie pas",
+        "Non, il faut appliquer les vérifications habituelles",
+        "Oui, si la demande est urgente",
+        "Oui, si l’appel est court"
+      ],
+      "c": 1,
+      "e": "Une voix peut être imitée ou synthétisée. Une procédure de validation indépendante reste utile, même si la personne semble connue."
+    },
+    {
+      "q": "Un mail cite ton poste et le nom de ton collègue. Cela prouve-t-il qu’il est légitime ?",
+      "a": [
+        "Oui, sans exception",
+        "Oui, s’il n’a pas de faute",
+        "Non, ces informations peuvent servir à un phishing ciblé",
+        "Oui, s’il contient un logo"
+      ],
+      "c": 2,
+      "e": "Des informations publiques ou divulguées permettent de personnaliser une attaque. Vérifie les demandes inhabituelles, les liens et les pièces jointes."
+    },
+    {
+      "q": "Tu as communiqué ton mot de passe à un faux support. Que faire ?",
+      "a": [
+        "Attendre pour voir",
+        "Effacer les messages et ne rien dire",
+        "Donner le code MFA pour annuler",
+        "Alerter rapidement le support officiel, changer le secret depuis un appareil sain et révoquer les sessions"
+      ],
+      "c": 3,
+      "e": "Réagir et signaler rapidement aide à limiter les dégâts. Conserve les éléments utiles à l'enquête sans rediffuser tes secrets."
+    }
+  ]
+}

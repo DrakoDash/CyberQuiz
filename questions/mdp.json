@@ -1,0 +1,223 @@
+{
+  "id": "mdp",
+  "titre": "Mots de Passe",
+  "titre_onglet": "Mots de Passe — CyberQuiz",
+  "categorie": "quiz",
+  "niveau": "Moyen",
+  "module": "04",
+  "parcours": "Apprendre à se protéger",
+  "description": "Des accès solides commencent par des secrets bien protégés.",
+  "themes": [
+    "Secrets uniques",
+    "Gestionnaire",
+    "MFA"
+  ],
+  "couleur": "255, 209, 112",
+  "couleur2": "#ff9b71",
+  "mode": "entrainement",
+  "consigne": "20 questions · Choisis tes réponses, puis consulte la correction à la fin.",
+  "pied_de_page": "CyberQuiz · Apprendre, comprendre, progresser.",
+  "illustration": "<circle cx=\"79\" cy=\"80\" r=\"29\"/><circle cx=\"72\" cy=\"73\" r=\"8\"/><path class=\"art-bright\" d=\"m99 101 44 44 13-13-12-12 7-7-12-12-8 8-14-14\"/>",
+  "questions": [
+    {
+      "q": "Quel mot de passe est particulièrement facile à deviner ?",
+      "a": [
+        "Le prénom de ton animal suivi de ton année de naissance",
+        "Une longue suite générée aléatoirement",
+        "Plusieurs mots choisis au hasard"
+      ],
+      "c": 0,
+      "e": "Des informations publiques et des motifs prévisibles facilitent les essais. La robustesse dépend notamment de la longueur et du caractère imprévisible du secret."
+    },
+    {
+      "q": "À génération aléatoire comparable, quel changement rend un mot de passe plus difficile à deviner ?",
+      "a": [
+        "Le raccourcir",
+        "Augmenter sa longueur",
+        "Le réutiliser ailleurs"
+      ],
+      "c": 1,
+      "e": "La longueur augmente le nombre de combinaisons possibles. Une longueur minimale isolée ne garantit pas la robustesse : la prévisibilité compte aussi."
+    },
+    {
+      "q": "Pourquoi éviter des mots du dictionnaire dans son mot de passe ?",
+      "a": [
+        "Ils sont plus faciles à retenir",
+        "Ils rendent le mot de passe plus unique",
+        "Ils peuvent être devinés par attaques par dictionnaire"
+      ],
+      "c": 2,
+      "e": "Les attaquants utilisent des dictionnaires pour tester des mots courants. Les mots de passe doivent être imprévisibles."
+    },
+    {
+      "q": "Est-il sûr d'utiliser un mot de passe contenant votre date de naissance ?",
+      "a": [
+        "Non, ces informations sont publiques ou facilement accessibles",
+        "Oui, c'est facile à retenir",
+        "Ça dépend de la région"
+      ],
+      "c": 0,
+      "e": "Les données personnelles comme la date de naissance sont souvent publiques. Elles ne doivent jamais être dans un mot de passe."
+    },
+    {
+      "q": "Quelle méthode est conçue pour résister au phishing du site de connexion ?",
+      "a": [
+        "Un code SMS recopié sur tout site",
+        "Une clé de sécurité FIDO2/WebAuthn",
+        "Un code reçu par mail recopié sur tout site"
+      ],
+      "c": 1,
+      "e": "FIDO2/WebAuthn lie l'authentification au site attendu. Un code temporaire saisi manuellement peut encore être volé par un faux site. Aucun mécanisme ne remplace toutes les autres protections."
+    },
+    {
+      "q": "Quelle est la meilleure méthode de MFA pour sécuriser un compte ?",
+      "a": [
+        "SMS uniquement",
+        "Email uniquement",
+        "Authentification par application (authenticator) ou clé de sécurité"
+      ],
+      "c": 2,
+      "e": "Les applications authenticator et les clés de sécurité offrent plus de protection que SMS/email contre les interceptions."
+    },
+    {
+      "q": "Pourquoi les SMS comme deuxième facteur ne sont-ils pas idéaux ?",
+      "a": [
+        "Ils peuvent être interceptés ou détournés (SIM swapping)",
+        "Ils sont trop rapides",
+        "Ils coûtent trop cher"
+      ],
+      "c": 0,
+      "e": "Le SIM swapping permet à des attaquants de se faire transférer votre numéro pour recevoir les codes SMS."
+    },
+    {
+      "q": "Qu'est-ce qu'un gestionnaire de mots de passe ?",
+      "a": [
+        "Un logiciel qui crée de faibles mots de passe",
+        "Non, une fuite peut donner accès aux autres comptes utilisant ce secret",
+        "Un service qui change automatiquement votre mot de passe"
+      ],
+      "c": 1,
+      "e": "Un attaquant peut tester les identifiants divulgués sur d'autres services. Des mots de passe uniques limitent cette réutilisation frauduleuse."
+    },
+    {
+      "q": "Pourquoi '123456' est-il un mauvais mot de passe ?",
+      "a": [
+        "Il est trop long",
+        "Il contient des caractères impossibles à saisir",
+        "Il figure parmi les premiers essais prévisibles"
+      ],
+      "c": 2,
+      "e": "Ce secret très courant peut être testé immédiatement. Le temps nécessaire pour trouver un mot de passe dépend du système, des protections et du type d'attaque : il n'existe pas de durée universelle."
+    },
+    {
+      "q": "Combien de temps faut-il pour craquer un mot de passe simple comme '123456' ?",
+      "a": [
+        "Quelques secondes à quelques minutes",
+        "Plusieurs années",
+        "Il ne peut pas être cracké"
+      ],
+      "c": 0,
+      "e": "'123456' et autres mots de passe simples peuvent être trouvés en secondes par les outils de force brute modernes."
+    },
+    {
+      "q": "Pourquoi éviter un mot de passe sur un post-it visible ?",
+      "a": [
+        "Parce que le papier bloque Internet",
+        "Une personne de passage peut le lire",
+        "Parce que cela chiffre le mot de passe"
+      ],
+      "c": 1,
+      "e": "Un secret exposé est facile à copier. Utilise un gestionnaire ou, pour les codes de secours, un lieu de conservation réellement protégé."
+    },
+    {
+      "q": "Tu dois mémoriser un secret principal. Quel choix privilégier ?",
+      "a": [
+        "Ton prénom",
+        "Une citation célèbre sans modification",
+        "Une phrase de passe longue composée de mots choisis au hasard"
+      ],
+      "c": 2,
+      "e": "Des mots choisis au hasard sont moins prévisibles qu'une citation ou une phrase personnelle. N'utilise pas les exemples publics d'un cours comme vrais mots de passe."
+    },
+    {
+      "q": "Qu'est-ce qu'une phrase de passe ?",
+      "a": [
+        "Un secret long composé de plusieurs mots",
+        "Un antivirus",
+        "Un identifiant public"
+      ],
+      "c": 0,
+      "e": "Une phrase de passe sert de mot de passe. Sa robustesse dépend de sa longueur et du choix imprévisible des mots, pas seulement des espaces ou symboles."
+    },
+    {
+      "q": "Pour un compte utilisateur ordinaire, faut-il imposer un nouveau mot de passe chaque mois sans signe de compromission ?",
+      "a": [
+        "Oui, en ajoutant seulement le numéro du mois",
+        "Non : privilégier un secret robuste et le changer en cas de compromission",
+        "Oui, en alternant deux mots de passe"
+      ],
+      "c": 1,
+      "e": "Le renouvellement périodique des comptes ordinaires favorise souvent des variantes prévisibles. Change un secret exposé ou suspect et respecte les règles particulières de ton organisation, notamment pour les comptes privilégiés."
+    },
+    {
+      "q": "Devriez-vous changer votre mot de passe régulièrement même sans suspicion ?",
+      "a": [
+        "Non, si vous ne soupçonnez rien",
+        "Oui, tous les 90 jours maximum",
+        "Oui, tous les mois"
+      ],
+      "c": 2,
+      "e": "Depuis un appareil sain, change le secret, révoque les sessions suspectes et vérifie les moyens de récupération. Changer le mot de passe seul ne ferme pas forcément toutes les sessions déjà ouvertes."
+    },
+    {
+      "q": "Quel avantage apporte une clé FIDO2/WebAuthn face à un code SMS ?",
+      "a": [
+        "Elle vérifie le site auquel elle répond et résiste au phishing",
+        "Elle rend toute infection impossible",
+        "Elle remplace les sauvegardes"
+      ],
+      "c": 0,
+      "e": "Une clé FIDO2/WebAuthn ne transmet pas un code réutilisable sur un autre site. Prévois un moyen de récupération sûr en cas de perte."
+    },
+    {
+      "q": "Quel est l'avantage d'une clé de sécurité (security key) par rapport aux codes SMS ?",
+      "a": [
+        "Elle est moins chère",
+        "Elle ne peut pas être interceptée numériquement, plus sûre contre les attaques",
+        "Elle fonctionne sans Internet"
+      ],
+      "c": 1,
+      "e": "Les clés de sécurité (USB, NFC) utilisent la cryptographie et ne peuvent pas être phishées ou interceptées comme les SMS."
+    },
+    {
+      "q": "Remplacer le 'a' par '@' dans un mot courant suffit-il ?",
+      "a": [
+        "Oui, toujours",
+        "Oui, même avec quatre caractères",
+        "Non, cette substitution est prévisible"
+      ],
+      "c": 2,
+      "e": "Les outils d'essai connaissent les substitutions courantes. Préfère un secret long et imprévisible plutôt qu'un mot courant légèrement transformé."
+    },
+    {
+      "q": "Où chercher pour activer le MFA sur un service ?",
+      "a": [
+        "Dans les paramètres de sécurité ou de connexion du compte",
+        "Dans le fond d’écran",
+        "Uniquement dans le menu de l’imprimante"
+      ],
+      "c": 0,
+      "e": "Le nom exact du menu varie selon le service. Configure une méthode proposée et conserve les codes de récupération en lieu sûr."
+    },
+    {
+      "q": "Comment activer l'authentification multi-facteur sur un compte Google ?",
+      "a": [
+        "C'est impossible",
+        "Via les paramètres de sécurité, en sélectionnant 'Vérification en 2 étapes'",
+        "Seulement avec un email spécialisé"
+      ],
+      "c": 1,
+      "e": "Google offre la 2FA dans les paramètres de compte. On peut choisir entre SMS, appels, ou l'application Google Authenticator."
+    }
+  ]
+}
