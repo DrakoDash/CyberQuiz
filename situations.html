@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>CyberQuiz — Mises en situation</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Share+Tech+Mono&display=swap">
+<link rel="stylesheet" href="site.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#070b17">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CyberQuiz">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<script src="maintenance.js"></script>
+<link rel="stylesheet" href="app.css">
+<script src="app.js"></script>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- ──── NAVBAR ──── -->
+<nav class="navbar">
+  <a href="accueil.html" class="nav-logo">Cyber<span>Quiz</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="accueil.html">Accueil</a>
+    <a href="quiz.html">📚 Quiz</a>
+    <a href="situations.html" class="active" aria-current="page">🖱️ Mises en situation</a>
+    <a href="quiz-final.html" class="final">⚡ Contrôle Final</a>
+    <a href="succes.html">🏆 Succès</a>
+    <a href="changelog.html">📋 Versions</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleMenu()" aria-label="Menu">
+    <i class="fa-solid fa-bars" id="menuIcon"></i>
+  </button>
+</nav>
+
+<!-- ──── EN-TÊTE ──── -->
+<header class="page-hero">
+  <div class="page-crumb"><a href="accueil.html">Accueil</a> / Mises en situation</div>
+  <h1 class="page-title"><span class="ico" aria-hidden="true">🖱️</span>Mises en situation</h1>
+  <p class="page-sub">Mets-toi dans la peau d'un(e) professionnel(le) : manipule de vraies fausses fenêtres (messagerie, fichiers, navigateur…) et réagis aux situations comme au travail.</p>
+  <div class="page-meta"><span><strong>3</strong> modules disponibles</span><span><strong id="catDone">0</strong> terminés</span><span>🛠️ D'autres simulations arrivent</span></div>
+</header>
+
+<section class="section-quizzes" id="quizzes" data-category="situations">
+<div class="section-label"><span class="section-label-text">01 · Simulations interactives</span><div class="section-line"></div></div><div class="quiz-grid">
+<a href="simulation.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(110, 231, 150)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/><path d="m12 8 5 2-2 1-1 2Z"/></svg></div><span class="badge badge-medium">Interactif</span></div><div class="card-title">Premier jour au bureau</div><div class="card-desc">Mises en situation interactives : trier ses mails, inspecter ses fichiers, partager un document en sécurité.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">12 étapes</span></div><span class="card-status status-new" id="status-simulation">Nouveau</span></div></a>
+<div class="quiz-card soon" aria-disabled="true" style="--card-accent:rgb(99, 216, 242)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M9 16a4 4 0 0 1 6 0"/><circle cx="12" cy="20" r="1"/></svg></div><span class="badge badge-soon">Bientôt</span></div><div class="card-title">Configurer sa box Wi-Fi</div><div class="card-desc">Changer le mot de passe administrateur, passer en WPA3, désactiver le WPS.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">Simulation interactive</span></div><span class="card-status status-soon">À venir</span></div></div>
+<div class="quiz-card soon" aria-disabled="true" style="--card-accent:rgb(255, 162, 131)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v6M15 10v5M9 15v5"/></svg></div><span class="badge badge-soon">Bientôt</span></div><div class="card-title">Le pare-feu de l'entreprise</div><div class="card-desc">Autoriser ou bloquer des connexions selon des règles de ports et d'adresses.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">Simulation interactive</span></div><span class="card-status status-soon">À venir</span></div></div>
+<div class="quiz-card soon" aria-disabled="true" style="--card-accent:rgb(182, 162, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></div><span class="badge badge-soon">Bientôt</span></div><div class="card-title">Mon smartphone en sécurité</div><div class="card-desc">Trier les autorisations des applis, repérer un faux SMS ou un QR code piégé.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">Simulation interactive</span></div><span class="card-status status-soon">À venir</span></div></div>
+</div>
+<div class="section-label"><span class="section-label-text">02 · Scénarios à choix</span><div class="section-line"></div></div><div class="quiz-grid">
+<a href="wifi-interactif.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(107, 207, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M9 16a4 4 0 0 1 6 0"/><circle cx="12" cy="20" r="1"/></svg></div><span class="badge badge-hard">Difficile</span></div><div class="card-title">Wi-Fi : mises en situation</div><div class="card-desc">10 situations pratiques pour comprendre les réglages et les pièges du Wi-Fi.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">10 questions</span></div><span class="card-status status-new" id="status-wifi-interactif">Nouveau</span></div></a>
+<a href="incident-response.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(255, 162, 131)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 10 18H2Z M12 9v5M12 17v1"/></svg></div><span class="badge badge-hard">Difficile</span></div><div class="card-title">Réponse aux Incidents</div><div class="card-desc">15 situations pour apprendre à alerter, contenir, préserver les traces et rétablir le service.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">15 questions</span></div><span class="card-status status-new" id="status-incident-response">Nouveau</span></div></a>
+</div>
+</section>
+
+<!-- ──── FOOTER ──── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo">CyberQuiz</span>
+      <p>Plateforme pédagogique interactive pour apprendre les bases de la cybersécurité.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Apprendre</h4>
+      <a href="quiz.html">Tous les quiz</a>
+      <a href="situations.html">Mises en situation</a>
+      <a href="quiz-final.html">Contrôle Final</a>
+    </div>
+    <div class="footer-col">
+      <h4>Ma progression</h4>
+      <a href="succes.html">Mes succès</a>
+      <a href="changelog.html">Nouveautés</a>
+    </div>
+    <div class="footer-col">
+      <h4>Liens utiles</h4>
+      <a href="https://github.com/DrakoDash/ProjetCyberSecurite" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 CyberQuiz — Tous droits réservés</span>
+    <span class="footer-badge"><i class="fa-solid fa-lock"></i> Sécurité & Apprentissage</span>
+  </div>
+</footer>
+
+<script src="succes.js"></script>
+<script src="site.js"></script>
+<script src="audio.js" defer></script>
+<script src="pwa.js" defer></script>
+</body>
+</html>

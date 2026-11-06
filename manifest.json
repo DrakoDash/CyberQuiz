@@ -6,45 +6,108 @@
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "display_override": ["standalone", "minimal-ui"],
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "any",
   "background_color": "#070b17",
   "theme_color": "#070b17",
   "lang": "fr",
   "dir": "ltr",
-  "categories": ["education", "games"],
+  "categories": [
+    "education",
+    "games"
+  ],
   "icons": [
-    { "src": "assets/icons/icon-72.png",           "sizes": "72x72",   "type": "image/png" },
-    { "src": "assets/icons/icon-96.png",           "sizes": "96x96",   "type": "image/png" },
-    { "src": "assets/icons/icon-128.png",          "sizes": "128x128", "type": "image/png" },
-    { "src": "assets/icons/icon-144.png",          "sizes": "144x144", "type": "image/png" },
-    { "src": "assets/icons/icon-152.png",          "sizes": "152x152", "type": "image/png" },
-    { "src": "assets/icons/icon-192.png",          "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "assets/icons/icon-384.png",          "sizes": "384x384", "type": "image/png" },
-    { "src": "assets/icons/icon-512.png",          "sizes": "512x512", "type": "image/png", "purpose": "any" },
-    { "src": "assets/icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "assets/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ],
   "shortcuts": [
     {
-      "name": "Mises en situation",
-      "short_name": "Simulation",
-      "description": "Lancer le module interactif Premier jour au bureau",
-      "url": "./simulation.html",
-      "icons": [{ "src": "assets/icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
+      "name": "Tous les quiz",
+      "short_name": "Quiz",
+      "description": "Voir la liste des quiz",
+      "url": "./quiz.html",
+      "icons": [
+        {
+          "src": "assets/icons/icon-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     },
     {
-      "name": "Quiz Débutant",
-      "short_name": "Débutant",
-      "description": "Lancer le quiz débutant",
-      "url": "./debutant.html",
-      "icons": [{ "src": "assets/icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
+      "name": "Mises en situation",
+      "short_name": "Situations",
+      "description": "Simulations interactives et scénarios",
+      "url": "./situations.html",
+      "icons": [
+        {
+          "src": "assets/icons/icon-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Mes succès",
       "short_name": "Succès",
       "description": "Voir les badges débloqués",
       "url": "./succes.html",
-      "icons": [{ "src": "assets/icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "assets/icons/icon-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     }
   ],
   "screenshots": [

@@ -37,7 +37,7 @@
   function saveSettings() { try { localStorage.setItem(STORE, JSON.stringify(settings)); } catch { /* stockage bloqué */ } }
 
   /* ── Moteur audio (créé au premier besoin) ── */
-  let ctx = null, master, musicBus, sfxBus, delay, unlocked = false;
+  let ctx = null, master, musicBus, sfxBus, delay, reverb, unlocked = false;
   function ensureContext() {
     if (ctx) return ctx;
     const AC = window.AudioContext || window.webkitAudioContext;
@@ -51,6 +51,19 @@
     musicBus = ctx.createGain(); musicBus.gain.value = 0;
     sfxBus = ctx.createGain(); sfxBus.gain.value = settings.sfx ? settings.sfxVol : 0;
     musicBus.connect(master); sfxBus.connect(master);
+
+    // Réverbération douce pour les sons d'interface (ambiance « console de salon »).
+    // La réponse impulsionnelle est fabriquée en code : un souffle stéréo qui s'éteint en ~1,4 s.
+    const len = Math.floor(ctx.sampleRate * 1.4);
+    const ir = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let ch = 0; ch < 2; ch++) {
+      const d = ir.getChannelData(ch);
+      for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3.2);
+    }
+    const conv = ctx.createConvolver(); conv.buffer = ir;
+    const verbTone = ctx.createBiquadFilter(); verbTone.type = 'lowpass'; verbTone.frequency.value = 4200;
+    reverb = ctx.createGain(); reverb.gain.value = 1;
+    reverb.connect(conv).connect(verbTone).connect(sfxBus);
 
     // Écho léger pour l'arpège de la musique
     delay = ctx.createDelay(1); delay.delayTime.value = 0.357;
@@ -84,6 +97,28 @@
     osc.start(t0); osc.stop(t0 + dur + release + 0.05);
   }
 
+  /* Note douce façon marimba / verre (sons d'interface façon PS5).
+     wet = part envoyée dans la réverbération (0 à 1). */
+  function mallet(freq, { start = 0, vol = 0.1, decay = 0.35, wet = 0.35, bright = 0.12, attack = 0.006 } = {}) {
+    const t0 = ctx.currentTime + start;
+    const out = ctx.createGain(); out.gain.value = 1;
+    const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 3200; lp.Q.value = 0.3;
+    [[1, vol, decay], [3, vol * bright, decay * 0.35], [2, vol * 0.18, decay * 0.6]].forEach(([mult, v, dec]) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = 'sine'; o.frequency.value = freq * mult;
+      g.gain.setValueAtTime(0, t0);
+      g.gain.linearRampToValueAtTime(v, t0 + attack);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + attack + dec);
+      o.connect(g).connect(lp);
+      o.start(t0); o.stop(t0 + attack + dec + 0.05);
+    });
+    lp.connect(out);
+    const dry = ctx.createGain(); dry.gain.value = 1 - wet * 0.5;
+    const send = ctx.createGain(); send.gain.value = wet;
+    out.connect(dry).connect(sfxBus);
+    out.connect(send).connect(reverb);
+  }
+
   /* Bruit filtré (souffle, « whoosh ») */
   let noiseBuffer = null;
   function getNoise() {
@@ -110,30 +145,26 @@
      EFFETS SONORES
      ============================================================ */
   const SFX = {
-    /* ── Sons d'interface inspirés de SteamOS : courts, ronds, feutrés ── */
-    // Le focus passe sur un élément (survol souris ou touche Tab) : petit « tic » doux
-    hover() {
-      tone({ freq: 1760, to: 1480, type: 'sine', dur: 0.022, vol: 0.045, attack: 0.002, release: 0.025, filter: 3500 });
-      tone({ freq: 880, type: 'triangle', dur: 0.018, vol: 0.02, attack: 0.002, release: 0.02 });
-    },
-    // Validation / clic : « bwip » arrondi en deux notes montantes
+    /* ── Sons d'interface inspirés de la PS5 : très doux, ronds, avec un léger halo ──
+       Gamme de référence : Ré majeur pentatonique (Ré, Mi, Fa#, La, Si) → toujours harmonieux. */
+    // Le focus passe sur un élément : petite goutte cristalline, à peine audible
+    hover() { mallet(midi(93), { vol: 0.035, decay: 0.12, wet: 0.25, bright: 0.05, attack: 0.004 }); },
+    // Validation / clic : « plic » rond, une note grave douce + son octave
     click() {
-      tone({ freq: midi(81), type: 'sine', dur: 0.04, vol: 0.13, attack: 0.004, release: 0.03, filter: 4000 });
-      tone({ freq: midi(88), type: 'sine', start: 0.035, dur: 0.06, vol: 0.12, attack: 0.004, release: 0.06, filter: 4000 });
-      tone({ freq: midi(76), type: 'triangle', dur: 0.05, vol: 0.04, release: 0.04 });
+      mallet(midi(81), { vol: 0.085, decay: 0.28, wet: 0.3 });
+      mallet(midi(93), { start: 0.012, vol: 0.03, decay: 0.18, wet: 0.4, bright: 0.04 });
     },
-    // Ouverture d'une page : souffle montant + petite cloche
+    // Ouverture d'une page : souffle aérien + deux notes qui montent
     nav() {
-      noise({ dur: 0.22, vol: 0.06, from: 350, to: 2800, q: 1.2 });
-      tone({ freq: midi(76), to: midi(83), type: 'sine', dur: 0.09, vol: 0.10, attack: 0.01, filter: 3000 });
-      tone({ freq: midi(88), type: 'sine', start: 0.08, dur: 0.12, vol: 0.07, release: 0.18 });
-      tone({ freq: midi(95), type: 'sine', start: 0.11, dur: 0.08, vol: 0.03, release: 0.2 });
+      noise({ dur: 0.45, vol: 0.022, from: 600, to: 3200, q: 0.6 });
+      mallet(midi(78), { vol: 0.06, decay: 0.35, wet: 0.5 });
+      mallet(midi(85), { start: 0.07, vol: 0.055, decay: 0.45, wet: 0.55 });
     },
-    // Retour (← Accueil, Précédent) : la même chose, mais qui redescend
+    // Retour : les mêmes notes, qui redescendent
     back() {
-      noise({ dur: 0.2, vol: 0.05, from: 2600, to: 400, q: 1.2 });
-      tone({ freq: midi(86), type: 'sine', dur: 0.045, vol: 0.11, filter: 3500 });
-      tone({ freq: midi(79), type: 'sine', start: 0.045, dur: 0.08, vol: 0.10, release: 0.08, filter: 3000 });
+      noise({ dur: 0.4, vol: 0.018, from: 3000, to: 700, q: 0.6 });
+      mallet(midi(85), { vol: 0.055, decay: 0.3, wet: 0.45 });
+      mallet(midi(78), { start: 0.07, vol: 0.055, decay: 0.4, wet: 0.5 });
     },
     correct() {
       [72, 76, 79].forEach((n, i) => tone({ freq: midi(n), type: 'triangle', start: i * 0.07, dur: 0.12, vol: 0.22 }));
@@ -156,8 +187,8 @@
       [76, 79, 83, 88, 91].forEach((n, i) => tone({ freq: midi(n), type: 'sine', start: 0.05 + i * 0.06, dur: 0.18, vol: 0.16 }));
       [64, 71, 76].forEach(n => tone({ freq: midi(n), type: 'triangle', start: 0.35, dur: 0.7, vol: 0.07, release: 0.6 }));
     },
-    'toggle-on'() { tone({ freq: midi(79), type: 'sine', dur: 0.04, vol: 0.1 }); tone({ freq: midi(86), type: 'sine', start: 0.04, dur: 0.07, vol: 0.1, release: 0.06 }); },
-    'toggle-off'() { tone({ freq: midi(86), type: 'sine', dur: 0.04, vol: 0.1 }); tone({ freq: midi(79), type: 'sine', start: 0.04, dur: 0.07, vol: 0.09, release: 0.06 }); }
+    'toggle-on'() { mallet(midi(81), { vol: 0.06, decay: 0.2, wet: 0.3 }); mallet(midi(88), { start: 0.06, vol: 0.06, decay: 0.3, wet: 0.35 }); },
+    'toggle-off'() { mallet(midi(88), { vol: 0.055, decay: 0.2, wet: 0.3 }); mallet(midi(81), { start: 0.06, vol: 0.055, decay: 0.3, wet: 0.35 }); }
   };
 
   function play(name) {
@@ -310,7 +341,7 @@
     if (!elt || elt === lastHover || elt.disabled || elt.closest('[data-sound="none"]')) return;
     lastHover = elt;
     const now = performance.now();
-    if (now - lastHoverAt < 45) return;    // évite la « mitraillette » en passant vite sur une liste
+    if (now - lastHoverAt < 70) return;    // évite la « mitraillette » en passant vite sur une liste
     lastHoverAt = now;
     if (unlocked) play('hover');
   }

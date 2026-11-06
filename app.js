@@ -33,13 +33,14 @@
   const page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
   const QUIZ_PAGES = ['debutant', 'pratiques', 'menaces', 'mdp', 'reseaux', 'wifi', 'vie-privee', 'ingenierie-sociale',
     'avance', 'reseaux-securite', 'wifi-interactif', 'incident-response', 'quiz-final'].map(p => p + '.html');
-  // Pages de quiz (et simulation) : plein écran, sans barre d'onglets (voir app.css).
-  const isQuizPage = QUIZ_PAGES.includes(page) || page === 'simulation.html';
+  const SITUATION_PAGES = ['simulation.html', 'wifi-interactif.html', 'incident-response.html'];
+  // Pages de quiz et de mises en situation : plein écran, sans barre d'onglets (voir app.css).
+  const isQuizPage = QUIZ_PAGES.includes(page) || SITUATION_PAGES.includes(page);
   root.classList.toggle('page-quiz', isQuizPage);
   const TABS = [
     { id: 'home',  ico: '🏠', label: 'Accueil',    href: 'accueil.html',          match: p => p === 'accueil.html' || p === 'index.html' },
-    { id: 'quiz',  ico: '📚', label: 'Quiz',       href: 'accueil.html#quizzes',  match: p => QUIZ_PAGES.includes(p) },
-    { id: 'sim',   ico: '🖱️', label: 'Simulation', href: 'simulation.html',       match: p => p === 'simulation.html' },
+    { id: 'quiz',  ico: '📚', label: 'Quiz',       href: 'quiz.html',             match: p => p === 'quiz.html' || QUIZ_PAGES.includes(p) },
+    { id: 'sim',   ico: '🖱️', label: 'Situations', href: 'situations.html',       match: p => p === 'situations.html' || SITUATION_PAGES.includes(p) },
     { id: 'achv',  ico: '🏆', label: 'Succès',     href: 'succes.html',           match: p => p === 'succes.html' },
     { id: 'sound', ico: '🎧', label: 'Son' }
   ];

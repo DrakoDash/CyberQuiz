@@ -92,6 +92,9 @@ CyberQuiz/
 ├── wifi-interactif.html
 ├── pratiques.html
 ├── incident-response.html
+├── quiz.html         # liste des quiz
+├── situations.html   # liste des mises en situation
+├── site.css / site.js  # styles et script communs (accueil, quiz, situations)
 ├── simulation.html
 ├── quiz-final.html
 ├── changelog.html

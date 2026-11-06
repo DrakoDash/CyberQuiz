@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>CyberQuiz — Quiz</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Share+Tech+Mono&display=swap">
+<link rel="stylesheet" href="site.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#070b17">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="CyberQuiz">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<script src="maintenance.js"></script>
+<link rel="stylesheet" href="app.css">
+<script src="app.js"></script>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- ──── NAVBAR ──── -->
+<nav class="navbar">
+  <a href="accueil.html" class="nav-logo">Cyber<span>Quiz</span></a>
+  <div class="nav-links" id="navLinks">
+    <a href="accueil.html">Accueil</a>
+    <a href="quiz.html" class="active" aria-current="page">📚 Quiz</a>
+    <a href="situations.html">🖱️ Mises en situation</a>
+    <a href="quiz-final.html" class="final">⚡ Contrôle Final</a>
+    <a href="succes.html">🏆 Succès</a>
+    <a href="changelog.html">📋 Versions</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleMenu()" aria-label="Menu">
+    <i class="fa-solid fa-bars" id="menuIcon"></i>
+  </button>
+</nav>
+
+<!-- ──── EN-TÊTE ──── -->
+<header class="page-hero">
+  <div class="page-crumb"><a href="accueil.html">Accueil</a> / Quiz</div>
+  <h1 class="page-title"><span class="ico" aria-hidden="true">📚</span>Les quiz</h1>
+  <p class="page-sub">Des questions à choix multiples pour apprendre les bons réflexes, chaque réponse est expliquée. Commence par les bases, puis monte en difficulté jusqu'au Contrôle final.</p>
+  <div class="page-meta"><span><strong>11</strong> quiz</span><span><strong id="catDone">0</strong> terminés</span><span>🟢 Facile → 🔴 Expert</span></div>
+</header>
+
+<!-- ──── FILTRES ET RECHERCHE ──── -->
+<div class="controls-container">
+  <div class="quiz-filters">
+    <button class="filter-btn active" onclick="filterQuiz('all', this)">Tous les quiz</button>
+    <button class="filter-btn" onclick="filterQuiz('easy', this)">🟢 Facile</button>
+    <button class="filter-btn" onclick="filterQuiz('medium', this)">🟡 Moyen</button>
+    <button class="filter-btn" onclick="filterQuiz('hard', this)">🔴 Difficile / Expert</button>
+  </div>
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <input type="text" id="searchInput" placeholder="Rechercher un sujet, mot-clé..." oninput="searchQuizzes()" aria-label="Rechercher un quiz">
+  </div>
+</div>
+
+<section class="section-quizzes" id="quizzes" data-category="quiz">
+<div class="section-label"><span class="section-label-text">01 · Les bases</span><div class="section-line"></div></div><div class="quiz-grid">
+<a href="debutant.html" class="quiz-card" data-diff="easy" style="--card-accent:rgb(94, 213, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-4-3-8-2-9-1v15c3-1 6-1 9 2 3-3 6-3 9-2V4c-1-1-5-2-9 1Zm0 0v16"/></svg></div><span class="badge badge-easy">Facile</span></div><div class="card-title">Les Fondamentaux</div><div class="card-desc">Les bases de la cybersécurité et les premiers réflexes pour se protéger.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">20 questions</span></div><span class="card-status status-new" id="status-debutant">Nouveau</span></div></a>
+<a href="pratiques.html" class="quiz-card" data-diff="easy" style="--card-accent:rgb(102, 229, 181)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6Z"/><path d="m8 12 3 3 5-6"/></svg></div><span class="badge badge-easy">Facile</span></div><div class="card-title">Bonnes Pratiques</div><div class="card-desc">Les réflexes du quotidien : mises à jour, sauvegardes, téléchargements et liens suspects.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">15 questions</span></div><span class="card-status status-new" id="status-pratiques">Nouveau</span></div></a>
+</div>
+<div class="section-label"><span class="section-label-text">02 · Se protéger au quotidien</span><div class="section-line"></div></div><div class="quiz-grid">
+<a href="menaces.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(255, 120, 112)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 10 18H2Z M12 9v5M12 17v1"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Identifier les Menaces</div><div class="card-desc">Phishing, rançongiciels, logiciels espions et attaques : identifier les risques.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">20 questions</span></div><span class="card-status status-new" id="status-menaces">Nouveau</span></div></a>
+<a href="mdp.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(255, 209, 112)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Mots de Passe</div><div class="card-desc">Secrets robustes, gestionnaires, MFA et protection contre le phishing.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">20 questions</span></div><span class="card-status status-new" id="status-mdp">Nouveau</span></div></a>
+<a href="reseaux.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(182, 162, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 5v2"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Réseaux Sociaux</div><div class="card-desc">Faux profils, comptes compromis, publications, permissions et cyberharcèlement.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">10 questions</span></div><span class="card-status status-new" id="status-reseaux">Nouveau</span></div></a>
+<a href="wifi.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(99, 216, 242)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a14 14 0 0 1 18 0M6 12a9 9 0 0 1 12 0M9 16a4 4 0 0 1 6 0"/><circle cx="12" cy="20" r="1"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Sécurité Wi-Fi</div><div class="card-desc">Réseaux publics, HTTPS, VPN et sécurité de la box : distinguer les protections.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">12 questions</span></div><span class="card-status status-new" id="status-wifi">Nouveau</span></div></a>
+<a href="vie-privee.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(205, 166, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V6a4 4 0 0 1 8 0v4M12 14v3"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Vie Privée Numérique</div><div class="card-desc">Données personnelles, permissions, cookies, navigation privée et traces numériques.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">10 questions</span></div><span class="card-status status-new" id="status-vie-privee">Nouveau</span></div></a>
+</div>
+<div class="section-label"><span class="section-label-text">03 · Approfondir</span><div class="section-line"></div></div><div class="quiz-grid">
+<a href="ingenierie-sociale.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(255, 172, 120)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 5v2"/></svg></div><span class="badge badge-hard">Difficile</span></div><div class="card-title">Ingénierie Sociale</div><div class="card-desc">Déjouer les demandes urgentes, les faux supports et les manipulations ciblées.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">12 questions</span></div><span class="card-status status-new" id="status-ingenierie-sociale">Nouveau</span></div></a>
+<a href="reseaux-securite.html" class="quiz-card" data-diff="medium" style="--card-accent:rgb(103, 221, 205)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M12 8v4M5 16v-4h14v4"/></svg></div><span class="badge badge-medium">Moyen</span></div><div class="card-title">Sécurité des Réseaux</div><div class="card-desc">IP, DNS, ports, TLS, pare-feu et segmentation : les bases techniques du réseau.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">15 questions</span></div><span class="card-status status-new" id="status-reseaux-securite">Nouveau</span></div></a>
+<a href="avance.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(144, 166, 255)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-4-3-8-2-9-1v15c3-1 6-1 9 2 3-3 6-3 9-2V4c-1-1-5-2-9 1Zm0 0v16"/></svg></div><span class="badge badge-hard">Difficile</span></div><div class="card-title">Quiz Avancé</div><div class="card-desc">Développement web, cryptographie, droits, segmentation et analyse de sécurité.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">15 questions</span></div><span class="card-status status-new" id="status-avance">Nouveau</span></div></a>
+</div>
+<div class="section-label"><span class="section-label-text">04 · Valider ses acquis</span><div class="section-line"></div></div><div class="quiz-grid">
+<a href="quiz-final.html" class="quiz-card" data-diff="hard" style="--card-accent:rgb(249, 211, 123)"><div class="card-top"><div class="card-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6Z"/><path d="m8 12 3 3 5-6"/></svg></div><span class="badge badge-hard">Défi</span></div><div class="card-title">Contrôle Final</div><div class="card-desc">10 questions mélangées avec validation, explications et score final.</div><div class="card-footer"><div class="card-meta"><span class="card-meta-item">10 questions</span></div><span class="card-status status-new" id="status-quiz-final">Nouveau</span></div></a>
+</div>
+</section>
+
+<!-- ──── FOOTER ──── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="logo">CyberQuiz</span>
+      <p>Plateforme pédagogique interactive pour apprendre les bases de la cybersécurité.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Apprendre</h4>
+      <a href="quiz.html">Tous les quiz</a>
+      <a href="situations.html">Mises en situation</a>
+      <a href="quiz-final.html">Contrôle Final</a>
+    </div>
+    <div class="footer-col">
+      <h4>Ma progression</h4>
+      <a href="succes.html">Mes succès</a>
+      <a href="changelog.html">Nouveautés</a>
+    </div>
+    <div class="footer-col">
+      <h4>Liens utiles</h4>
+      <a href="https://github.com/DrakoDash/ProjetCyberSecurite" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> GitHub</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 CyberQuiz — Tous droits réservés</span>
+    <span class="footer-badge"><i class="fa-solid fa-lock"></i> Sécurité & Apprentissage</span>
+  </div>
+</footer>
+
+<script src="succes.js"></script>
+<script src="site.js"></script>
+<script src="audio.js" defer></script>
+<script src="pwa.js" defer></script>
+</body>
+</html>
