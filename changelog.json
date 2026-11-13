@@ -16,7 +16,7 @@
   },
   "versions": [
     {
-      "version": "Beta 28.0",
+      "version": "Beta 3.0",
       "date": "2026-11-06",
       "titre": "Plus confortable, plus solide",
       "resume": "Un accueil qui reprend là où tu t'étais arrêté, une page Paramètres avec thème clair et taille du texte, et la possibilité d'emporter ta progression sur un autre appareil.",
@@ -40,7 +40,7 @@
       ]
     },
     {
-      "version": "Beta 27.2",
+      "version": "Beta 2.2",
       "date": "2026-11-06",
       "titre": "Quiz et mises en situation séparés",
       "resume": "Les quiz et les mises en situation ont chacun leur page, et les sons d'interface deviennent plus doux.",
@@ -54,7 +54,7 @@
       ]
     },
     {
-      "version": "Beta 27.1",
+      "version": "Beta 2.1",
       "date": "2026-10-16",
       "titre": "Mode maintenance",
       "resume": "Le site peut être mis en maintenance ou afficher une annonce, depuis un simple fichier.",
@@ -66,7 +66,7 @@
       ]
     },
     {
-      "version": "Beta 27.0",
+      "version": "Beta 2.0",
       "date": "2026-10-16",
       "titre": "CyberQuiz devient une application",
       "resume": "CyberQuiz s'installe comme une vraie application, fonctionne hors-ligne et a maintenant du son.",
@@ -81,7 +81,7 @@
       ]
     },
     {
-      "version": "Beta 26.6",
+      "version": "Beta 1.5",
       "date": "2026-10-16",
       "titre": "Premier module interactif",
       "resume": "Première mise en situation interactive : on manipule de vraies fausses fenêtres, comme sur Pix.",
@@ -93,7 +93,7 @@
       ]
     },
     {
-      "version": "Beta 26.5",
+      "version": "Beta 1.4",
       "date": "2026-10-16",
       "titre": "Système de succès",
       "resume": "Des badges à débloquer pour donner envie de faire un quiz de plus.",
@@ -108,7 +108,7 @@
       ]
     },
     {
-      "version": "Beta 26.4",
+      "version": "Beta 1.3",
       "date": "2026-06-26",
       "titre": "Quiz de mises en situation et correctifs",
       "resume": "Deux nouveaux quiz basés sur des situations concrètes, et plusieurs correctifs.",
@@ -119,7 +119,7 @@
       ]
     },
     {
-      "version": "Beta 26.3",
+      "version": "Beta 1.2",
       "date": "2026-06-12",
       "titre": "Nouveaux quiz et première version de l'application",
       "resume": "CyberQuiz peut être installé comme une application, et de nouveaux quiz arrivent.",
@@ -132,7 +132,7 @@
       ]
     },
     {
-      "version": "Beta 26.2",
+      "version": "Beta 1.1",
       "date": "2026-06-11",
       "titre": "Refonte complète de la page d'accueil",
       "resume": "Une page d'accueil entièrement redessinée, avec la progression et les niveaux de difficulté.",
@@ -146,7 +146,7 @@
       ]
     },
     {
-      "version": "Beta 26.1",
+      "version": "Beta 1.0",
       "date": "2025-06-01",
       "titre": "Lancement initial du site",
       "resume": "La toute première version de CyberQuiz.",
