@@ -1,7 +1,7 @@
 {
   "mode": "annonce",
-  "titre": "CyberQuiz fait peau neuve",
-  "message": "Cette nouvelle version  est actuellement déployé en phase Beta. Certaines fonctionnalités peuvent être modifiées, supprimées ou temporairement indisponibles lors des prochaines mise a jour. Certaines fonctionnalitées nee peuvent pas être disponible pour tout les utilisateurs en même temps.",
+  "titre": "Note de version",
+  "message": "Cette version de CyberQuiz est actuellement déployé en phase Beta. Certaines fonctionnalités peuvent être modifiées, supprimées ou temporairement indisponibles lors des prochaines mise a jour. Certaines fonctionnalitées nee peuvent pas être disponible pour tout les utilisateurs en même temps.",
   "debut": "",
   "fin": "2026-10-20T18:00:00+03:00",
   "cle_dev_sha256": "e71a870e022492d267ddae62e1e6ef2f6f34ffb60a8387992cdac7d1dc8d5729"
